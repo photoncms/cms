@@ -1,0 +1,129 @@
+.login-page .wrapper{
+	left: 0;
+	padding: 0;
+	height: 100%;
+
+	.panel{
+		position: relative;
+		width: 400px;
+		margin: 0 auto;
+		top: 10%;
+		// @login-shadow: 0 0px 5px 0px rgba(0, 0, 0, 0.05), 0 4px 4px -3px rgba(0, 0, 0, 0.1);
+		// .box-shadow(@login-shadow);
+	}
+	.panel-heading, .list-group-item, .panel-footer{
+		text-align: center;
+	}
+	.panel-heading{
+		padding: 22px 15px;
+
+		> div{
+			display: inline-block;
+			margin: 0 auto;
+
+			img{
+				position: relative;
+				display: block;
+				float: left;
+				top: 5px;
+				width: 49px;
+				height: 44px;
+				margin: 0;
+				margin-right: 5px;
+			}
+			h1{
+				margin: 0;
+				display: block;
+				float: left;
+
+				span{
+					display: block;
+					color: @brand-dark;
+				}
+				.title{
+					font-size: 39px;
+					line-height: 39px;
+					font-weight: bold;
+					letter-spacing: -1px;
+				}
+				.subtitle{
+					font-size: 13px;
+					line-height: 13px;
+				}
+			}
+		}
+	}
+	.list-group-item{
+		padding: 23px 15px;
+		color: @gray;
+	}
+	.welcome-text{
+		display: block;
+		font-size: 18px;
+	}
+	.member{
+		display: inline-block;
+		margin-right: 7px;
+	}
+	.home {
+		margin-top: 10px;
+		display: block;
+		color: @brand-light;
+		height: 46px;
+		line-height: 34px;
+		i{
+			font-size: 35px;
+		}
+		span{
+			font-size: 12px;
+		    line-height: 12px;
+		    display: block;
+		}
+		.no-touch &:hover{
+			color: @brand-gray;
+		}
+	}
+	.login-text{
+		display: inline-block;
+		margin-bottom: 16px;
+	}
+	.form-group{
+		margin: 0 auto 10px;
+	}
+	.form-login-inputs{
+		width: 265px;
+		padding: 23px 0 13px;
+		margin: 0 auto;
+	}
+	.panel-footer{
+		.btn{
+			margin-top: 10px;
+			width: 260px;
+		}
+		.forgot{
+			display: inline-block;
+			margin: 15px auto 5px;
+		}
+	}
+	.server-error{
+	    font-size: 16px;
+	}
+}
+
+@media (max-width: (@screen-xs - 1)) {
+	.login-page {
+		form {
+			width: 100%;
+		}
+
+		.wrapper{
+			.panel{
+				position: relative;
+				width: 100%;
+				margin: 0 auto;
+				top: 0;
+				border-width: 1px 0;
+			}
+		}
+	}
+}

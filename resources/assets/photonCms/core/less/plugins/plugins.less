@@ -1,0 +1,338 @@
+// pNotify - Notifications
+.ui-pnotify {
+    top: 70px;
+    max-width: 90%;
+    .ui-pnotify-container {
+        border: none;
+        margin-bottom: 0;
+
+    }
+    .ui-pnotify-opacity-0 {
+        opacity: 0
+    }
+    .ui-pnotify-opacity-100 {
+        opacity: .1
+    }
+    .ui-pnotify-opacity-200 {
+        opacity: .2
+    }
+    .ui-pnotify-opacity-300 {
+        opacity: .3
+    }
+    .ui-pnotify-opacity-400 {
+        opacity: .4
+    }
+    .ui-pnotify-opacity-500 {
+        opacity: .5
+    }
+    .ui-pnotify-opacity-600 {
+        opacity: .6
+    }
+    .ui-pnotify-opacity-700 {
+        opacity: .7
+    }
+    .ui-pnotify-opacity-800 {
+        opacity: .8
+    }
+    .ui-pnotify-opacity-900 {
+        opacity: .9
+    }
+    .ui-pnotify-opacity-1000 {
+        opacity: 1
+    }
+    h4 {
+        font-size: 14px;
+        text-transform: uppercase;
+    }
+    .ui-pnotify-icon span {
+        position: relative;
+        top: -1px;
+        margin-right: 5px;
+        font-size: 16px;
+    }
+    .ui-pnotify-closer,
+    .ui-pnotify-sticker {
+        position: relative;
+        top: -2px;
+        margin-left: 10px;
+        outline: 0;
+    }
+    .alert {
+        background-color: #333;
+        color: #fff;
+    }
+    .alert-success {
+        background-color: #aece4e;
+        color: #fff;
+    }
+    .alert-info {
+        background-color: #76b6ec;
+        color: #fff;
+    }
+    .alert-danger {
+        background-color: #e77755;
+        color: #fff;
+    }
+    @media (max-width: (@screen-xs - 1)) {
+        right: 0 !important;
+    }
+}
+
+// Bootstrap Tags Input
+.bootstrap-tagsinput {
+    background-color: #fff;
+    border: 1px solid @panel-inner-border;
+    display: inline-block;
+    padding: 5px 5px 0;
+    margin-bottom: 10px;
+    color: #555;
+    vertical-align: middle;
+    border-radius: @border-radius-base;
+    width: 100%;
+    min-height: 37px;
+    line-height: @line-height-computed;
+    font-size: 0;
+    input {
+        position: relative;
+        border: none;
+        box-shadow: none;
+        outline: none;
+        background-color: transparent;
+        padding: 0;
+        margin: 0;
+        width: auto !important;
+        max-width: inherit;
+        font-size: @font-size-base;
+        &:focus {
+            border: none;
+            box-shadow: none;
+        }
+    }
+    .tag {
+        display: inline-block;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        padding: 8px;
+        color: #fff;
+        font-size: @font-size-base;
+        font-weight: normal;
+        border-radius: @border-radius-base;
+        .user-select(none);
+        cursor: default;
+        [data-role="remove"] {
+            margin-left: 8px;
+            cursor: pointer;
+            .opacity(.5);
+            &:after {
+                content: "\F057";
+                font-family: FontAwesome;
+                font-weight: normal;
+                font-style: normal;
+                text-decoration: inherit;
+                -webkit-font-smoothing: antialiased;
+            }
+            &:hover,
+            &:active {
+                .opacity(1);
+            }
+        }
+    }
+}
+
+// Star Rating
+.star-rating {
+    color: @brand-primary;
+    .dimmed {
+        color: @brand-faded;
+    }
+    .icon-remove-sign {
+        padding: 5px;
+    }
+}
+
+// Code Prettifier
+// desert scheme ported from vim to google prettify
+pre.prettyprint {
+    display: block;
+    background-color: #333;
+    margin-bottom: 0;
+}
+
+pre .nocode {
+    background-color: none;
+    color: #000
+}
+
+pre .str {
+    color: #ffa0a0
+}
+
+
+/* string  - pink */
+
+pre .kwd {
+    color: #f0e68c;
+    font-weight: bold
+}
+
+pre .com {
+    color: #87ceeb
+}
+
+
+/* comment - skyblue */
+
+pre .typ {
+    color: #98fb98
+}
+
+
+/* type    - lightgreen */
+
+pre .lit {
+    color: #cd5c5c
+}
+
+
+/* literal - darkred */
+
+pre .pun {
+    color: #fff
+}
+
+
+/* punctuation */
+
+pre .pln {
+    color: #fff
+}
+
+
+/* plaintext */
+
+pre .tag {
+    color: #f0e68c;
+    font-weight: bold
+}
+
+
+/* html/xml tag    - lightyellow */
+
+pre .atn {
+    color: #bdb76b;
+    font-weight: bold
+}
+
+
+/* attribute name  - khaki */
+
+pre .atv {
+    color: #ffa0a0
+}
+
+
+/* attribute value - pink */
+
+pre .dec {
+    color: #98fb98
+}
+
+
+/* decimal         - lightgreen */
+
+// Specify class=linenums on a pre to get line numbering
+ol.linenums {
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #AEAEAE
+}
+
+
+/* IE indents via margin-left */
+
+li.L0,
+li.L1,
+li.L2,
+li.L3,
+li.L5,
+li.L6,
+li.L7,
+li.L8 {
+    list-style-type: none
+}
+
+
+/* Alternate shading for lines */
+
+li.L1,
+li.L3,
+li.L5,
+li.L7,
+li.L9 {}
+
+@media print {
+    pre.prettyprint {
+        background-color: none
+    }
+    pre .str,
+    code .str {
+        color: #060
+    }
+    pre .kwd,
+    code .kwd {
+        color: #006;
+        font-weight: bold
+    }
+    pre .com,
+    code .com {
+        color: #600;
+        font-style: italic
+    }
+    pre .typ,
+    code .typ {
+        color: #404;
+        font-weight: bold
+    }
+    pre .lit,
+    code .lit {
+        color: #044
+    }
+    pre .pun,
+    code .pun {
+        color: #440
+    }
+    pre .pln,
+    code .pln {
+        color: #000
+    }
+    pre .tag,
+    code .tag {
+        color: #006;
+        font-weight: bold
+    }
+    pre .atn,
+    code .atn {
+        color: #404
+    }
+    pre .atv,
+    code .atv {
+        color: #060
+    }
+}
+
+// UniformJS
+div.checker {
+    position: relative;
+    top: -1px;
+}
+
+.checkbox-inline {
+    div.checker {
+        margin-left: -20px;
+    }
+}
+
+// Color Picker
+.text-center .farbtastic {
+    margin: 0 auto;
+}

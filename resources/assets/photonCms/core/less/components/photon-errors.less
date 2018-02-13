@@ -1,0 +1,54 @@
+.server-error{
+    font-size: 14px;
+    color: @state-danger-text;
+}
+
+.panel.panel-error-block.invalid-license {
+    width: 500px;
+
+    h1 {
+        font-size: 22px !important;
+        width: 80%;
+
+        .license-error-info {
+            clear: both;
+            margin-top: 30px;
+            font-size: 12px !important;
+            color: @brand-light;
+        }
+    }
+
+    .refresh-status {
+        width: 20%;
+        float: right;
+        overflow: hidden;
+        text-align: center;
+        font-size: 36px;
+
+        a {
+            color: @brand-light;
+            display: block;
+
+            .cta-text {
+                display: block;
+                font-size: 12px;
+            }
+
+            &:hover {
+                color: @brand-gray;
+            }
+        }
+    }
+
+    .panel-body a {
+        display: inline;
+        color: #fff;
+        float: none;
+        height: auto;
+        line-height: auto;
+
+        &:hover {
+            color: #fff;
+        }
+    }
+}

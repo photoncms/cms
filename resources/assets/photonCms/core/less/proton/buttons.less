@@ -1,0 +1,41 @@
+//
+// Buttons
+// --------------------------------------------------
+
+.btn {
+  &:focus {
+    outline: 0;
+    
+  }
+
+  &:active,
+  &.active {
+    .box-shadow(none);
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    cursor: not-allowed;
+    pointer-events: none; // Future-proof disabling of clicks
+    .opacity(.65);
+    .box-shadow(none);
+  }
+}
+
+.input-group-btn .btn{
+  background-color: #f4f4f4;
+  border-color: @input-border;
+
+  &:hover,
+  &:focus {
+    border-color: @input-border;
+  }
+}
+
+// button-demo just adds some vertical margin between buttons
+.button-demo{
+  .btn, .make-switch{
+    margin-top: 5px;
+  }
+}

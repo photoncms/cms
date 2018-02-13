@@ -1,0 +1,263 @@
+@main-nav-width: 250px;
+@main-nav-subnav-width: 210px;
+
+
+// TABLET/DESKTOP MAIN NAV
+@media (min-width: @screen-xs) {
+	nav.main-menu{
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		height: 100%;
+		left: 0;
+		width: 60px;
+		overflow: hidden;
+		.transition(width 0.05s linear);
+		-webkit-transform: translateZ(0) scale(1.0, 1.0);
+		background: @brand-dark;
+		z-index: @zindex-navbar + 10;
+		>ul{
+			margin: 7px 0;
+
+			&.logout{
+				position: absolute;
+				left: 0;
+				bottom: 0;
+			}
+		}
+		li{
+			position: relative;
+			display: block;
+			width: @main-nav-width;
+
+			>a, .clickable{
+				position: relative;
+				cursor: pointer;
+				.display-table;
+				color: @brand-light;
+				-webkit-transform: translateZ(0) scale(1.0, 1.0);
+				.transition(all 0.1s linear);
+			}
+
+			// subnav ul
+			ul{
+				position: absolute;
+				display: inline-block;
+				background: @brand-darker;
+				top: 0;
+				right: -@main-nav-subnav-width;
+				width: 0;
+				overflow: hidden;
+				.transition(width 0s 0.05s linear);
+			}
+			// subnav ul li
+			li{
+				.display-table;
+				width: @main-nav-subnav-width;
+
+				>a{
+					width: @main-nav-subnav-width;
+					height: 36px;
+					color: @brand-light;
+				}
+				.subnav-text{
+					display: table-cell;
+					vertical-align: middle;
+					padding-left: 20px;
+					padding-right: 40px;
+				}
+				.no-touch &:hover a{
+					color: #fff;
+					background-color: #5fa2db;
+				}
+			}
+			&.has-subnav .nav-text{
+				width: @main-nav-width - 80px;
+				max-width: @main-nav-width - 80px;
+			}
+			.no-touch &:hover >.clickable, &.active >.clickable,
+			.no-touch &:hover >a, &.active >a{
+				color: #fff;
+				background-color: #5fa2db;
+			}
+			.no-touch &:hover ul, &.active ul{
+				width: @main-nav-subnav-width;
+			}
+		}
+		.nav-icon{
+			position: relative;
+			display: table-cell;
+			width: 60px;
+			height: 36px;
+			text-align: center;
+			vertical-align: middle;
+			font-size: 18px;
+
+			&.fa-home{
+				font-size: 20px;
+			}
+		}
+		.nav-text{
+			position: relative;
+			left: -1px;
+			display: table-cell;
+			vertical-align: middle;
+			width: @main-nav-width - 60px;
+			max-width: @main-nav-width - 60px;
+			visibility: hidden;
+			overflow: hidden;
+		}
+		.fa-angle-right{
+			display: table-cell;
+			width: 20px;
+			vertical-align: middle;
+			font-size: 16px;
+		}
+		.no-touch &:hover, &.expanded{
+			width: @main-nav-width;
+			overflow: visible;
+
+			.nav-text{
+				visibility: visible;
+			}
+		}
+		.label-new{
+			display: block;
+			position: absolute;
+			top: 10px;
+			right: 5px;
+		}
+	}
+}
+
+// MOBILE MAIN NAV
+@media (max-width: (@screen-xs - 1)) {
+	nav.main-menu{
+		position: relative;
+		width: 100%;
+		left: 0;
+		right: 0;
+		max-height: 0;
+		overflow: hidden;
+		.transition(max-height 0.2s linear);
+		-webkit-transform: translateZ(0) scale(1.0, 1.0);
+		background: @brand-dark;
+		z-index: @zindex-navbar + 10;
+		display: none;
+
+		>ul{
+			margin: 0;
+
+			>li{
+				border: 1px solid #404040;
+				border-width: 0 0 1px;
+				&.has-subnav.active, &.has-subnav:hover{
+					border-bottom-color: @brand-darker;
+				}
+				.no-touch &:hover >.clickable, &.active >.clickable,
+				.no-touch &:hover >a, &.active >a{
+					color: #fff;
+					background-color: @brand-darker;
+				}
+			}
+			>li:first-child,{
+				// border-top-width: 0;
+			}
+			>li:last-child,{
+				// border-bottom-width: 0;
+			}
+		}
+		li{
+			display: block;
+			width: 100%;
+
+			>a, .clickable{
+				position: relative;
+				.display-table;
+				cursor: pointer;
+				width: 100%;
+				border-collapse: collapse;
+				border-spacing:0;
+				color: @brand-light;
+				-webkit-transform: translateZ(0) scale(1.0, 1.0);
+				.transition(all 0.1s linear);
+			}
+			ul{
+				display: block;
+				background: @brand-darker;
+				width: 100%;
+				max-height: 0;
+				overflow: hidden;
+				.transition(max-height 0.5s linear);
+
+				>li{
+					border: 1px solid #404040;
+					border-width: 1px 0 0;
+
+				}
+			}
+			li{
+				.display-table;
+				width: 100%;
+
+				>a{
+					width: 100%;
+					height: 40px;
+					color: @brand-light;
+				}
+				.subnav-text{
+					display: table-cell;
+					vertical-align: middle;
+					padding-left: 60px;
+				}
+			}
+			.no-touch &:hover ul, &.active ul{
+				max-height: 1000px;
+			}
+		}
+
+		.nav-icon{
+			position: relative;
+			display: table-cell;
+			width: 60px;
+			height: 40px;
+			text-align: center;
+			vertical-align: middle;
+			font-size: 18px;
+
+			&.fa-home{
+				font-size: 20px;
+			}
+		}
+		.nav-text{
+			position: relative;
+			left: -1px;
+			display: table-cell;
+			vertical-align: middle;
+		}
+		.fa-angle-right{
+			display: table-cell;
+			width: 20px;
+			vertical-align: middle;
+			font-size: 16px;
+		}
+		&.expanded{
+			display: block;
+			max-height: 1500px;
+			overflow: visible;
+			.transition(max-height 0.3s linear);
+
+		}
+		.label-new{
+			display: block;
+			position: absolute;
+			top: 12px;
+			right: 11px;
+		}
+	}
+}
+
+
+nav.main-menu .label-new.label-warning{
+	color: #555;
+}

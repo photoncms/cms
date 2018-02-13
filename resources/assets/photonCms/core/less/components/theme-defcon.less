@@ -1,0 +1,21 @@
+@body-bg-terminal: #000;
+
+@main-menu-text-terminal : #8EB33B;
+@main-menu-bg-terminal : #000;
+@main-submenu-bg-terminal : darken(#8EB33B, 40%);
+
+@sidebar-bg-terminal : darken(#8EB33B, 20%);
+
+@common-bg-terminal : darken(#8EB33B, 20%);
+@common-text-terminal : #8EB33B;
+
+@dropdown-bg-terminal : darken(#8EB33B, 20%);
+@dropdown-menu-text-terminal : #CDEE69;
+
+.theme-terminal{
+	.body-theme(@body-bg-terminal);
+	.main-menu-theme(@main-menu-text-terminal; @main-menu-bg-terminal; @main-submenu-bg-terminal);
+	.sidebar-theme(@sidebar-bg-terminal);
+	.common-theme(@common-text-terminal, @common-bg-terminal);
+	.dropdown-theme(@dropdown-menu-text-terminal, @dropdown-bg-terminal);
+}

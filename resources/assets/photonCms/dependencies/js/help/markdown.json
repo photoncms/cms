@@ -1,0 +1,6 @@
+{
+    "build" : "./resources/assets/photonCms/dependencies/js/help/Help.md",
+    "files" : [
+        "./resources/assets/photonCms/dependencies/js/help/SourceFiles/Main.md"
+    ]
+}

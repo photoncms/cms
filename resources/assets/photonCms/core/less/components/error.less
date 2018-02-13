@@ -1,0 +1,139 @@
+.error-page{
+	.wrapper{
+		left: 0;
+		padding: 0;
+		height: 100%;
+	}
+	.tooltip-inner{
+		line-height: 25px;
+	}
+}
+
+.panel.panel-error-block{
+    .box-shadow(none);
+    margin-bottom: 0;
+    border-bottom-width: 0;
+
+    .panel-heading{
+    	padding: 20px 30px;
+		border-right: 3px solid @brand-danger;
+		border-bottom: 1px solid @panel-inner-border;
+		>div{
+			position: relative;
+			padding: 11px 0;
+			> i{
+				top: -6px;
+				font-size: 38px;
+				height: 38px;
+				margin-right: 15px;
+			}
+			.error-code{
+				display: block;
+				top: 0;
+				right: 0;
+				height: auto;
+				width: 110px;
+				font-size: 48px;
+				line-height: 49px;
+			}
+			h1{
+			    margin: -2px 0 0;
+			    display: block;
+			    float: left;
+			    font-size: @font-size-base;
+			    small{
+			        margin: 0 0 3px;
+			        display: block;
+			        font-size: @font-size-base;
+			    }
+			    i{
+			    	position: relative;
+			    	top: 1px;
+			    	margin-left: 8px;
+					color: @brand-faded;
+			    }
+			}
+		}
+    }
+	.error-footer {
+		text-align: center;
+		.homepage-link {
+			float: none;
+			i {
+				font-size: 35px;
+			}
+		}
+	}
+    .panel-body{
+    	padding: 15px 30px;
+		a{
+			display: block;
+			color: @brand-light;
+			float: left;
+			height: 46px;
+			line-height: 34px;
+			i{
+				font-size: 17px;
+			}
+			span{
+				font-size: 12px;
+			    line-height: 12px;
+			    display: block;
+			}
+			.no-touch &:hover{
+				color: @brand-gray;
+			}
+		}
+		.input-group{
+			float: left;
+			margin-left: 15px;
+			width: 200px;
+			max-width: 80%;
+			input{
+				border-right: none;
+				padding-right: 0;
+				&:focus{
+					border-color: @input-border;
+				}
+			}
+			.btn-search{
+				border-left: none;
+				background: #fff;
+			}
+			i{
+				color: @brand-light;
+			}
+			.btn:hover{
+				i{
+					color: @brand-gray;
+				}
+			}
+		}
+    }
+}
+@media (min-width: @screen-xs) {
+    .panel.panel-error-block{
+        position: relative;
+        margin: 0 auto;
+        top: 25%;
+        width: 400px;
+        .box-shadow(@panel-shadow);
+        border-bottom-width: 1px;
+
+        .panel-heading > div{
+			.error-code{
+				position: absolute;
+				text-align: right;
+				border-left: 1px solid @gray-lighter;
+			}
+		}
+	    .panel-body{
+			padding: 30px;
+			.input-group{
+				width: 290px;
+				float: right;
+				margin-left: 0;
+			}
+		}
+    }
+}

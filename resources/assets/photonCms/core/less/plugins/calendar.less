@@ -1,0 +1,52 @@
+.calendar{
+    .fc-header td{
+        display: inline-block;
+        padding: 10px 5px;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+    .btn{
+        margin: 0 2px;
+    }
+    .fc-header-left .btn{
+        font-size: 18px;
+        line-height: 20px;
+    }
+    .fc-header-right{
+        text-align: right;
+    }
+    h2{
+        font-size: 16px;
+        margin: 0;
+    }
+    .fc-state-disabled{
+        background-color: @brand-faded;
+        border-color: @brand-faded;
+    }
+    .fc-content{
+        padding: 15px 20px;
+        border-top: 1px solid @panel-default-border;
+        background: @brand-lighter;
+        table{
+            background-color: @brand-lighter;
+        }
+    }
+}
+
+@media (min-width: (@screen-xs + 200px)) {
+    .calendar{
+        .fc-header td{
+            display: table-cell;
+            padding: 10px 15px;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+        .btn{
+            margin: 0 5px;
+        }
+        h2{
+            font-size: 22px;
+            margin: 0;
+        }
+    }
+}

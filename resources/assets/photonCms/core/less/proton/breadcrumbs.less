@@ -1,0 +1,113 @@
+//
+// Breadcrumbs
+// --------------------------------------------------
+
+
+.breadcrumb {
+  position: relative;
+  left: @wrapper-mobile-padding + 2px;
+  padding: 14px 0;
+  margin: 0;
+  background-color: transparent;
+
+  a{
+    color: @brand-light;
+
+    i{
+      font-size: 20px;
+    }
+  }
+
+  > li {
+    position: relative;
+    display: inline-block;
+    text-transform: uppercase;
+    z-index: @zindex-navbar + 1;
+    white-space: nowrap;
+
+    &+li:before {
+      position: relative;
+      top: -2px;
+      font-family: FontAwesome;
+      font-weight: normal;
+      font-style: normal;
+      text-decoration: inherit;
+      -webkit-font-smoothing: antialiased;
+      font-size: 7px;
+
+      .lt-ie9 &{
+        position: static;
+        top: auto;
+      }
+
+      content: "\f054\00a0"; // Unicode space added since inline-block means non-collapsing white-space
+      padding: 0 10px;
+      color: @brand-light;
+    }
+  }
+  li.group + li.active{
+    margin-left: 22px;
+    display: block;
+    > a{
+      color: @brand-faded;
+    }
+  }
+  > .active a{
+    color: @brand-light;
+  }
+
+  .dropdown-menu{
+    display: none;
+  }
+
+  > li.open .dropdown-menu{
+    display: none;
+  }
+}
+
+
+@media (min-width: @screen-xs) {
+    .breadcrumb {
+      position: absolute;
+      top: 0;
+      left: 32px;
+      padding: 24px 0;
+
+      > li {
+        &+li:before {
+          top: -1px;
+          font-size: 10px;
+        }
+      }
+      li.group + li.active{
+        margin-left: 0;
+        display: inline-block;
+      }
+      .dropdown-menu{
+        left: 30px;
+
+        // FADE IN EFFECT
+        .opacity &{
+          display: block;
+          max-height: 0;
+          overflow: hidden;
+          opacity: 0;
+          .transition(~"opacity 0.1s, max-height 0s 0.5s");
+        }
+        a{
+          text-transform: capitalize;
+        }
+      }
+
+      > li.open .dropdown-menu{
+        display: block;
+        .opacity &{
+          max-height: 1000px;
+          overflow: visible;
+          opacity: 1;
+          .transition(~"opacity 0.1s");
+        }
+      }
+
+    }
+}

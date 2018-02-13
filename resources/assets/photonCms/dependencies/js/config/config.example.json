@@ -1,0 +1,58 @@
+{
+    "assetManager": {
+        "itemsPerPage": 20,
+        "preselectedImageSizeIndex": 0,
+        "useMultipleFileUploader": false
+    },
+    "companySubtitle": "CONTENT MANAGEMENT",
+    "companyTitle": "Photon",
+    "defaultModuleIcon": "fa fa-file-o",
+    "dateFormat": "MMM Do YYYY h:mm:ssa",
+    "env": {
+        "photoncp.dev": {
+            "apiBasePath": "http://photoncp.dev/api",
+            "controlPanelBase": "cp",
+            "debug": true,
+            "name": "development",
+            "production": false,
+            "pusher": {
+                "key": "your-pusher-key",
+                "cluster": "your-pusher-cluster"
+            },
+            "websiteBasePath": "http://photoncp.dev",
+        },
+        "default": {
+            "apiBasePath": "/api",
+            "controlPanelBase": "cp",
+            "debug": true,
+            "name": "development",
+            "production": false,
+            "pusher": {
+                "key": "your-pusher-key",
+                "cluster": "your-pusher-cluster"
+            },
+            "websiteBasePath": ""
+        }
+    },
+    "inlineFieldTypes": [
+        "Gallery",
+        "ManyToManyExtended",
+        "ManyToOneExtended",
+        "OneToManyExtended",
+        "OneToOneExtended",
+        "RichText"
+    ],
+    "locale": "en",
+    "moduleTypes": {
+        "single_entry": "Single Entry",
+        "non_sortable": "Non Sortable",
+        "sortable": "Sortable",
+        "multilevel_sortable": "Multilevel Sortable"
+    },
+    "paginatedNodesItemsPerPage": 25,
+    "searchItemsPerPage": 25,
+    "select2MatchType": "begins_with",
+    "signUpEnabled": false,
+    "spellcheck": false,
+    "startPage": "/"
+}

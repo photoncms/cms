@@ -1,0 +1,45 @@
+a {
+  .color-transition;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+nav{
+  .user-select(none);
+
+  ul, li{
+    margin: 0;
+    padding: 0;
+    outline: 0;
+  }
+}
+.display-table{
+    display: table;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.color-transition{
+  .transition(color 0.1s);
+}
+.full-transition{
+  .transition(all 0.1s);
+}
+// Scrollbar customization for Webkit browsers
+.styled-scrollbar::-webkit-scrollbar{
+    width:0.3em;
+    background-color: @brand-lighter;
+}
+.styled-scrollbar::-webkit-scrollbar-thumb{
+    background-color: @brand-primary;
+    border-radius: 0;
+}
+.styled-scrollbar::-webkit-scrollbar-track{
+    background-color: none;
+}

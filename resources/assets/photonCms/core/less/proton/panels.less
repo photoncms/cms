@@ -1,0 +1,151 @@
+//
+// Panels
+// --------------------------------------------------
+
+
+// @panel-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.05);
+@panel-shadow: none;
+.panel {
+  .box-shadow(@panel-shadow);
+  
+  > .list-group {
+
+    .list-group-item {
+      border-color: @panel-inner-border;
+      background: none;
+      border-radius: 0;
+    }
+  }
+}
+
+.panel-heading, .panel-footer, .panel-group .panel {
+  border-radius: 0;
+}
+
+.panel-group {
+    margin-bottom: @line-height-computed;
+
+    .panel {
+      + .panel {
+        margin-top: 0;
+        border-top: 0;
+      }
+    }
+
+    .panel-heading {
+        border-bottom: 0;
+        padding: 17px 15px;
+
+        a{
+            display: block;
+
+            // &:before{
+            //     position: relative;
+            //     top: -0;
+            //     font-family: FontAwesome;
+            //     font-weight: normal;
+            //     font-style: normal;
+            //     text-decoration: inherit;
+            //     -webkit-font-smoothing: antialiased;
+            //     content: '\F0DA';
+            // }
+        }
+    }
+    .panel-collapse{
+        .box-shadow(0 -3px 0 0 transparent);
+        &.in{
+            .box-shadow(0 -3px 0 0 @brand-primary);
+        }
+    }
+    .collapsing {
+      height: 0;
+      .transition(all .35s ease);
+    }
+}
+
+// Proton Panel Block
+.panel.panel-block{
+    
+    .panel-heading{
+        padding: 20px;
+        border: none;
+        .clearfix;
+
+        >div{
+            > img, > i{
+                position: relative;
+                top: -1px;
+                display: block;
+                float: left;
+                height: 30px;
+                margin: 0;
+                margin-right: 10px;
+            }
+            > i{
+                font-size: 31px;
+            }
+            h1{
+                margin: -2px 0 0;
+                display: block;
+                float: left;
+                font-size: @font-size-large;
+
+                small{
+                    margin: 1px 0 0;
+                    display: block;
+                    font-size: @font-size-small;
+                }
+            }
+        }
+    }
+    .list-group{
+
+        .list-group-item:first-child{
+            border-top: none;
+        }
+        .list-group-item{
+            padding: 15px 15px 20px;
+        }
+    }
+}
+.panel.panel-title-block{
+    .box-shadow(none);
+    margin-bottom: 0;
+    border-bottom-width: 0;
+    h1{
+        max-width: 180px;
+        small{
+            line-height: 15px;
+        }
+    }
+}
+@media (min-width: @screen-xs) {
+    .panel.panel-title-block{
+        .box-shadow(@panel-shadow);
+        margin-bottom: 20px;
+        // border-bottom-width: 1px;
+        border: none;
+        background: none;
+        h1{
+            max-width: 70%;
+        }
+        .panel-heading {
+            padding: 15px 0;
+            background: none;
+        }
+    }
+}
+
+.panel.panel-grid-demo{
+    padding: 0;
+    margin: 0;
+    border-width: 5px;
+    overflow: hidden;
+    .panel-heading{
+        color: #fff;
+        padding: 20px 0;
+    }
+}
+.row.panel-grid-demo{
+    margin-bottom: 20px;
+}

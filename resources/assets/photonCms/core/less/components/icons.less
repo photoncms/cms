@@ -1,0 +1,62 @@
+@font-face {
+  font-family: 'proton-icons';
+  src:url('../fonts/proton/proton-icons.eot');
+  src:url('../fonts/proton/proton-icons.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/proton/proton-icons.svg#proton-icons') format('svg'),
+    url('../fonts/proton/proton-icons.woff') format('woff'),
+    url('../fonts/proton/proton-icons.ttf') format('truetype');
+  font-style: normal;
+  font-weight: normal;
+}
+
+.fa-proton-logo {
+  font-family: 'proton-icons' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+}
+.fa-proton-logo:before {
+  content: "\e000";
+}
+
+.icons-demo{
+  text-align: center;
+
+  h4{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    font-size: 16px;
+    text-align: left;
+    border-color: transparent;
+    padding-left: 10px;
+  }
+
+  a{
+    display: block;
+    height: 80px;
+    padding: 5px;
+    color: @brand-gray;
+    font-size: 12px;
+    line-height: 13px;
+    .transition(all 0.2s);
+
+    i{
+      display: block;
+      font-size: 20px;
+      padding-bottom: 3px;
+      -webkit-transform: translateZ(0) scale(1.0, 1.0);
+    }
+
+    &:hover{
+      background-color: @brand-primary;
+      color: #fff;
+    }
+  }
+  ul{
+    list-style: none;
+  }
+}

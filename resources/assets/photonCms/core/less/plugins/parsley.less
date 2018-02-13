@@ -1,0 +1,18 @@
+.parsley-error{
+  .form-control-focus(@state-danger-text);
+}
+.parsley-errors-list{
+  display: block;
+  text-align: right;
+  list-style: none;
+  color: @state-danger-text;
+  margin: 0;
+}
+.checker{
+  .parsley-errors-list{
+    position: relative;
+    width: 200px;
+    top: -5px;
+    text-align: left;
+  }
+}

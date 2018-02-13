@@ -1,0 +1,76 @@
+.extended-relation-listing-entry {
+	position: relative;
+	height: auto;
+	overflow: hidden;
+    border: 1px solid #e1e1e1;
+    margin-bottom: 10px;
+    background-color: #fff;
+    z-index: 5;
+
+    .available-permissions {
+        margin-top: 20px !important;
+        margin-bottom: 0px !important;
+    }
+
+    .section-title {
+        margin: 10px 0 0;
+    }
+
+    &.active {
+    	border-color: #a5c8e5;
+        background-color: #a5c8e5;
+        color: white;
+
+        .button-container {
+            button, a {
+                display: none
+            }
+        }
+    }
+
+    .extended-option {
+        padding: 6px 0;
+        font-style: italic;
+    }
+
+	.panel {
+		background-color: #fff;
+	}
+
+	.form-footer {
+		margin-top: 20px;
+	}
+
+    .button-container {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        width: 100%;
+        height: auto;
+
+        &.confirm-delete {
+            background: #fff;
+        }
+
+	    button, a {
+	        float: right;
+	        opacity: 0.25;
+	        margin-left: 5px;
+
+	        &:hover {
+	            opacity: 1;
+	        }
+	    }
+	}
+
+    .form-horizontal {
+        .form-group {
+            margin: 0 -14px 15px;
+        }
+    }
+}
+
+.hide-permission-generator {
+    margin-bottom: 15px;
+}
+

@@ -1,0 +1,66 @@
+<div
+    :id="'widget.' + widget.id"
+    class="proton-widget widget-latest"
+    :class="{setup: setupMode}">
+    <div class="panel panel-default back">
+        <div class="panel-heading">
+            <i class="fa fa-cog"></i>
+            <i
+                @click="removeWidget"
+                class="fa fa-trash">
+            </i>
+            <span>Settings</span>
+            <div
+                @click="toggleSetup"
+                class="toggle-widget-setup">
+                <i class="fa fa-ok"></i>
+                <span>DONE</span>
+            </div>
+        </div>
+        <ul class="list-group scrollable">
+            <li class="widget-type-text {{widget.theme}}-type-text">Latest Widget</li>
+            <li
+                class="list-group-item"
+                v-for="field in fields">
+                <component
+                    :is="field.type"
+                    :field="field">
+                </component>
+            </li>
+        </ul>
+    </div>
+    <div class="panel {{widget.theme || 'panel-primary'}} front">
+        <div
+            class="panel-heading"
+            :class="{'with-heading-icon': widget.icon}">
+            <i v-if="widget.icon" class="{{widget.icon}}"></i>
+            <span>{{widget.heading}}</span>
+            <i
+                @click="toggleSetup"
+                class="fa fa-cog toggle-widget-setup">
+            </i>
+        </div>
+        <div>
+            <ul class="list-group pending"
+                :class="{'condensed': condensed}">
+                <li
+                    class="list-group-item"
+                    :widget="widget"
+                    v-for="item in items"
+                    track-by="id">
+                    <i v-if="item[widget.imageField]"><img :src="item[widget.imageField]" :alt="item[widget.titleField]"></i>
+                    <div
+                        class="text-holder"
+                        :class="{
+                            'no-image': !item[widget.imageField],
+                            'no-excerpt': !item[widget.excerptField]
+                        }">
+                        <span class="title-text">{{item[widget.titleField]}}</span>
+                        <span v-if="item[widget.excerptField]" class="description-text">{{item[widget.excerptField]}}</span>
+                    </div>
+                    <span class="stat-value">{{item.timeAgo}}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

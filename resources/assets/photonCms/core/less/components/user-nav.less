@@ -1,0 +1,380 @@
+	nav.user-menu{
+		position: relative;
+		top: 0;
+		left: 0;
+		height: 60px;
+		border-bottom: 1px solid @gray-lighter;
+		background-color: #fff;
+		width: 100%;
+		display: flex;
+		justify-content: flex-end;
+		.box-shadow(0 4px 10px -4px rgba(0, 0, 0, 0.15));
+
+		.user-menu-wrapper{
+			position: relative;
+			z-index: 1;
+		}
+
+		i, .user-name {
+			display: table-cell;
+			font-size: 20px;
+			height: 30px;
+			text-align: center;
+			vertical-align: middle;
+		}
+
+		> section > a{
+			position: relative;
+			float: left;
+			// .display-table;
+			padding: 15px 0 15px;
+
+			i {
+				width: 50px;
+				height: 30px;
+				color: @brand-faded;
+				border-left: 1px solid @gray-lighter;
+				.color-transition;
+
+			}
+
+			.user-name {
+				color: @brand-faded;
+				font-size: 14px;
+
+				.user-name-caret {
+					display: inline;
+					font-size: 14px;
+					height: auto;
+					width: auto;
+					vertical-align: top;
+				}
+			}
+
+			.no-touch &:hover, &.active, &.unread{
+
+				i, .user-name {
+					color: @brand-primary;
+				}
+			}
+		}
+
+		.menu-counter{
+			position: absolute;
+			top: -2px;
+			left: 15px;
+			width: 30px;
+			height: 21px;
+			background-color: @brand-primary;
+			border-radius: 0 0 3px 3px;
+			color: #fff;
+			text-align: center;
+		}
+
+		.main-menu-access{
+			position: relative;
+			float: left;
+			// .display-table;
+			padding: 15px 17px;
+			color: @brand-gray;
+			.full-transition;
+
+			i{
+				font-size: 21px;
+				width: 30px;
+			}
+
+			&.active{
+				background: @brand-dark;
+
+				i{
+					color: #fff;
+				}
+			}
+		}
+
+		.panel{
+			position: absolute;
+			display: none;
+			top: 58px;
+			left: 0;
+			right: 0;
+			width: 100%;
+			@user-nav-shadow: 0 0px 5px 2px rgba(0, 0, 0, 0.05);
+			.box-shadow(@user-nav-shadow);
+			z-index: @zindex-navbar + 10;
+
+			.arrow{
+				&,
+				&:after {
+				  position: absolute;
+				  display: block;
+				  width: 0;
+				  height: 0;
+				  border-color: transparent;
+				  border-style: solid;
+				  border-width: @popover-arrow-width;
+				  content: " ";
+				}
+
+				&.user-menu-arrow{
+					border-width: @popover-arrow-outer-width;
+					right: 50%;
+					margin-right: -@popover-arrow-outer-width;
+					border-top-width: 0;
+					border-bottom-color: @panel-default-border;
+					top: -@popover-arrow-outer-width;
+
+					&:after {
+						top: 1px;
+						margin-left: -@popover-arrow-width;
+						border-top-width: 0;
+						border-bottom-color: @panel-default-heading-bg;
+					}
+				}
+			}
+			&.theme-view .user-menu-arrow{
+				right: 145px;
+			}
+			&.messages-view .user-menu-arrow{
+				right: 86px;
+			}
+			&.notifications-view .user-menu-arrow{
+				right: 28px;
+			}
+
+			.panel-no-unread{
+				padding: 15px;
+				text-align: center;
+			}
+			.panel-footer{
+				padding: 10px 15px;
+				overflow: hidden;
+				height: auto;
+
+				.see-all,
+				.mark-all-as-read {
+					display: inline;
+					line-height: 17px;
+					float: left;
+				}
+
+				.mark-all-as-read {
+					float: right;
+				}
+			}
+			.panel-heading{
+				padding: 0 15px;
+
+				i, span{
+					display: table-cell;
+					vertical-align: middle;
+					height: 53px;
+				}
+				span{
+					font-size: 17px;
+					text-transform: uppercase;
+				}
+				i{
+					position: relative;
+					top: -1px;
+					font-size: 20px;
+					width: 40px;
+					text-align: left;
+					padding-left: 6px;
+				}
+				.fa-remove{
+					position: absolute;
+					display: block;
+					top: 20px;
+					right: 15px;
+					width: 20px;
+					height: 20px;
+					font-size: 14px;
+					color: @brand-faded;
+					.color-transition;
+
+					.no-touch &:hover{
+						cursor: pointer;
+						color: @brand-gray;
+					}
+				}
+			}
+
+			.list-group-item{
+				padding: 12px 15px;
+				.full-transition;
+
+				i, .text-holder{
+					display: table-cell;
+					vertical-align: middle;
+				}
+				a {
+					color: inherit;
+				}
+				i{
+					width: 40px;
+					text-align: left;
+
+					img, b{
+						height: 28px;
+						width: 28px;
+						margin-left: 2px;
+						border-radius: 50%;
+					}
+					b{
+						display: block;
+						background-color: #fff;
+						border: 1px dashed @brand-gray;
+
+						&.dark{
+							background-color: @brand-gray;
+							border: none;
+						}
+						&.pastel{
+							background-color: #eefddf;
+						}
+						&.pastel-marine{
+							background-color: #dfeefd;
+						}
+						&.rio{
+							background-color: #1d8c97;
+						}
+						&.terminal{
+							background-color: #CDEE69;
+						}
+					}
+				}
+				.text-holder{
+					span{
+						display: block;
+						width: 210px;
+						line-height: 17px;
+						.text-overflow();
+					}
+					.title-text{
+						width: 190px;
+						font-weight: bold;
+					}
+				}
+				.time-ago{
+					position: absolute;
+					top: 12px;
+					right: 15px;
+					width: 80px;
+					text-align: right;
+					color: @brand-faded;
+					line-height: 17px;
+				}
+
+				.no-touch &:hover{
+					cursor: pointer;
+					background-color: @brand-primary;
+					color: #fff;
+
+					.time-ago{
+						color: #fff;
+					}
+				}
+			}
+		}
+
+	}
+// }
+
+@media (max-width: (@screen-xs - 1)) {
+	nav.user-menu{
+		border-bottom: none;
+		justify-content: space-between;
+	}
+
+	.user-menu-wrapper {
+		.fa-user-circle {
+			border: none;
+		}
+
+		.user-name {
+			max-width: 120px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+	}
+}
+
+@media (min-width: (@screen-xs - 1)) and (max-width: (@screen-sm - 1)) {
+	.user-menu-wrapper {
+		.user-name {
+			max-width: 100px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+	}
+}
+
+@media (min-width: @screen-xs) {
+	nav.user-menu{
+		height: 70px;
+		border: none;
+		background-color: transparent;
+		.box-shadow(none);
+
+		.dashboard-page &{
+			position: absolute;
+
+			.user-menu-wrapper{
+				margin-right: 30px;
+			}
+			.panel{
+				right: 20px;
+			}
+		}
+
+
+		.main-menu-access{
+			display: none;
+		}
+		.user-menu-wrapper{
+			// margin-right: 20px - @wrapper-large-padding;
+		}
+
+		> section > a{
+			margin: 10px 0;
+			padding: 0;
+
+			i{
+				border: none;
+				height: 50px;
+				width: 40px;
+			}
+		}
+
+		.menu-counter{
+			top: -10px;
+			left: 5px;
+			width: 30px;
+			height: 23px;
+			.dashboard-page &{
+				top: -15px;
+			}
+		}
+
+		.panel{
+			left: auto;
+			right: 120px;
+			width: 300px;
+
+			&.theme-view .user-menu-arrow{
+				right: 99px;
+			}
+			&.messages-view .user-menu-arrow{
+				right: 59px;
+			}
+			&.notifications-view .user-menu-arrow{
+				right: 20px;
+			}
+		}
+
+	}
+}

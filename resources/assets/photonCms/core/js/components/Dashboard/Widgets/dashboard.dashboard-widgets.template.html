@@ -1,0 +1,40 @@
+<div>
+    <section class="widget-group">
+        <component :is="widget.type" :widget.sync="widget" v-for="widget in widgets"></component>
+        <div
+            data-toggle="modal"
+            href="#new-widget-modal"
+            class="placeholder drag-placeholder new-widget-placeholder">
+        </div>
+    </section>
+    <div id="new-widget-modal" tabindex="-1" role="dialog" class="modal modal-new-widget fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><i class="fa fa-plus"></i><span>SELECT NEW WIDGET TYPE</span></h4>
+                </div>
+                <div class="modal-body">
+                    <div
+                        @click="newWidget('widget-latest')"
+                        class="widget-screen">
+                        <img src="/images/widgets/latest.jpg" alt="Latest Widget">
+                    </div>
+                    <div
+                        @click="newWidget('widget-stats')"
+                        class="widget-screen">
+                        <img src="/images/widgets/stats.jpg" alt="Stats Widget">
+                    </div>
+                    <div
+                        @click="newWidget('widget-barchart')"
+                        class="widget-screen">
+                        <img src="/images/widgets/barchart.jpg" alt="Barchart Widget">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-lg btn-default" data-dismiss="modal">CANCEL</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+</div>

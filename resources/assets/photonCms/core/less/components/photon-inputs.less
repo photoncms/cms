@@ -1,0 +1,86 @@
+select, select[multiple], select[size] {
+    visibility: hidden;
+    height: 34px;
+}
+
+#redactor-modal {
+    select, select[multiple], select[size] {
+        visibility: visible;
+    }
+}
+
+.select2-drop,
+.select2-container {
+    .select-icons {
+        display: inline-block;
+        width: 20px;
+        color: #333;
+    }
+}
+
+.btn-primary-outline {
+    background-color: transparent;
+    border-color: @brand-faded;
+    color: @brand-gray;
+
+    &:hover, &:focus {
+       color: @brand-dark;
+    }
+}
+
+.btn.btn-link.btn-refresh {
+    position: relative;
+    width: 100%;
+    color: #999;
+    text-decoration: none;
+    .icon-refresh {
+        position: relative;
+        top: 1px;
+        font-size: 20px;
+    }
+    .no-touch &:hover {
+        color: darken(#999, 10%);
+    }
+}
+
+.panel-controls {
+    .form-group {
+        margin-bottom: 0;
+    }
+}
+
+.form-footer {
+    height: auto;
+    overflow: hidden;
+
+    .create-another {
+        margin: 0px 10px 0 0;
+        padding-top: 8px;
+    }
+
+    .form-group {
+        .btn {
+            display: block;
+            float: left;
+            .pull-right {
+                float: right;
+            }
+        }
+        .btn + .btn {
+            margin-left: 3px;
+        }
+
+        &.no-bottom-margin {
+            margin-bottom: 0;
+        }
+    }
+
+    &.form-footer-no-padding {
+        padding: 0px !important;
+
+        .form-group {
+            margin: 0px !important;
+        }
+    }
+}
+

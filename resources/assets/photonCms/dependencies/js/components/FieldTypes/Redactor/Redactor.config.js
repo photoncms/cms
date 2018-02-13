@@ -1,0 +1,42 @@
+const config = require('~/config/config.json');
+
+export const redactorConfig = {
+    'buttons': [
+        'format',
+        'bold',
+        'italic',
+        'lists',
+        'link',
+    ],
+    'formatting': [
+        'p',
+        'blockquote',
+        'pre',
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'h5',
+    ],
+    'imageEditable': false,
+    'defaultImageAlignment': 'article-photo',
+    'defaultImageSizeId': 2,
+    'minHeight': '300px',
+    'maxWidth': '660px',
+    'plugins': [
+        'advanced',
+        'alignment',
+        'clips',
+        'embedCode',
+        'editPhotonImage',
+        'fontcolor',
+        'fontsize',
+        'fullscreen',
+        'source',
+        'video',
+    ],
+    'script': true,
+    'spellcheck': config.spellcheck,
+    'toolbarFixed': false,
+    'toolbarOverflow': true,
+};

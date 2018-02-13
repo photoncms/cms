@@ -1,0 +1,11 @@
+@main-menu-text-light : @brand-light;	
+@main-menu-bg-light : @brand-lighter;
+@main-submenu-bg-light : darken(@brand-lighter, 1%);
+
+@dropdown-bg-light : @brand-lighter;
+@dropdown-menu-text-light : @main-menu-text-light;
+
+.theme-light{
+	.main-menu-theme(@main-menu-text-light; @main-menu-bg-light; @main-submenu-bg-light);
+	.dropdown-theme(@dropdown-menu-text-light, @dropdown-bg-light);
+}

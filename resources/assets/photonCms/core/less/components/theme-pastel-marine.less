@@ -1,0 +1,23 @@
+@spin-marine : 210;
+
+@body-bg-pastel-marine: spin(saturate(darken(@body-bg, 1%), 70%), @spin-marine);
+
+@main-menu-text-pastel-marine : spin(saturate(darken(@brand-light, 5%), 20%), @spin-marine);
+@main-menu-bg-pastel-marine : spin(saturate(darken(@brand-lighter, 5%), 90%), @spin-marine);
+@main-submenu-bg-pastel-marine : spin(saturate(darken(@brand-lighter, 9%), 90%), @spin-marine);
+
+@sidebar-bg-pastel-marine : lighten(@main-menu-bg-pastel-marine, 3%);
+
+@common-bg-pastel-marine : @main-menu-bg-pastel-marine;
+@common-text-pastel-marine : @main-menu-text-pastel-marine;
+
+@dropdown-bg-pastel-marine : @main-menu-bg-template;
+@dropdown-menu-text-pastel-marine : @main-menu-text-pastel-marine;
+
+.theme-pastel-marine{
+	.body-theme(@body-bg-pastel-marine);
+	.main-menu-theme(@main-menu-text-pastel-marine; @main-menu-bg-pastel-marine; @main-submenu-bg-pastel-marine);
+	.sidebar-theme(@sidebar-bg-pastel-marine);
+	.common-theme(@common-text-pastel-marine, @common-bg-pastel-marine);
+	.dropdown-theme(@dropdown-menu-text-pastel-marine, @dropdown-bg-pastel-marine);
+}

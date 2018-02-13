@@ -1,0 +1,49 @@
+<div
+    :id="'widget.' + widget.id"
+    class="proton-widget general-stats"
+    :class="{setup: setupMode}">
+    <div class="panel panel-default back">
+        <div class="panel-heading">
+            <i class="fa fa-cog"></i>
+            <i
+                @click="removeWidget"
+                class="fa fa-trash">
+            </i>
+            <span>Settings</span>
+            <div
+                @click="toggleSetup"
+                class="toggle-widget-setup">
+                <i class="fa fa-ok"></i>
+                <span>DONE</span>
+            </div>
+        </div>
+        <ul class="list-group scrollable">
+            <li class="widget-type-text {{widget.theme}}-type-text">Barchart Widget</li>
+            <li
+                class="list-group-item"
+                v-for="field in fields">
+                <component
+                    :is="field.type"
+                    :field="field">
+                </component>
+            </li>
+        </ul>
+    </div>
+    <div class="panel {{widget.theme || 'panel-primary'}} front">
+        <div
+            class="panel-heading"
+            :class="{'with-heading-icon': widget.icon}">
+            <i v-if="widget.icon" class="{{widget.icon}}"></i>
+            <span>{{widget.heading}}</span>
+            <i
+                @click="toggleSetup"
+                class="fa fa-cog toggle-widget-setup">
+            </i>
+        </div>
+        <div>
+            <div class="form-group">
+                <canvas class="barchart" id="widget-chart-{{widget.id}}" width="280" height="180"></canvas>
+            </div>
+        </div>
+    </div>
+</div>

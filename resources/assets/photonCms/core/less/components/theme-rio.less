@@ -1,0 +1,21 @@
+@body-bg-rio: saturate(lighten(#cac44a, 30%), 70%);
+
+@main-menu-text-rio : #fff;
+@main-menu-bg-rio : #1d8c97;
+@main-submenu-bg-rio : lighten(#00995f, 5%);
+
+@sidebar-bg-rio : lighten(#759e1c, 35%);
+
+@common-bg-rio : lighten(#c795ae, 30%);
+@common-text-rio : darken(#c795ae, 20%);
+
+@dropdown-bg-rio : #c25aaf;
+@dropdown-menu-text-rio : #fff;
+
+.theme-rio{
+	.body-theme(@body-bg-rio);
+	.main-menu-theme(@main-menu-text-rio; @main-menu-bg-rio; @main-submenu-bg-rio);
+	.sidebar-theme(@sidebar-bg-rio);
+	.common-theme(@common-text-rio, @common-bg-rio);
+	.dropdown-theme(@dropdown-menu-text-rio, @dropdown-bg-rio);
+}

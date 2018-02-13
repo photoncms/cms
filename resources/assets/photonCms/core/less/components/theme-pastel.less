@@ -1,0 +1,23 @@
+@pastel-green-spin: 90;
+
+@body-bg-pastel: spin(saturate(darken(@body-bg, 3%), 70%), @pastel-green-spin);
+
+@main-menu-text-pastel : spin(saturate(darken(@brand-light, 5%), 20%), @pastel-green-spin);
+@main-menu-bg-pastel : spin(saturate(darken(@brand-lighter, 5%), 90%), @pastel-green-spin);
+@main-submenu-bg-pastel : spin(saturate(darken(@brand-lighter, 9%), 90%), @pastel-green-spin);
+
+@sidebar-bg-pastel : lighten(@main-menu-bg-pastel, 3%);
+
+@common-bg-pastel : @main-menu-bg-pastel;
+@common-text-pastel : @main-menu-text-pastel;
+
+@dropdown-bg-pastel : @main-menu-bg-template;
+@dropdown-menu-text-pastel : @main-menu-text-pastel;
+
+.theme-pastel{
+	.body-theme(@body-bg-pastel);
+	.main-menu-theme(@main-menu-text-pastel; @main-menu-bg-pastel; @main-submenu-bg-pastel);
+	.sidebar-theme(@sidebar-bg-pastel);
+	.common-theme(@common-text-pastel, @common-bg-pastel);
+	.dropdown-theme(@dropdown-menu-text-pastel, @dropdown-bg-pastel);
+}

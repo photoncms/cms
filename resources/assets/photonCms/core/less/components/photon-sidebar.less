@@ -1,0 +1,97 @@
+.sidebar {
+    position: relative;
+    .version {
+        font-size: 11px;
+        margin-left: 10px;
+    }
+    .panel-body .input-group {
+        display: block;
+        .btn-search {
+            margin: 1px 1px 1px -38px;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            border: none;
+            z-index: 3;
+        }
+        .btn-search[disabled] {
+            background-color: #eee;
+            border-color: #eee;
+            opacity: 1;
+        }
+        .btn-search-advanced-shift {
+            margin-left: -66px;
+        }
+        .form-control {
+            display: block;
+        }
+    }
+    .advanced-search .panel-heading {
+        border-top-right-radius: 3px;
+        border-top-left-radius: 3px;
+    }
+    .scrollable {
+        .transition(opacity 0.1s ease-out);
+        opacity: 1;
+        &.search-transition {
+            opacity: 0;
+        }
+    }
+
+    .menu-picker {
+        padding-top: 0;
+    }
+
+    &.search-mode{
+        .advanced-search{
+            @media (min-width: @screen-xs) {
+                width: 262px;
+            }
+            max-height: none;
+            .transition(none);
+        }
+        .sidebar-handle{
+            display: block;
+        }
+    }
+    &.locked:before{
+        position: absolute;
+        content: '';
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: red;
+        opacity: 0.3;
+    }
+
+    .jstree .warn {
+        background-color: #f4c84f;
+        border-radius: 3px;
+        color: #ffffff;
+        box-shadow: inset 0 0 1px #f4c84f;
+
+        &.jstree-clicked, &.jstree-hovered {
+            background: darken(#f4c84f, 15%);
+            color: #ffffff;
+            border-radius: 3px;
+            box-shadow: inset 0 0 1px darken(#f4c84f, 15%);
+        }
+    }
+}
+
+.help-sidebar {
+    img {
+        width: 100%;
+    }
+
+    .question-circle-icon {
+        color: @brand-faded;
+        margin-right: 5px;
+    }
+}
+
+@media (min-width: @screen-xs) {
+    .panel-datatable {
+        margin-top: -21px;
+    }
+}

@@ -1,0 +1,85 @@
+
+/* Make clicks pass-through */
+#nprogress {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  z-index: 1031;
+}
+
+#nprogress .bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #76b6ec;
+  height: 100%;
+  width: 100%;
+}
+
+/* Fancy blur effect */
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0px;
+  width: 100px;
+  height: 100%;
+  box-shadow: 0 0 10px #76b6ec, 0 0 5px #76b6ec;
+  opacity: 1.0;
+
+  -webkit-transform: rotate(3deg) translate(0px, -4px);
+      -ms-transform: rotate(3deg) translate(0px, -4px);
+          transform: rotate(3deg) translate(0px, -4px);
+}
+
+/* Remove these to get rid of the spinner */
+#nprogress .spinner {
+  display: block;
+  position: fixed;
+  z-index: 10031;
+  top: 13px;
+  right: 37px;
+}
+
+@media (max-width: 479px) {
+  #nprogress .spinner {
+    top: 8px;
+    right: 12px;
+  }
+}
+
+#nprogress .spinner-icon {
+  width: 25px;
+  height: 25px;
+  box-sizing: border-box;
+
+  border: solid 3px transparent;
+  border-top-color: #76b6ec;
+  border-left-color: #76b6ec;
+  border-radius: 50%;
+
+  -webkit-animation: nprogress-spinner 400ms linear infinite;
+          animation: nprogress-spinner 400ms linear infinite;
+}
+
+.nprogress-custom-parent {
+  overflow: hidden;
+  position: relative;
+}
+
+.nprogress-custom-parent #nprogress .spinner,
+.nprogress-custom-parent #nprogress .bar {
+  position: absolute;
+}
+
+@-webkit-keyframes nprogress-spinner {
+  0%   { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes nprogress-spinner {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+

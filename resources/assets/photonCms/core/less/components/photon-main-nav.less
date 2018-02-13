@@ -1,0 +1,9 @@
+@media (max-width: (@screen-xs - 1)) {
+    nav.main-menu {
+        &.expanded {
+            max-height: 1500px;
+            overflow: visible;
+            .transition(max-height 0.1s linear);
+        }
+    }
+}

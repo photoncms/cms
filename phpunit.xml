@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="bootstrap/autoload.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         syntaxCheck="false">
+    <testsuites>
+        <testsuite name="Application Test Suite">
+            <directory>./tests/</directory>
+            <exclude>./tests/Nodes/NodeBaseTest.php</exclude>
+            
+            
+<!--            <exclude>./tests/Auth/ConfirmTest.php</exclude>
+            <exclude>./tests/Auth/ImpersonationStartTest.php</exclude>
+            <exclude>./tests/Auth/ImpersonationStopTest.php</exclude>
+            <exclude>./tests/Auth/LoggedInUserTest.php</exclude>
+            <exclude>./tests/Auth/LoginTest.php</exclude>
+            <exclude>./tests/Auth/LogoutTest.php</exclude>
+            <exclude>./tests/Auth/RefreshTest.php</exclude>
+            <exclude>./tests/Auth/RegisterTest.php</exclude>
+
+            <exclude>./tests/FieldType/GetFieldTypesTest.php</exclude>
+            
+            <exclude>./tests/Generator/Fields/FieldTypeBooleanTest.php</exclude>
+            <exclude>./tests/Generator/Fields/FieldTypeDateTest.php</exclude>
+            <exclude>./tests/Generator/Fields/FieldTypeHiddenTest.php</exclude>
+            <exclude>./tests/Generator/Fields/FieldTypeImageTest.php</exclude>
+            <exclude>./tests/Generator/Fields/FieldTypeInputTextTest.php</exclude>
+            <exclude>./tests/Generator/Fields/FieldTypeIntegerTest.php</exclude>
+            <exclude>./tests/Generator/Fields/FieldTypeManyToManyTest.php</exclude>
+            <exclude>./tests/Generator/Fields/FieldTypeManyToOneTest.php</exclude>
+            <exclude>./tests/Generator/Fields/FieldTypePasswordTest.php</exclude>
+            <exclude>./tests/Generator/Fields/FieldTypeRichTextTest.php</exclude>
+            <exclude>./tests/Generator/Fields/FieldTypeSystemDateTest.php</exclude>
+            <exclude>./tests/Generator/Fields/FieldTypeSystemIntegerTest.php</exclude>
+            <exclude>./tests/Generator/Fields/FieldsTest.php</exclude>
+            
+            <exclude>./tests/Generator/CreateModuleTest.php</exclude>
+            <exclude>./tests/Generator/DeleteModuleTest.php</exclude>
+            <exclude>./tests/Generator/GetModuleTest.php</exclude>
+            <exclude>./tests/Generator/GetModulesTest.php</exclude>
+            <exclude>./tests/Generator/UpdateModuleTest.php</exclude>
+            
+            <exclude>./tests/Menu/CreateMenuTest.php</exclude>
+            <exclude>./tests/Menu/DeleteMenuTest.php</exclude>
+            <exclude>./tests/Menu/GetMenuTest.php</exclude>
+            <exclude>./tests/Menu/GetMenusTest.php</exclude>
+            <exclude>./tests/Menu/UpdateMenuTest.php</exclude>
+            
+            <exclude>./tests/MenuItem/CreateMenuItemTest.php</exclude>
+            <exclude>./tests/MenuItem/DeleteMenuItemTest.php</exclude>
+            <exclude>./tests/MenuItem/GetMenuItemsTest.php</exclude>
+            <exclude>./tests/MenuItem/RepositionMenuItemTest.php</exclude>
+            <exclude>./tests/MenuItem/UpdateMenuItemTest.php</exclude>
+            
+            <exclude>./tests/MenuLinkType/GetMenuLinkTypeResourcesTest.php</exclude>
+            <exclude>./tests/MenuLinkType/GetMenuLinkTypesTest.php</exclude>
+            
+            <exclude>./tests/Module/CreateEntryTest.php</exclude>
+            <exclude>./tests/Module/DeleteEntryTest.php</exclude>
+            <exclude>./tests/Module/GetEntriesTest.php</exclude>
+            <exclude>./tests/Module/GetEntryTest.php</exclude>
+            <exclude>./tests/Module/UpdateEntryTest.php</exclude>
+            
+            <exclude>./tests/ModuleTypes/GetModuleTypesTest.php</exclude>
+            <exclude>./tests/ModuleTypes/MultilevelSortableTest.php</exclude>
+            <exclude>./tests/ModuleTypes/NonSortableTest.php</exclude>
+            <exclude>./tests/ModuleTypes/SingleEntryTest.php</exclude>
+            <exclude>./tests/ModuleTypes/SortableTest.php</exclude>
+            
+            <exclude>./tests/Nodes/GetNodeTest.php</exclude>
+            <exclude>./tests/Nodes/GetNodeWithAncestorsTest.php</exclude>
+            <exclude>./tests/Nodes/GetRootNodesTest.php</exclude>
+            <exclude>./tests/Nodes/NodesHaveChildrenTest.php</exclude>
+            <exclude>./tests/Nodes/RepositionNodesTest.php</exclude>
+            
+            <exclude>./tests/Password/ChangePasswordTest.php</exclude>
+            <exclude>./tests/Password/RequestResetPasswordTest.php</exclude>
+            
+            <exclude>./tests/Photon/PhotonResetTest.php</exclude>
+            
+            <exclude>./tests/Search/AnchorTextSearchTest.php</exclude>-->
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">app/</directory>
+        </whitelist>
+    </filter>
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <env name="CACHE_DRIVER" value="array"/>
+        <env name="SESSION_DRIVER" value="array"/>
+        <env name="QUEUE_DRIVER" value="sync"/>
+        <env name="DB_CONNECTION" value="mysql_testing"/>
+    </php>
+</phpunit>

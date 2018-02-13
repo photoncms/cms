@@ -1,0 +1,108 @@
+//
+// Dropdown menus
+// --------------------------------------------------
+
+.dropdown-menu {
+  background: @brand-dark;
+  min-width: 165px;
+  margin: 0;
+  padding: 7px 0;
+  border: none;
+  border-radius: 0;
+  display: none;
+
+
+  // FADE IN EFFECT
+  .opacity &{
+    display: block;
+    max-height: 0; // 0 by default, but 1000px on "open" of the menu
+    overflow: hidden; // hidden by default, but visible on "open" of the menu
+    opacity: 0; // 0 by default, but 1 on "open" of the menu
+    .box-shadow(none);
+    .transition(~"opacity 0.1s, max-height 0s 0.5s");
+  }
+
+  // Aligns the dropdown menu to right
+  &.pull-right {
+    right: 0;
+    left: auto;
+
+    &.dropdown-menu-arrow{
+
+      &:after, &:before {
+        right: 20%;
+      }
+    }
+  }
+
+  &.dropdown-menu-arrow{
+    margin-top: @popover-arrow-width + 5px;
+
+    &:after, &:before {
+      position: absolute;
+      display: block;
+      width: 0;
+      height: 0;
+      border-color: transparent;
+      border-style: solid;
+      border-width: @popover-arrow-outer-width;
+      content: " ";
+
+      right: 80%;
+      margin-right: -@popover-arrow-outer-width;
+      border-top-width: 0;
+      border-bottom-color: @brand-dark;
+      top: -@popover-arrow-outer-width;
+    }
+  }
+
+
+
+  .divider {
+    .nav-divider(@brand-darker);
+  }
+
+  > li > a {
+    padding: 2px 20px;
+    color: @brand-light;
+    .full-transition;
+  }
+}
+
+.open {
+// Show the menu
+  > .dropdown-menu {
+    display: block;
+    .opacity &{
+      max-height: 1000px;
+      overflow: visible;
+      opacity: 1;
+      .transition(~"opacity 0.1s");
+    }
+  }
+}
+.dropdown-menu > li > a {
+  &:hover,
+  &:focus {
+    color: #fff;
+    background-color: #5fa2db;
+  }
+}
+
+// Active state
+.dropdown-menu > .active > a {
+  &,
+  &:hover,
+  &:focus {
+    color: #fff;
+    background-color: #5fa2db;
+  }
+}
+
+.dropdown-menu > .disabled > a {
+  &,
+  &:hover,
+  &:focus {
+    color: @brand-faded;
+  }
+}

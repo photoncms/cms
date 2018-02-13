@@ -1,0 +1,23 @@
+@spin-control : 210;
+
+@body-bg-template: spin(saturate(darken(@body-bg, 1%), 70%), @spin-control);
+
+@main-menu-text-template : spin(saturate(darken(@brand-light, 5%), 20%), @spin-control);
+@main-menu-bg-template : spin(saturate(darken(@brand-lighter, 5%), 90%), @spin-control);
+@main-submenu-bg-template : spin(saturate(darken(@brand-lighter, 9%), 90%), @spin-control);
+
+@sidebar-bg-template : lighten(@main-menu-bg-template, 3%);
+
+@common-bg-template : @main-menu-bg-template;
+@common-text-template : @main-menu-text-template;
+
+@dropdown-bg-template : @main-menu-bg-template;
+@dropdown-menu-text-template : @main-menu-text-template;
+
+.theme-template{
+	.body-theme(@body-bg-template);
+	.main-menu-theme(@main-menu-text-template; @main-menu-bg-template; @main-submenu-bg-template);
+	.sidebar-theme(@sidebar-bg-template);
+	.common-theme(@common-text-template, @common-bg-template);
+	.dropdown-theme(@dropdown-menu-text-template, @dropdown-bg-template);
+}

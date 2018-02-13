@@ -1,0 +1,114 @@
+/*!
+ * Slider for Bootstrap
+ *
+ * Copyright 2012 Stefan Petre
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ */
+
+.slider {
+	display: inline-block;
+	vertical-align: middle;
+	position: relative;
+	&.slider-horizontal {
+		width: 100% !important;
+		height: @line-height-computed;
+		.slider-track {
+			height: @line-height-computed/2;
+			margin-top: -@line-height-computed/4;
+			top: 50%;
+			left: @line-height-computed/2;
+			right: @line-height-computed/2;
+		}
+		.slider-selection {
+			height: 100%;
+			top: 0;
+			bottom: 0;
+		}
+		.slider-handle {
+			margin-left: -@line-height-computed;
+			margin-top: -@line-height-computed/4;
+		}
+	}
+	&.slider-vertical {
+		height: 200px !important;
+		margin-top: @line-height-computed /2;
+		margin-right: @line-height-computed /2;
+		width: @line-height-computed;
+		.slider-track {
+			width: @line-height-computed/2;
+			margin-left: -@line-height-computed/4;
+			left: 50%;
+			top: @line-height-computed/2;
+			bottom: @line-height-computed/2;
+		}
+		.slider-selection {
+			width: 100%;
+			left: 0;
+			top: 0;
+			bottom: 0;
+		}
+		.slider-handle {
+			height: @line-height-computed *2;
+			width: @line-height-computed;
+			margin-left: -@line-height-computed/4;
+			margin-top: -@line-height-computed;
+
+			&:after{
+				content: "\F142"; // Unicode space added since inline-block means non-collapsing white-space
+				top: 0;
+				left: 7.5px;
+				padding: 10px 0;
+			}
+		}
+	}
+	input {
+		display: none;
+	}
+	.tooltip-inner {
+		white-space: nowrap;
+		margin-top: -20px;
+	}
+}
+.slider-track {
+	position: absolute;
+	cursor: pointer;
+	background-color: @progress-bg;
+	border-radius: @border-radius-base;
+}
+.slider-selection {
+	position: absolute;
+	background-color: @brand-primary;
+	border-radius: @border-radius-base;
+}
+.slider-handle {
+	position: absolute;
+	width: @line-height-computed *2;
+	height: @line-height-computed;
+	background-color: #fff;
+	border: 1px solid #e1e1e1;
+	border-radius: @border-radius-base;
+	.transition(border-color 0.1s);
+
+	&:after{
+		position: absolute;
+		font-family: FontAwesome;
+		font-weight: normal;
+		font-style: normal;
+		text-decoration: inherit;
+		-webkit-font-smoothing: antialiased;
+		content: "\F141"; // Unicode space added since inline-block means non-collapsing white-space
+		top: 0;
+		left: 0;
+		padding: 0 13px;
+		color: #e1e1e1;
+		.color-transition;
+	}
+	&:hover{
+		border: 1px solid @brand-light;
+		&:after{
+			color: @brand-light;
+		}
+	}
+}

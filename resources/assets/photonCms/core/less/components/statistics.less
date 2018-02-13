@@ -1,0 +1,95 @@
+.panel.stat {
+	position: relative;
+	border-color: #e5e5e5;
+	border-right: 3px solid @text-color;
+	background-color: #ffffff;
+	-webkit-transform: translateZ(0) scale(1.0, 1.0);
+
+	.panel-heading{
+		padding: 13px 20px;
+		border: none;
+		> div{
+		    .clearfix;
+		    display: block;
+		    margin: 0 auto;
+			> i{
+		        position: relative;
+		        display: block;
+		        top: -1px;
+		        float: left;
+		        height: 42px;
+		        margin: 0;
+		        margin-right: 20px;
+		        font-size: 38px;
+		        height: 42px;
+		    }
+		    h2{
+		        display: block;
+		        float: left;
+		        margin: 6px 0 0;
+		        height: 30px;
+		        overflow: hidden;
+		        font-size: @font-size-base;
+		        font-weight: lighter;
+		    }
+		    .counter{
+		    	position: absolute;
+		    	display: inline-block;
+		    	padding: 0 20px;
+		    	top: 9px;
+		    	right: 0;
+		    	height: 50px;
+		    	line-height: 50px;
+		    	font-size: 38px;
+		    	background-color: #fff;
+		    	border-left: 1px solid #eeeeee;
+		    	.box-shadow(-15px 0 20px -4px #ffffff);
+		        font-weight: lighter;
+		    	z-index: 2;
+
+		    	&.counter-small{
+					font-size: 22px;
+					padding: 0 10px;
+		    	}
+
+		    	.sparkspan{
+		    		position: relative;
+		    		top: 7px;
+		    	}
+		    }
+		}
+	}
+
+	&.stat-warning{
+		border-right-color: @state-warning-text;
+		&.stat-color i{
+			color: @state-warning-text;
+		}
+	}
+	&.stat-danger{
+		border-right-color: @state-danger-text;
+		&.stat-color i{
+			color: @state-danger-text;
+		}
+	}
+	&.stat-success{
+		border-right-color: @state-success-text;
+		&.stat-color i{
+			color: @state-success-text;
+		}
+	}
+	&.stat-info{
+		border-right-color: @state-info-text;
+		&.stat-color i{
+			color: @state-info-text;
+		}
+	}
+}
+	
+.row.stat-row{
+	margin-bottom: 10px;
+}
+
+.jqstooltip{
+	.box-sizing(content-box);
+}

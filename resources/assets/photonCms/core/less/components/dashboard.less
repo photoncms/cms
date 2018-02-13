@@ -1,0 +1,255 @@
+.dashboard-page{
+	background-color: #ededed;
+
+	.wrapper{
+		padding: 0;
+		width: 100%;
+	}
+	.title-bar{
+		position: relative;
+		display: block;
+		background-color: #fff;
+		.box-shadow(0 4px 10px -2px rgba(0, 0, 0, 0.05));
+
+		>div{
+			position: relative;
+			.display-table;
+			height: 70px;
+			margin: 0 auto;
+		}
+		span, nav{
+			display: table-cell;
+			vertical-align: middle;
+		}
+		span{
+			font-size: 25px;
+			font-weight: 300;
+		}
+		.welcomeText, .welcomeText span {
+			font-size: 15px;
+			text-align: center;
+
+			span {
+				display: inline;
+			}
+		}
+	}
+
+	nav.dashboard-menu{
+		@dashboard-nav-width: 155px;
+
+		position: relative;
+		z-index: @zindex-navbar - 1;
+
+		> a{
+			position: relative;
+			.display-table;
+			width: 52px;
+			height: 31px;
+			margin-left: 9px;
+			border: 1px solid transparent;
+			border-bottom: none;
+			z-index: 2;
+
+			i{
+				position: relative;
+				top: -1px;
+				display: table-cell;
+				width: 29px;
+				vertical-align: middle;
+				text-align: right;
+				font-size: 20px;
+				color: @brand-faded;
+				.color-transition;
+			}
+			.menu-state-icon{
+				display: none;
+				text-align: center;
+				font-size: 10px;
+
+				&.active{
+					display: table-cell;
+				}
+			}
+			.fa-sort-up{
+				top: 3px;
+			}
+			.no-touch &:hover{
+				cursor: pointer;
+
+				i{
+					color: @brand-dark;
+				}
+			}
+		}
+		ul{
+			position: absolute;
+			top: 55px;
+			right: 0;
+			padding: 7px 0;
+			background: @brand-dark;
+			z-index: 1;
+			margin-top: -1px;
+			border: 1px solid transparent;
+			display: none;
+
+			// FADE IN EFFECT
+			.opacity &{
+				display: block;
+				max-height: 0;
+				overflow: hidden;
+				opacity: 0;
+				.transition(~"opacity 0.1s, max-height 0s 0.5s");
+			}
+
+
+			li{
+				position: relative;
+				display: block;
+				height: 24px;
+				min-width: @dashboard-nav-width;
+
+				>a{
+					position: relative;
+					display: block;
+					line-height: 24px;
+					padding-left: 20px;
+					padding-right: 10px;
+					color: @brand-light;
+					white-space: nowrap;
+					-webkit-transform: translateZ(0) scale(1.0, 1.0);
+					.transition(all 0.1s linear);
+				}
+				.no-touch &:hover a, &.active a{
+					color: #fff;
+					background-color: #5fa2db;
+				}
+			}
+		}
+		&.expanded{
+			> a{
+				background: @brand-dark;
+				border: 1px solid transparent;
+				border-bottom: none;
+				i{
+					color: #fff !important;
+				}
+			}
+			ul{
+				display: block;
+				.opacity &{
+					max-height: 1000px;
+					overflow: visible;
+					opacity: 1;
+					.transition(~"opacity 0.1s");
+				}
+			}
+		}
+	}
+
+	.quick-launch-bar{
+		position: relative;
+		display: block;
+		background-color: #f5f5f5;
+		.box-shadow(0 4px 10px -4px rgba(0, 0, 0, 0.05));
+
+		ul{
+			display: block;
+			min-height: 80px;
+			margin: 0 auto;
+			padding: 0 20px;
+			text-align: center;
+			font-size: 0;
+		}
+		li{
+			display: inline-block;
+			min-width: 80px;
+			max-width: 160px;
+			width: auto;
+			height: 80px;
+			font-size: @font-size-base;
+			text-align: center;
+			a{
+				display: table-cell;
+				vertical-align: middle;
+				color: @brand-light;
+				height: 80px;
+				padding-top: 6px;
+			}
+			i{
+				font-size: 25px;
+			}
+			span{
+				display: block;
+				margin-top: 4px;
+			}
+			.no-touch &:hover, &.active{
+				a{
+					color: @brand-dark;
+				}
+			}
+			&.ui-sortable-helper a{
+				color: @brand-light !important;
+			}
+		}
+		.add-quick-launch{
+			position: absolute;
+			top: 25px;
+			right: 25px;
+			display: none;
+			background-color: @brand-faded;
+			width: 30px;
+			height: 30px;
+			border-radius: 3px;
+			color: #f5f5f5;
+			text-align: center;
+			line-height: 31px;
+			font-size: 15px;
+			.transition(background-color 0.1s);
+
+			.no-touch &:hover, &.active{
+				background-color: @brand-success;
+			}
+		}
+	}
+
+
+}
+
+@media (min-width: @screen-xs) {
+	.dashboard-page{
+		.wrapper{
+			padding: 0 0 0 60px;
+        	flex-grow: 1;
+		}
+		.title-bar > div {
+			// left: -61px / 1.5;
+		}
+		nav.dashboard-menu{
+			z-index: @zindex-navbar + 1;
+			-webkit-transform: translateZ(0) scale(1.0, 1.0);
+
+
+			ul{
+				top: 55px;
+				right: auto;
+				left: 9px;
+			}
+		}
+		.quick-launch-bar{
+			ul{
+				padding: 0 60px;
+			}
+		}
+	}
+}
+@media (min-width: @screen-sm) {
+	.dashboard-page{
+		.title-bar > div{
+			// left: 61px / 2;
+		}
+		.quick-launch-bar .add-quick-launch{
+			display: block;
+		}
+	}
+}

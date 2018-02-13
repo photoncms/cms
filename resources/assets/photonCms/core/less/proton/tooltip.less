@@ -1,0 +1,25 @@
+//
+// Tooltips
+// --------------------------------------------------
+
+.tooltip {
+  font-size: @font-size-base;
+  line-height: 34px;
+  -webkit-transform: translateZ(0) scale(1.0, 1.0);
+
+  &.in     { .opacity(1); }
+}
+
+.tooltip-inner {
+  padding: 3px 13px;
+  border-radius: 0;
+  line-height: 20px;
+}
+
+.tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+}

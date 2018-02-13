@@ -1,0 +1,104 @@
+// Proton layout
+@wrapper-mobile-padding: 9px;
+@wrapper-large-padding: 30px;
+
+html, body {
+    min-width: 300px;
+}
+
+.vueAppContainer {
+    display: flex;
+}
+
+.login-page {
+    .vueAppContainer {
+        justify-content: center;
+    }
+}
+
+.wrapper {
+    position: relative;
+    padding: 0 @wrapper-mobile-padding;
+    opacity: 1;
+
+    .no-cssanimations & {
+        opacity: 1;
+    }
+}
+
+// Scrollable (y-axis) elements: ;
+.scrollable{
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+.scrollable-both{
+    overflow-y: auto;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+// Only used for no-touch devices
+.no-touch {
+    .scrollable.hover {
+        overflow-y: hidden;
+
+        &:hover {
+            overflow-y: auto;
+            overflow: visible;
+        }
+    }
+}
+
+@media (max-width: @screen-xs) {
+    .vueAppContainer {
+        flex-wrap: wrap;
+    }
+
+    .full-height-tree {
+        &.scrollable-both{
+            max-height: 250px;
+        }
+    }
+
+    .wrapper {
+        &.scrollable {
+            flex: 1 1 auto;
+        }
+    }
+}
+
+@media (min-width: @screen-xs) {
+    html,
+    body,
+    .vueAppContainer {
+        width:100%;
+        height:100%;
+        overflow: hidden;
+    }
+
+    body {
+        position: fixed;
+    }
+
+    .wrapper {
+        display: block;
+        padding: 0;
+        padding: 0 @wrapper-large-padding @wrapper-large-padding;
+        flex-grow: 1;
+
+        p {
+            padding: 0 15px;
+        }
+    }
+
+    .notifications-wrapper {
+        .wrapper {
+            padding-left: 90px;
+        }
+        .breadcrumb {
+            left: 92px;
+        }
+    }
+}

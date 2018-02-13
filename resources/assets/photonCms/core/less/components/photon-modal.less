@@ -1,0 +1,28 @@
+.modal-vue {
+    display: block;
+    
+    .modal-transition {
+        transition: all .3s ease;
+    }
+
+    .modal-leave {
+        border-radius: 1px !important;
+    }
+
+    .modal-transition .modal-dialog,
+    .modal-transition .modal-backdrop {
+        transition: all .2s ease;
+    }
+
+    .modal-enter .modal-dialog,
+    .modal-leave .modal-dialog {
+        opacity: 0;
+        transform: translateY(-30%);
+    }
+
+    .modal-enter .modal-backdrop,
+    .modal-leave .modal-backdrop {
+        opacity: 0;
+    }
+}
+
