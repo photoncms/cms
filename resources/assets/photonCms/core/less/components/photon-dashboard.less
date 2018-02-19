@@ -215,6 +215,7 @@
 
 .new-widget-placeholder {
     cursor: pointer;
+
     &:after {
         position: absolute;
         top: 50%;
@@ -228,8 +229,21 @@
         opacity: 0.4;
         .transition(opacity 0.2s ease-out);
     }
+
     .no-touch &:hover:after {
         opacity: 1;
+    }
+
+    &.disabled {
+        cursor: default;
+
+        &:after {
+            margin-left: -102px / 2;
+            content: "\f015";
+        }
+        .no-touch &:hover:after {
+            opacity: 0.4;
+        }
     }
 }
 

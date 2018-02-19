@@ -3,7 +3,7 @@
         :id="`widget.${widget.id}`"
         class="proton-widget widget-latest"
         :class="{ 'setup': setupMode }">
-        <div class="panel panel-default back">
+        <div v-if="userHasRole('super_administrator')" class="panel panel-default back">
             <div class="panel-heading">
                 <i class="fa fa-cog"></i>
                 <span>{{ $t('dashboard.settings') }}</span>
@@ -54,7 +54,7 @@
             <div class="panel-heading" :class="{'with-heading-icon': widget.icon}">
                 <i v-if="widget.icon" :class="widget.icon"></i>
                 <span>{{widget.heading}}</span>
-                <i @click="toggleSetup" class="fa fa-cog toggle-widget-setup"></i>
+                <i v-if="userHasRole('super_administrator')" @click="toggleSetup" class="fa fa-cog toggle-widget-setup"></i>
             </div>
             <div>
                 <ul class="list-group pending condensed">

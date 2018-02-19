@@ -9,6 +9,8 @@ import {
     mapActions,
 } from 'vuex';
 
+import { userHasRole } from '_/vuex/actions/userActions';
+
 export default {
     /**
      * Define props
@@ -332,7 +334,15 @@ export default {
                         }, refreshInterval);
                     }
                 });
-        }
+        },
+
+        /**
+         * Checks if a user has given role
+         *
+         * @param   {string}  role
+         * @return  {bool}
+         */
+        userHasRole,
     },
 
     /**
