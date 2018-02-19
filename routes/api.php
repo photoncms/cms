@@ -58,7 +58,7 @@ Route::group(['middleware' => 'checkLicense'], function () {
         Route::get('/auth/logout', '\Photon\PhotonCms\Core\Controllers\auth\JwtAuthController@logout');
         Route::get('/auth/me', '\Photon\PhotonCms\Core\Controllers\auth\JwtAuthController@getAuthenticatedUser');
 
-        Route::get('/auth/impersonate/stop', '\Photon\PhotonCms\Core\Controllers\auth\JwtAuthController@stopImpersonating')->middleware('isSuperAdmin');
+        Route::get('/auth/impersonate/stop', '\Photon\PhotonCms\Core\Controllers\auth\JwtAuthController@stopImpersonating');
         Route::get('/auth/impersonate/{id}', '\Photon\PhotonCms\Core\Controllers\auth\JwtAuthController@startImpersonating')->middleware('isSuperAdmin');
         //---------- End of User Administration -----------/
 
