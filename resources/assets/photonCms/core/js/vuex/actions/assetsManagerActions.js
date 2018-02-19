@@ -156,7 +156,7 @@ export default {
 
         commit(types.UNSET_ASSETS);
 
-        if(multiple) {
+        if(multiple && !_.isEmpty(value)) {
             value = value.map((asset) => {
                 if(_.has(asset, 'id')) {
                     return asset['id'];
