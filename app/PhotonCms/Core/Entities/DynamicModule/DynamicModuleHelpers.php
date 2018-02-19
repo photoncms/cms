@@ -2,6 +2,8 @@
 
 namespace Photon\PhotonCms\Core\Entities\DynamicModule;
 
+use Photon\PhotonCms\Dependencies\Traits\AnchorFields;
+
 /**
  * Contains Dynamic Module entity helper functions.
  *
@@ -9,6 +11,8 @@ namespace Photon\PhotonCms\Core\Entities\DynamicModule;
  */
 class DynamicModuleHelpers
 {
+
+    use AnchorFields;
 
     /**
      * Generates item anchor text from the item instance and anchor text stub
