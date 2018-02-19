@@ -728,8 +728,8 @@ class DynamicModuleController extends Controller
                 $this->dynamicModuleRepository->save($updatedEntry, $dynamicModuleGateway);
             }
         }
-
-        return $updatedEntry;
+        
+        return $updatedEntry->fresh();
     }
 
     /**
