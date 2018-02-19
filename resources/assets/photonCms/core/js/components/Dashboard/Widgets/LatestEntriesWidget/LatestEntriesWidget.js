@@ -238,7 +238,7 @@ export default {
         addThumbSuffix(imageName) {
             let imageNameArray = imageName.split('.');
 
-            imageNameArray[imageNameArray.length-2] += '_80x80';
+            imageNameArray[imageNameArray.length-2] += '_120x90';
 
             return imageNameArray.join('.');
         },
