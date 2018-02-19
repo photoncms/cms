@@ -299,7 +299,7 @@ class ModuleController extends Controller
 
         // validate that there is only one default_search_choice
         $hasSearchChoice = false;
-        foreach ($fieldsData as $fieldData) {
+        foreach ($fieldsData as $key => $fieldData) {
             if(isset($fieldData['is_default_search_choice']) && filter_var($fieldData['is_default_search_choice'], FILTER_VALIDATE_BOOLEAN) ) {
                 if($hasSearchChoice) {
                     throw new PhotonException('MODULE_CREATION_ERROR_MULTIPLE_DEFAULT_SEARCH_CHOICES');
@@ -329,6 +329,16 @@ class ModuleController extends Controller
                 if(!$hasDefaultSearchChoice)
                     throw new PhotonException('MODULE_CREATION_ERROR_RELATED_MODULE_DEFAULT_SEARCH_CHOICE_MISSING');
             }
+
+            if($fieldData['type'] == 17 && (!isset($fieldData['disabled']) || $fieldData['disabled'] != 1))
+                throw new PhotonException('VALIDATION_ERROR', [
+                    'error_fields' => [ 
+                        "fields[{$key}][disabled]" => [
+                            "failed_rule" => "Confirmed",
+                            "message" => "The fields.{$key}.disabled option must be set to true."
+                        ]
+                    ]
+                ]);
         }
 
         $this->deleteMigrations();
@@ -560,9 +570,9 @@ class ModuleController extends Controller
 
         $moduleData['id'] = $module->id;
         $hasNewSearchChoice = false;
-        foreach ($fieldsData as $key => $singleField) {
+        foreach ($fieldsData as $key => $fieldData) {
             $fieldsData[$key]['module_id'] = $module->id;
-            if(isset($singleField['is_default_search_choice']) && filter_var($singleField['is_default_search_choice'], FILTER_VALIDATE_BOOLEAN) ) {
+            if(isset($fieldData['is_default_search_choice']) && filter_var($fieldData['is_default_search_choice'], FILTER_VALIDATE_BOOLEAN) ) {
                 if($hasNewSearchChoice) {
                     throw new PhotonException('MODULE_UPDATE_ERROR_MULTIPLE_DEFAULT_SEARCH_CHOICES');
                 }
@@ -579,6 +589,16 @@ class ModuleController extends Controller
                 if(!$hasDefaultSearchChoice)
                     throw new PhotonException('MODULE_CREATION_ERROR_RELATED_MODULE_DEFAULT_SEARCH_CHOICE_MISSING');
             }
+
+            if($fieldData['type'] == 17 && (!isset($fieldData['disabled']) || $fieldData['disabled'] != 1))
+                throw new PhotonException('VALIDATION_ERROR', [
+                    'error_fields' => [ 
+                        "fields[{$key}][disabled]" => [
+                            "failed_rule" => "Confirmed",
+                            "message" => "The fields.{$key}.disabled option must be set to true."
+                        ]
+                    ]
+                ]);
         }
 
         $this->deleteMigrations();
