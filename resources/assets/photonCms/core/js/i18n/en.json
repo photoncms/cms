@@ -105,6 +105,7 @@
         "addNewModule": "Add new module",
         "addShortcut": "Add Shortcut",
         "latestEntries": "Latest Entries",
+        "noShortcutsSet": "No shortcuts set.",
         "selectNewWidgetType": "Select New Widget Type",
         "settings": "Settings"
     },
