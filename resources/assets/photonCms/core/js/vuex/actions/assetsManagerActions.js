@@ -116,6 +116,12 @@ export default {
             return;
         }
 
+        if (state.multiple) {
+            selectedAssetsIds = selectedAssetsIds.map((asset) => {
+                return asset;
+            }).join(',');
+        }
+
         const payload = {
             filter: {
                 id: {
@@ -149,6 +155,14 @@ export default {
         commit(types.SET_MULTIPLE, { value: multiple });
 
         commit(types.UNSET_ASSETS);
+
+        if(multiple) {
+            value = value.map((asset) => {
+                if(_.has(asset, 'id')) {
+                    return asset['id'];
+                }
+            });
+        }
 
         commit(types.SET_SELECTED_ASSETS_IDS, { value });
     },
