@@ -5,6 +5,8 @@ import {
     mapActions,
 } from 'vuex';
 
+import { userHasRole } from '_/vuex/actions/userActions';
+
 const LatestEntriesWidget = Vue.component(
         'LatestEntriesWidget',
         require('_/components/Dashboard/Widgets/LatestEntriesWidget/LatestEntriesWidget.vue')
@@ -107,7 +109,15 @@ export default {
                         $('.widget-group').sortable('refresh');
                     });
                 });
-        }
+        },
+
+        /**
+         * Checks if a user has given role
+         *
+         * @param   {string}  role
+         * @return  {bool}
+         */
+        userHasRole,
     },
 
     /**

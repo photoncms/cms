@@ -8,9 +8,14 @@
                 v-for="singleWidget in widget.widgets">
             </component>
             <div
+                v-if="userHasRole('super_administrator')"
                 data-toggle="modal"
                 href="#new-widget-modal"
                 class="placeholder drag-placeholder new-widget-placeholder">
+            </div>
+            <div
+                v-if="!userHasRole('super_administrator') && widget.widgets.length == 0"
+                class="placeholder drag-placeholder new-widget-placeholder disabled">
             </div>
         </section>
         <div id="new-widget-modal" tabindex="-1" role="dialog" class="modal modal-new-widget fade">
