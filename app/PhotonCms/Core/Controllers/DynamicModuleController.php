@@ -601,6 +601,10 @@ class DynamicModuleController extends Controller
      */
     public function massUpdate($tableName)
     {
+        if (env('MASS_EDITING_DISABLED', false)) {
+            throw new PhotonException('PHOTON_MASS_EDITING_DISABLED');
+        }
+
         $data = \Request::all();
         $filter = \Request::get('filter');
 
@@ -724,8 +728,8 @@ class DynamicModuleController extends Controller
                 $this->dynamicModuleRepository->save($updatedEntry, $dynamicModuleGateway);
             }
         }
-
-        return $updatedEntry;
+        
+        return $updatedEntry->fresh();
     }
 
     /**

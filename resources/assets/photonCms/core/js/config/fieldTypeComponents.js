@@ -30,6 +30,11 @@ export const AssetField = Vue.component(
         require('_/components/FieldTypes/AssetsManager/AssetsManager.vue')
     );
 
+export const AssetsField = Vue.component(
+        'AssetsField',
+        require('_/components/FieldTypes/AssetsManager/AssetsManager.vue')
+    );
+
 export const FileInputField = Vue.component(
         'FileInputField',
         require('_/components/FieldTypes/AssetsManager/AssetsManager.vue')

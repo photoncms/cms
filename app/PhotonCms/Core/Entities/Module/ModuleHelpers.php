@@ -4,6 +4,7 @@ namespace Photon\PhotonCms\Core\Entities\Module;
 
 use Photon\PhotonCms\Core\Exceptions\PhotonException;
 use Photon\PhotonCms\Core\Entities\Module\Module;
+// use Photon\PhotonCms\Dependencies\Traits\AnchorFields;
 
 /**
  * Contains Module entity helper functions.
@@ -52,6 +53,25 @@ class ModuleHelpers
                 if (!self::checkArrayStructureByItemStack($fieldNames, $anchorTextItems)) {
                     $excessFields[] = $usedField;
                 }
+            }
+
+            // if there are no excess fields anchor is valid
+            if(empty($excessFields))
+                return true;
+
+            // check for anchor methods
+            foreach ($excessFields as $key => $excessField) {
+                $functionData = explode("|", $excessField);
+                // if method is not formated properly throw error
+                if(count($functionData) != 2)
+                    throw new PhotonException('TRYING_TO_USE_NON_EXISTING_FIELD_AS_ANCHOR_TEXT', ['fields' => $excessFields]);
+
+                // if method does not exist in trait throw error
+                $functionName = $functionData[1];
+                if(!method_exists('Photon\PhotonCms\Dependencies\Traits\AnchorFields', $functionName)) 
+                    throw new PhotonException('TRYING_TO_USE_NON_EXISTING_FIELD_AS_ANCHOR_TEXT', ['fields' => $excessFields]);
+                
+                unset($excessFields[$key]);
             }
 
             if (!empty($excessFields)) {

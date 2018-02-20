@@ -524,7 +524,7 @@ export default {
         }
 
         // Makes a copy of the filter so the state object doesn't get mutated
-        payload.filter = Object.assign({}, store.state.advancedSearch.filter);
+        payload.filter = Object.assign({}, store.state.advancedSearch.payload.filter);
 
         return api[action](uri, payload)
             .then((response) => {

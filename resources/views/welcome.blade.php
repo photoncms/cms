@@ -72,10 +72,11 @@
                 </div>
 
                 <div class="links">
-                    <a href="https://docs.photoncms.com/">API Documentation</a>
+                    <a href="/cp">Control Panel</a>
+                    <a href="https://photoncms.com/resources">Resources</a>
+                    <a href="https://docs.photoncms.com/">API Docs</a>
                     <a href="https://github.com/photoncms/cms">GitHub</a>
                     <a href="https://photoncms.com/support#slack">Slack</a>
-                    <a href="https://photoncms.com/blog">Blog</a>
                 </div>
             </div>
         </div>

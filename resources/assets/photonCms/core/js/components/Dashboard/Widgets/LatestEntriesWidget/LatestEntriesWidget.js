@@ -9,6 +9,8 @@ import {
     mapActions,
 } from 'vuex';
 
+import { userHasRole } from '_/vuex/actions/userActions';
+
 export default {
     /**
      * Define props
@@ -236,7 +238,7 @@ export default {
         addThumbSuffix(imageName) {
             let imageNameArray = imageName.split('.');
 
-            imageNameArray[imageNameArray.length-2] += '_80x80';
+            imageNameArray[imageNameArray.length-2] += '_120x90';
 
             return imageNameArray.join('.');
         },
@@ -332,7 +334,15 @@ export default {
                         }, refreshInterval);
                     }
                 });
-        }
+        },
+
+        /**
+         * Checks if a user has given role
+         *
+         * @param   {string}  role
+         * @return  {bool}
+         */
+        userHasRole,
     },
 
     /**

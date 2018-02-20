@@ -3,6 +3,8 @@ import {
     mapActions
 } from 'vuex';
 
+import { userHasRole } from '_/vuex/actions/userActions';
+
 // TODO: Refactor and implement menu items from API
 export default {
     /**
@@ -25,6 +27,14 @@ export default {
         ...mapActions('ui', [ // Map actions from photonModuleActions module namespace
             'getQuickLaunchMenu'
         ]),
+
+        /**
+         * Checks if a user has given role
+         *
+         * @param   {string}  role
+         * @return  {bool}
+         */
+        userHasRole,
     },
 
     /**

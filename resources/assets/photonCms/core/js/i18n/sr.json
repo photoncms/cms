@@ -105,6 +105,7 @@
         "addNewModule": "Dodaj nov modul",
         "addShortcut": "Dodaj prečicu",
         "latestEntries": "Najnoviji unosi",
+        "noShortcutsSet": "Nema postavljenih prečica.",
         "selectNewWidgetType": "Odaberi tip novog Widgeta",
         "settings": "Podešavanja"
     },

@@ -20,11 +20,16 @@
                         <span class="nav-text">{{menuListItem.title}}</span>
                     </a>
                 </li>
-                <li>
+                <li v-if="userHasRole('super_administrator')">
                     <router-link :to="`/menu-items-editor/2`">
                         <i class="nav-icon fa fa-pencil-square-o"></i>
                         <span class="nav-text">{{ $t('dashboard.addShortcut') }}</span>
                     </router-link>
+                </li>
+                <li v-if="!userHasRole('super_administrator') && ui.menus.quickLaunchMenu.length == 0">
+                    <a>
+                        <span class="nav-text">{{ $t('dashboard.noShortcutsSet') }}</span>
+                    </a>
                 </li>
             </ul>
         </div>
