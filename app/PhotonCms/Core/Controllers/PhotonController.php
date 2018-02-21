@@ -2,6 +2,7 @@
 
 namespace Photon\PhotonCms\Core\Controllers;
 
+use Carbon\Carbon;
 use Config;
 use DB;
 use Schema;
@@ -221,6 +222,7 @@ class PhotonController extends Controller
         $this->seedInitialValues();
         $this->rebuildModels();
         $this->rebuildSeeders();
+        $this->updatePasswordCreationTime();
 
         return $this->responseRepository->make('PHOTON_HARD_RESET_SUCCESS');
     }
@@ -257,6 +259,7 @@ class PhotonController extends Controller
         $this->seedInitialValues();
         $this->rebuildModels();
         $this->rebuildSeeders();
+        $this->updatePasswordCreationTime();
 
         return $this->responseRepository->make('PHOTON_SOFT_RESET_SUCCESS');
     }
@@ -562,6 +565,16 @@ class PhotonController extends Controller
         $seedTemplate->addExclusion('id');
         $seedTemplate->useForce();
         $this->seedRepository->create($seedTemplate, $this->seedGateway);
+    }
+
+    /**
+     * Sets all password_created_at values to current time
+     */
+    private function updatePasswordCreationTime()
+    {
+        $authClassName = config("auth.providers.users.model");
+        $user = new $authClassName();
+        $user->query()->update(['password_created_at' => Carbon::now()]);
     }
 
     /**
