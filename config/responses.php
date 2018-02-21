@@ -15,6 +15,7 @@ return [
     'ILLEGAL_CLASS_INSTANCE' => 500,
     'TEMPLATE_PATH_NOT_SET' => 500,
     'UNEXPECTED_TYPE' => 406,
+    'PHOTON_INVALID_CACHE_DRIVER' => 500,
 
     // Change service
     'ILLEGAL_CHANGE_TYPE' => 500,
