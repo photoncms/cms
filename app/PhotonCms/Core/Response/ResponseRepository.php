@@ -11,7 +11,7 @@ use Photon\PhotonCms\Core\Exceptions\PhotonException;
 use Photon\PhotonCms\Core\Transform\TransformationController;
 use Illuminate\Http\Response;
 use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
+use Monolog\Handler\RotatingFileHandler;
 
 class ResponseRepository
 {
@@ -75,6 +75,9 @@ class ResponseRepository
 
     private function logResponse($content)
     {
+        if(!env("PHOTON_STORE_LOGS", true))
+            return true;
+
         $user = \Auth::user();
 
         $logData = [
@@ -86,7 +89,8 @@ class ResponseRepository
         ];
 
         $orderLog = new Logger("api");
-        $orderLog->pushHandler(new StreamHandler(storage_path('logs/photon/api.log')), Logger::INFO);
-        $orderLog->info('photon', $logData);
+        $rotatingHandler = new RotatingFileHandler(storage_path('logs/photon/api.log'), env("PHOTON_MAX_DAILY_LOGS", 30), Logger::INFO);
+        $orderLog->pushHandler($rotatingHandler);
+        $orderLog->addInfo('photon', $logData);
     }
 }
