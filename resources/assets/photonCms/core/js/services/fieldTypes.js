@@ -1,3 +1,5 @@
+import * as fieldTypesDependencies from '~/services/fieldTypes';
+
 // Manually defines field types used on API
 // There is also an API route returning this, but mapping is still needed
 // to connect API field types to Vue components, so it's done manually
@@ -188,6 +190,7 @@ export const permissions = {
 
 // Field id to field object map
 export const mapFromId = {
+    ...fieldTypesDependencies.mapFromId,
     1: inputText,
     2: richText,
     3: image,

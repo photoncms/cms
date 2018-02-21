@@ -2,11 +2,18 @@ import _ from 'lodash';
 
 import * as types from '_/vuex/mutation-types';
 
-import * as fieldTypes from '_/services/fieldTypes';
+import * as fieldTypesCore from '_/services/fieldTypes';
+
+import * as fieldTypesDependencies from '~/services/fieldTypes';
 
 import { pError } from '_/helpers/logger';
 
 import Vue from 'vue';
+
+const fieldTypes = {
+    ...fieldTypesCore,
+    ...fieldTypesDependencies,
+};
 
 /**
  * Define the module state
