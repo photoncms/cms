@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import { markdown } from 'markdown';
 
-import md from '~/help/help.md';
+import md from '~/help/Help.md';
 
 import getSlug from 'speakingurl';
 
