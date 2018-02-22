@@ -10,5 +10,5 @@
  *
  * @type  {Object}
  */
-export const mapFromId = {
+export const mapFromIdDependencies = {
 };
