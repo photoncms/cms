@@ -21,9 +21,6 @@ Route::get('/export/download/{fileName}', 'DynamicModuleController@downloadExpor
 Route::group(['prefix' => '/photon'], function () {
     //Fully restarts the photon installation.
     Route::get('/hard_reset', 'PhotonController@hardReset');
-    Route::get('/sync', 'PhotonController@sync')->middleware('isSuperAdmin');
-    Route::get('/revert_to_sync', 'PhotonController@revertToSync')->middleware('isSuperAdmin');
-    Route::get('/revert_to_sync/{tableName}', 'PhotonController@revertModuleToSync')->middleware('isSuperAdmin');
     Route::get('/soft_reset', 'PhotonController@softReset');
 });
 //---------- End of Photon Core -----------/
@@ -48,6 +45,10 @@ Route::group(['middleware' => 'checkLicense'], function () {
             //Rebulids the module model.
             Route::get('/rebuild_model/{tableName}', 'PhotonController@rebuildModuleModel')->middleware('isSuperAdmin');
             Route::get('/rebuild_extender/{tableName}', 'PhotonController@rebuildModuleExtender')->middleware('isSuperAdmin');
+            //Photon Sync
+            Route::get('/sync', 'PhotonController@sync')->middleware('isSuperAdmin');
+            Route::get('/revert_to_sync', 'PhotonController@revertToSync')->middleware('isSuperAdmin');
+            Route::get('/revert_to_sync/{tableName}', 'PhotonController@revertModuleToSync')->middleware('isSuperAdmin');
         });
 
         //---------- User Authentication -----------/
@@ -195,7 +196,7 @@ Route::group(['middleware' => 'checkLicense'], function () {
         //---------- End of Module Subscriptions -----------/
 
         //---------- Modules -----------/
-        Route::get('/{tableName}', 'DynamicModuleController@getAllEntries');
+        Route::get('/{tableName}', 'DynamicModuleController@getAllEntries')->middleware('isSuperAdmin');
 
         //Returns single module item (e.g. news).
         Route::get('/{tableName}/{entryId}', 'DynamicModuleController@getEntry')->where('entryId', '[0-9]+');
