@@ -190,7 +190,7 @@ export const permissions = {
 
 // Field id to field object map
 export const mapFromId = {
-    ...fieldTypesDependencies.mapFromId,
+    ...fieldTypesDependencies.mapFromIdDependencies,
     1: inputText,
     2: richText,
     3: image,
