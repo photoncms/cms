@@ -310,15 +310,18 @@ class PhotonController extends Controller
         ResetHelper::rebuildAndRunMigrations(); // Re/builds all photon module migrations and runs them
         ResetHelper::rebuildModels();
 
-        foreach ($backedUpTableNames as $backedUpTableName) {
-            $gateway = $this->dynamicModuleLibrary->getGatewayInstanceByTableName($backedUpTableName);
+        $modules = $this->moduleRepository->getAll($this->moduleGateway);
+        foreach ($modules as $module) {
+            $gateway = $this->dynamicModuleLibrary->getGatewayInstanceByTableName($module->table_name);
             $this->dynamicModuleRepository->restoreModuleData($gateway);
-        }
 
-        foreach ($backedUpPivotTables as $moduleNameKey => $backedUpPivotTable) {
-            foreach ($backedUpPivotTable as $individualTable) {
-                $gateway = $this->dynamicModuleLibrary->getGatewayInstanceByTableName($moduleNameKey);
-                $this->dynamicModuleRepository->restorePivotTableData($individualTable, $gateway);
+            $modelRelations = ModelRelationFactory::makeMultipleFromFields($module->fields);
+            foreach ($modelRelations as $relation) {
+                if(!$relation->requiresPivot()) {
+                    continue;
+                }
+                
+                $this->dynamicModuleRepository->restorePivotTableData($relation->pivotTable, $gateway);
             }
         }
 

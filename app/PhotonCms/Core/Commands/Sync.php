@@ -140,19 +140,21 @@ class Sync extends Command
         ResetHelper::rebuildModels();
         $this->info('...Models rebuilt');
 
-        foreach ($backedUpTableNames as $backedUpTableName) {
-            $gateway = $this->dynamicModuleLibrary->getGatewayInstanceByTableName($backedUpTableName);
+        $modules = $this->moduleRepository->getAll($this->moduleGateway);
+        foreach ($modules as $module) {
+            $gateway = $this->dynamicModuleLibrary->getGatewayInstanceByTableName($module->table_name);
             $this->dynamicModuleRepository->restoreModuleData($gateway);
-        }
-        $this->info('...Modules data restored');
 
-        foreach ($backedUpPivotTables as $moduleNameKey => $backedUpPivotTable) {
-            foreach ($backedUpPivotTable as $individualTable) {
-                $gateway = $this->dynamicModuleLibrary->getGatewayInstanceByTableName($moduleNameKey);
-                $this->dynamicModuleRepository->restorePivotTableData($individualTable, $gateway);
+            $modelRelations = ModelRelationFactory::makeMultipleFromFields($module->fields);
+            foreach ($modelRelations as $relation) {
+                if(!$relation->requiresPivot()) {
+                    continue;
+                }
+                
+                $this->dynamicModuleRepository->restorePivotTableData($relation->pivotTable, $gateway);
             }
         }
-        $this->info('...Pivot tables data restored');
+        $this->info('...Modules data restored');
 
         $this->info("Photon CMS Synced");
     }
