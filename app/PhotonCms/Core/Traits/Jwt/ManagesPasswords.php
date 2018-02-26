@@ -151,7 +151,7 @@ trait ManagesPasswords
             }
 
             $user->save();
-            \Password::getRepository()->delete($token);
+            \Password::getRepository()->delete($user);
 
             return $this->responseRepository->make('PASSWORD_RESET_SUCCESS');
         }
