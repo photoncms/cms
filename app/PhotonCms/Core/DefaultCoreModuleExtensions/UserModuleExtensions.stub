@@ -212,7 +212,8 @@ class UserModuleExtensions extends BaseDynamicModuleExtension implements
             $item->password_created_at = Carbon::now();
             $item->save();
 
-            $item->notify(new RegistrationConfirmation($item));
+            if(\Config::get('photon.use_registration_service_email'))
+                $item->notify(new RegistrationConfirmation($item));
         }
     }
 
