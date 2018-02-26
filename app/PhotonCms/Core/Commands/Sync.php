@@ -117,34 +117,34 @@ class Sync extends Command
                 $backedUpPivotTables[$module->table_name][] = $relation->pivotTable;
             }
         }
-        $this->line('Data backup');
+        $this->info('...Data backup performed');
 
         ResetHelper::deleteModels();
-        $this->line('Models deleted');
+        $this->info('...Models removed');
 
         ResetHelper::deleteMigrations();
-        $this->line('Migrations deleted');
+        $this->info('...Migrations removed');
 
         ResetHelper::deleteTables();
-        $this->line('Tables deleted');
+        $this->info('...Tables removed');
 
-        ResetHelper::runMigrations(); // Runs photon base migrations
-        $this->line('Run base migrations');
+        ResetHelper::runMigrations();
+        $this->info('...Base migrations ran');
 
         DatabaseHelper::seedTablesData(config('photon.photon_sync_clear_tables'), true);
-        $this->line('Run dynamic module seeders');
+        $this->info('...Dynamic module seeders ran');
 
-        ResetHelper::rebuildAndRunMigrations(); // Re/builds all photon module migrations and runs them
-        $this->line('Rebuild and run migrations');
+        ResetHelper::rebuildAndRunMigrations();
+        $this->info('...Migrations rebuilt and ran');
 
         ResetHelper::rebuildModels();
-        $this->line('Rebuild models');
+        $this->info('...Models rebuilt');
 
         foreach ($backedUpTableNames as $backedUpTableName) {
             $gateway = $this->dynamicModuleLibrary->getGatewayInstanceByTableName($backedUpTableName);
             $this->dynamicModuleRepository->restoreModuleData($gateway);
         }
-        $this->line('Restore modules data');
+        $this->info('...Modules data restored');
 
         foreach ($backedUpPivotTables as $moduleNameKey => $backedUpPivotTable) {
             foreach ($backedUpPivotTable as $individualTable) {
@@ -152,7 +152,7 @@ class Sync extends Command
                 $this->dynamicModuleRepository->restorePivotTableData($individualTable, $gateway);
             }
         }
-        $this->line('Restore pivot tables data');
+        $this->info('...Pivot tables data restored');
 
         $this->info("Photon CMS Synced");
     }
