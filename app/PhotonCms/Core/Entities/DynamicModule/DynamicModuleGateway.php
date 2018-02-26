@@ -548,7 +548,9 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
             $insertData[] = $newInsert;
         }
 
+        \Schema::disableForeignKeyConstraints();
         \DB::table($this->moduleTableName)->insert($insertData);
+        \Schema::enableForeignKeyConstraints();
 
         return true;
     }
