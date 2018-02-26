@@ -20,7 +20,7 @@ class RebuildResizedImages extends Command
      *
      * @var string
      */
-    protected $signature = 'rebuild:resized-images {sizeId} {--showLog} {--force}';
+    protected $signature = 'photon:rebuild-resized-images {sizeId} {--showLog} {--force}';
 
     protected $IAPI;
 
@@ -29,7 +29,7 @@ class RebuildResizedImages extends Command
      *
      * @var string
      */
-    protected $description = 'Rebuilds all images of given image size.';
+    protected $description = 'Rebuilds all images of given image size';
 
     /**
      * Create a new command instance.

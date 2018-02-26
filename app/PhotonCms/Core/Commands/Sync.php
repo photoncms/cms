@@ -20,14 +20,14 @@ class Sync extends Command
      *
      * @var string
      */
-    protected $signature = 'sync';
+    protected $signature = 'photon:sync';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Sync entire project.';
+    protected $description = 'Performs the Photon Sync action';
 
     /**
      *
