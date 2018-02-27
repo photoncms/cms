@@ -16,6 +16,8 @@ use Photon\PhotonCms\Core\Entities\UsedPassword\UsedPasswordRepository;
 use Photon\PhotonCms\Core\Entities\UsedPassword\UsedPasswordGateway;
 
 use Photon\PhotonCms\Core\Entities\DynamicModule\DynamicModuleLibrary;
+use Photon\PhotonCms\Core\Entities\Field\FieldRepository;
+use Photon\PhotonCms\Core\Entities\Field\Contracts\FieldGatewayInterface;
 
 class JwtAuthController extends Controller
 {
@@ -45,23 +47,39 @@ class JwtAuthController extends Controller
     private $dynamicModuleLibrary;
 
     /**
+     * @var FieldRepository
+     */
+    private $fieldRepository;
+
+    /**
+     * @var FieldGatewayInterface
+     */
+    private $fieldGateway;
+
+    /**
      * Controller construcor.
      *
      * @param ResponseRepository $responseRepository
      * @param UsedPasswordRepository $usedPasswordRepository
      * @param UsedPasswordGateway $usedPasswordGateway
+     * @param FieldRepository $fieldRepository
+     * @param FieldGatewayInterface $fieldGateway
      */
     public function __construct(
         ResponseRepository $responseRepository,
         UsedPasswordRepository $usedPasswordRepository,
         UsedPasswordGateway $usedPasswordGateway,
-        DynamicModuleLibrary $dynamicModuleLibrary
+        DynamicModuleLibrary $dynamicModuleLibrary,
+        FieldRepository $fieldRepository,
+        FieldGatewayInterface $fieldGateway
     )
     {
         $this->responseRepository     = $responseRepository;
         $this->usedPasswordRepository = $usedPasswordRepository;
         $this->usedPasswordGateway    = $usedPasswordGateway;
         $this->dynamicModuleLibrary   = $dynamicModuleLibrary;
+        $this->fieldRepository        = $fieldRepository;
+        $this->fieldGateway           = $fieldGateway;
     }
 
     /**
@@ -84,12 +102,20 @@ class JwtAuthController extends Controller
      */
     protected function validator_create(array $data)
     {
-        return Validator::make($data, [
-            'first_name' => 'required|max:255',
-            'last_name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:8|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/',
-        ]);
+        $columnsForValidation = config("photon.photon_register_use_columns");
+
+        $fields = $this->fieldRepository->findByModuleId(1, $this->fieldGateway);
+
+        // Regular user-defined validation
+        $validationRules = [];
+        foreach ($fields as $field) {
+            $uniqueName = $field->getUniqueName();
+            if ($field->validation_rules && in_array($uniqueName, $columnsForValidation)) {
+                $validationRules[$uniqueName] = $field->validation_rules;
+            }
+        }
+
+        return Validator::make($data, $validationRules);
     }
 
     /**
