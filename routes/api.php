@@ -20,7 +20,7 @@ Route::get('/export/download/{fileName}', 'DynamicModuleController@downloadExpor
 //---------- Photon Core -----------/
 Route::group(['prefix' => '/photon'], function () {
     //Fully restarts the photon installation.
-    Route::get('/hard_reset', 'PhotonController@hardReset');
+    // Route::get('/hard_reset', 'PhotonController@hardReset');
     Route::get('/soft_reset', 'PhotonController@softReset');
 });
 //---------- End of Photon Core -----------/
