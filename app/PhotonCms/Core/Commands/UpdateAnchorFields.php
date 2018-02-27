@@ -14,14 +14,14 @@ class UpdateAnchorFields extends Command
      *
      * @var string
      */
-    protected $signature = 'anchor_fields:update {tables?}';
+    protected $signature = 'photon:update-anchor-fields {tables?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Update all anchor_text and anchor_html fields for either all or specific modules.';
+    protected $description = 'Update all anchor_text and anchor_html fields for either all or specific modules';
 
     /**
      * @var ModuleLibrary
@@ -80,7 +80,7 @@ class UpdateAnchorFields extends Command
         $tables = $this->argument('tables');
         if($tables)
         	$tables = explode(",", $tables);
-        else 
+        else
         	$tables = [];
 
         // prepare modules

@@ -62,7 +62,8 @@ trait RegistersUsers
         }
 
         // Send an email
-        $user->notify(new RegistrationConfirmation($user));
+        if(\Config::get('photon.use_registration_service_email'))
+            $user->notify(new RegistrationConfirmation($user));
 
         // clear cache
         if(config("photon.use_photon_cache")) {

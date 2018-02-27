@@ -29,6 +29,7 @@ use Photon\PhotonCms\Core\Entities\DynamicModule\DynamicModuleRepository;
 use Photon\PhotonCms\Core\Entities\DynamicModule\DynamicModuleGateway;
 use Photon\PhotonCms\Core\Entities\Migration\MigrationCompiler;
 use Photon\PhotonCms\Core\Helpers\DatabaseHelper;
+use Photon\PhotonCms\Core\Helpers\ResetHelper;
 use Photon\PhotonCms\Core\Helpers\LicenseKeyHelper;
 use Photon\PhotonCms\Core\Entities\DynamicModuleModel\DynamicModuleModelHelper;
 use Photon\PhotonCms\Core\Entities\Model\ModelTemplateFactory;
@@ -301,23 +302,26 @@ class PhotonController extends Controller
             }
         }
 
-        $this->deleteModels();
-        $this->deleteMigrations();
-        $this->deleteTables();
-        $this->runMigrations(); // Runs photon base migrations
+        ResetHelper::deleteModels();
+        ResetHelper::deleteMigrations();
+        ResetHelper::deleteTables();
+        ResetHelper::runMigrations(); // Runs photon base migrations
         DatabaseHelper::seedTablesData(config('photon.photon_sync_clear_tables'), true);
-        $this->rebuildAndRunMigrations(); // Re/builds all photon module migrations and runs them
-        $this->rebuildModels();
+        ResetHelper::rebuildAndRunMigrations(); // Re/builds all photon module migrations and runs them
+        ResetHelper::rebuildModels();
 
-        foreach ($backedUpTableNames as $backedUpTableName) {
-            $gateway = $this->dynamicModuleLibrary->getGatewayInstanceByTableName($backedUpTableName);
+        $modules = $this->moduleRepository->getAll($this->moduleGateway);
+        foreach ($modules as $module) {
+            $gateway = $this->dynamicModuleLibrary->getGatewayInstanceByTableName($module->table_name);
             $this->dynamicModuleRepository->restoreModuleData($gateway);
-        }
 
-        foreach ($backedUpPivotTables as $moduleNameKey => $backedUpPivotTable) {
-            foreach ($backedUpPivotTable as $individualTable) {
-                $gateway = $this->dynamicModuleLibrary->getGatewayInstanceByTableName($moduleNameKey);
-                $this->dynamicModuleRepository->restorePivotTableData($individualTable, $gateway);
+            $modelRelations = ModelRelationFactory::makeMultipleFromFields($module->fields);
+            foreach ($modelRelations as $relation) {
+                if(!$relation->requiresPivot()) {
+                    continue;
+                }
+                
+                $this->dynamicModuleRepository->restorePivotTableData($relation->pivotTable, $gateway);
             }
         }
 
