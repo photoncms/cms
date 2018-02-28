@@ -4,6 +4,7 @@ namespace Photon\PhotonCms\Core\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
+use Schema;
 
 use Photon\PhotonCms\Core\Entities\Module\ModuleRepository;
 use Photon\PhotonCms\Core\Entities\Module\Contracts\ModuleGatewayInterface;
@@ -96,28 +97,33 @@ class Sync extends Command
         }
         Cache::flush("all_permissions");
 
-        $modules = $this->moduleRepository->getAll($this->moduleGateway);
+        $isEmptyDb = !(Schema::hasTable('modules') && Schema::hasTable('fields'));
 
-        $backedUpTableNames = [];
-        $backedUpPivotTables = [];
-        foreach ($modules as $module) {
-            $gateway = $this->dynamicModuleLibrary->getGatewayInstanceByTableName($module->table_name);
-            $this->dynamicModuleRepository->backupModuleData($gateway);
-            $backedUpTableNames[] = $module->table_name;
+        // back up data if db is set
+        if(!$isEmptyDb) {
+            $modules = $this->moduleRepository->getAll($this->moduleGateway);
 
-            $modelRelations = ModelRelationFactory::makeMultipleFromFields($module->fields);
-            foreach ($modelRelations as $relation) {
-                if(!$relation->requiresPivot()) {
-                    continue;
-                }
-
+            $backedUpTableNames = [];
+            $backedUpPivotTables = [];
+            foreach ($modules as $module) {
                 $gateway = $this->dynamicModuleLibrary->getGatewayInstanceByTableName($module->table_name);
-                $this->dynamicModuleRepository->backupPivotTableData($relation, $gateway);
+                $this->dynamicModuleRepository->backupModuleData($gateway);
+                $backedUpTableNames[] = $module->table_name;
 
-                $backedUpPivotTables[$module->table_name][] = $relation->pivotTable;
+                $modelRelations = ModelRelationFactory::makeMultipleFromFields($module->fields);
+                foreach ($modelRelations as $relation) {
+                    if(!$relation->requiresPivot()) {
+                        continue;
+                    }
+
+                    $gateway = $this->dynamicModuleLibrary->getGatewayInstanceByTableName($module->table_name);
+                    $this->dynamicModuleRepository->backupPivotTableData($relation, $gateway);
+
+                    $backedUpPivotTables[$module->table_name][] = $relation->pivotTable;
+                }
             }
+            $this->info('...Data backup performed');
         }
-        $this->info('...Data backup performed');
 
         ResetHelper::deleteModels();
         $this->info('...Models removed');
@@ -140,21 +146,26 @@ class Sync extends Command
         ResetHelper::rebuildModels();
         $this->info('...Models rebuilt');
 
-        $modules = $this->moduleRepository->getAll($this->moduleGateway);
-        foreach ($modules as $module) {
-            $gateway = $this->dynamicModuleLibrary->getGatewayInstanceByTableName($module->table_name);
-            $this->dynamicModuleRepository->restoreModuleData($gateway);
+        if(!$isEmptyDb) {
+            $modules = $this->moduleRepository->getAll($this->moduleGateway);
+            foreach ($modules as $module) {
+                $gateway = $this->dynamicModuleLibrary->getGatewayInstanceByTableName($module->table_name);
+                $this->dynamicModuleRepository->restoreModuleData($gateway);
 
-            $modelRelations = ModelRelationFactory::makeMultipleFromFields($module->fields);
-            foreach ($modelRelations as $relation) {
-                if(!$relation->requiresPivot()) {
-                    continue;
+                $modelRelations = ModelRelationFactory::makeMultipleFromFields($module->fields);
+                foreach ($modelRelations as $relation) {
+                    if(!$relation->requiresPivot()) {
+                        continue;
+                    }
+                    
+                    $this->dynamicModuleRepository->restorePivotTableData($relation->pivotTable, $gateway);
                 }
-                
-                $this->dynamicModuleRepository->restorePivotTableData($relation->pivotTable, $gateway);
             }
+            $this->info('...Modules data restored');
+        } else {
+            ResetHelper::seedInitialValues();
+            $this->info('...Initial Values seeded');
         }
-        $this->info('...Modules data restored');
 
         $this->info("Photon CMS Synced");
     }
