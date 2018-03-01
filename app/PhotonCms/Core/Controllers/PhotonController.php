@@ -209,21 +209,21 @@ class PhotonController extends Controller
         }
         Cache::flush("all_permissions");
 
-        $this->removeLogFiles();
-        $this->deleteModels();
-        $this->deleteModuleExtenders();
-        $this->deleteAssets();
-        $this->deleteMigrations();
-        $this->deleteTables();
-        $this->cleanDirectories();
-        $this->rebuildDefaultModuleExtenders();
-        $this->runMigrations(); // Runs photon base migrations
-        $this->seedInitialCore();
-        $this->rebuildAndRunMigrations(); // Re/builds all photon module migrations and runs them
-        $this->seedInitialValues();
-        $this->rebuildModels();
-        $this->rebuildSeeders();
-        $this->updatePasswordCreationTime();
+        ResetHelper::removeLogFiles();
+        ResetHelper::deleteModels();
+        ResetHelper::deleteModuleExtenders();
+        ResetHelper::deleteAssets();
+        ResetHelper::deleteMigrations();
+        ResetHelper::deleteTables();
+        ResetHelper::cleanDirectories();
+        ResetHelper::rebuildDefaultModuleExtenders();
+        ResetHelper::runMigrations();
+        ResetHelper::seedInitialCore();
+        ResetHelper::rebuildAndRunMigrations();
+        ResetHelper::seedInitialValues();
+        ResetHelper::rebuildModels();
+        ResetHelper::rebuildSeeders();
+        ResetHelper::updatePasswordCreationTime();
 
         return $this->responseRepository->make('PHOTON_HARD_RESET_SUCCESS');
     }

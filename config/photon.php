@@ -333,5 +333,19 @@ return [
     | 
     |
     */
-    'mass_auto_update_anchor' => env('MASS_AUTO_UPDATE_ANCHOR', true)
+    'mass_auto_update_anchor' => env('MASS_AUTO_UPDATE_ANCHOR', true),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Column names from users module that would be used for generating registration validator
+    |--------------------------------------------------------------------------
+    |
+    */
+    'photon_register_use_columns' => [
+        'first_name',
+        'last_name',
+        'email',
+        'password'
+    ],
+
 ];
