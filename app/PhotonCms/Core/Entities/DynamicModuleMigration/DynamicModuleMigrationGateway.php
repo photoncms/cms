@@ -12,6 +12,6 @@ class DynamicModuleMigrationGateway extends MigrationGateway
     {
         $path = config('photon.dynamic_model_migrations_dir');
 
-        return Artisan::call('migrate', ['--path' => $path]);
+        return Artisan::call('migrate', ['--path' => $path, '--force' => true]);
     }
 }
