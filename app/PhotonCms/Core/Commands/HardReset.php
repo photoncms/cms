@@ -92,6 +92,7 @@ class HardReset extends Command
     {
         if (!env('CAN_RESET_PHOTON') || !\App::environment('local', 'staging', 'development', 'testing')) {
             $this->info('...Photon reset forbidden');
+            return false;
         }
 
         // clear cache
