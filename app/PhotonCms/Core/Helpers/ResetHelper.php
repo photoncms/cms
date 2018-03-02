@@ -176,7 +176,7 @@ class ResetHelper
      */
     public static function runMigrations()
     {
-        Artisan::call('migrate', ['--quiet' => true]);
+        Artisan::call('migrate', ['--quiet' => true, '--force' => true]);
     }
 
     /**

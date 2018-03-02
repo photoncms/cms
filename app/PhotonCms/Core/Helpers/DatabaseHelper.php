@@ -78,6 +78,8 @@ class DatabaseHelper
             $parameters['--path'] = $path;
         }
 
+        $parameters['--force'] = true;
+
         return \Artisan::call('migrate', $parameters);
     }
 }
