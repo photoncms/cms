@@ -215,10 +215,10 @@ return [
 //            'min' => 1
 //        ],
 //        [
-//            'role' => 'operator',
+//            'role' => 'moderator',
 //            'min' => 1,
 //            'match' => [
-//                'flight_operator'
+//                'administrator'
 //            ]
 //        ]
     ],
@@ -277,20 +277,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | 
+    |
     |--------------------------------------------------------------------------
     |
-    | 
+    |
     |
     */
     'uid_seed_string' => env('APP_UID_SEED_STRING', null),
 
     /*
     |--------------------------------------------------------------------------
-    | 
+    |
     |--------------------------------------------------------------------------
     |
-    | 
+    |
     |
     */
     'imagick_quality' => env('IMAGICK_QUALITY', 85),
@@ -300,7 +300,7 @@ return [
     | '2x2' corelates to '4:2:0'
     |--------------------------------------------------------------------------
     |
-    | 
+    |
     |
     */
     'imagick_sampling' => env('IMAGICK_SAMPLING', '2x2'),
@@ -310,7 +310,7 @@ return [
     | should photon use caching? if use file or database cache drivers are not supported
     |--------------------------------------------------------------------------
     |
-    | 
+    |
     |
     */
     'use_photon_cache' => env('USE_PHOTON_CACHING', false),
@@ -320,7 +320,7 @@ return [
     | how long should photon cache be stored (in minutes)
     |--------------------------------------------------------------------------
     |
-    | 
+    |
     |
     */
     'photon_caching_time' => env('PHOTON_CACHING_TTL', 60),
@@ -330,7 +330,7 @@ return [
     | should anchor fields be automatically updated
     |--------------------------------------------------------------------------
     |
-    | 
+    |
     |
     */
     'mass_auto_update_anchor' => env('MASS_AUTO_UPDATE_ANCHOR', true),
