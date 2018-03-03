@@ -27,9 +27,8 @@
                                     v-model="credentials.email"
                                     class="form-control input-lg"
                                     id="email"
-                                    :placeholder="$t('login.email')"
-                                    data-parsley-required="true"
-                                    :data-parsley-required-message="$t('login.emailRequiredMessage')">
+                                    :placeholder="$t('login.email')">
+                                    <div id="email-error" class="form-field-error"></div>
                             </div>
                             <br>
                         </li>

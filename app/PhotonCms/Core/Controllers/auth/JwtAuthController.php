@@ -126,11 +126,24 @@ class JwtAuthController extends Controller
      */
     protected function validator_create_with_invitation(array $data)
     {
-        return Validator::make($data, [
-            'first_name' => 'required|max:255',
-            'last_name' => 'required|max:255',
-            'password' => 'required|min:8|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/',
-        ]);
+        $columnsForValidation = config("photon.photon_register_use_columns");
+
+        if (($key = array_search('email', $columnsForValidation)) !== false) {
+            unset($columnsForValidation[$key]);
+        }
+
+        $fields = $this->fieldRepository->findByModuleId(1, $this->fieldGateway);
+
+        // Regular user-defined validation
+        $validationRules = [];
+        foreach ($fields as $field) {
+            $uniqueName = $field->getUniqueName();
+            if ($field->validation_rules && in_array($uniqueName, $columnsForValidation)) {
+                $validationRules[$uniqueName] = $field->validation_rules;
+            }
+        }
+
+        return Validator::make($data, $validationRules);
     }
 
     /**
@@ -141,9 +154,13 @@ class JwtAuthController extends Controller
      */
     protected function validator_change_password($data)
     {
+        $fields = $this->fieldRepository->findByModuleId(1, $this->fieldGateway);
+
+        $field = $fields->firstWhere('column_name', 'password');
+
         return Validator::make($data, [
             'old_password' => 'required',
-            'new_password' => 'required|min:8|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/'
+            'new_password' => $field->validation_rules,
         ]);
     }
 
@@ -168,10 +185,14 @@ class JwtAuthController extends Controller
      */
     protected function validator_reset_password($data)
     {
+        $fields = $this->fieldRepository->findByModuleId(1, $this->fieldGateway);
+
+        $field = $fields->firstWhere('column_name', 'password');
+
         return Validator::make($data, [
             'token' => 'required',
             'email' => 'required|exists:users,email',
-            'password' => 'required|min:8|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/'
+            'password' => $field->validation_rules,
         ]);
     }
 }
