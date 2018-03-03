@@ -196,7 +196,7 @@ Route::group(['middleware' => 'checkLicense'], function () {
         //---------- End of Module Subscriptions -----------/
 
         //---------- Modules -----------/
-        Route::get('/{tableName}', 'DynamicModuleController@getAllEntries')->middleware('isSuperAdmin');
+        Route::get('/{tableName}', 'DynamicModuleController@getAllEntries');
 
         //Returns single module item (e.g. news).
         Route::get('/{tableName}/{entryId}', 'DynamicModuleController@getEntry')->where('entryId', '[0-9]+');
