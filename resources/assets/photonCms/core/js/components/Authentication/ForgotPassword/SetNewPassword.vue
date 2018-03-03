@@ -26,9 +26,9 @@
                                     type="email"
                                     v-model="credentials.email"
                                     class="form-control input-lg"
-                                    id="email"
                                     :placeholder="$t('register.email')"
-                                    :data-parsley-required-message="$t('register.emailRequiredMessage')">
+                                    id="email">
+                                    <div id="email-error" class="form-field-error"></div>
                             </div>
                             <div class="form-group">
                                 <input name="password"
@@ -36,9 +36,8 @@
                                     v-model="credentials.password"
                                     class="form-control input-lg"
                                     id="password"
-                                    :placeholder="$t('register.password')"
-                                    data-parsley-required="true"
-                                    :data-parsley-required-message="$t('register.passwordRequiredMessage')">
+                                    :placeholder="$t('register.password')">
+                                    <div id="password-error" class="form-field-error"></div>
                             </div>
                             <div class="form-group">
                                 <input name="confirm_password"
@@ -49,8 +48,8 @@
                                     :placeholder="$t('register.confirmPassword')"
                                     data-parsley-required="true"
                                     data-parsley-equalto="#password"
-                                    :data-parsley-required-message="$t('confirmPasswordRequiredMessage')"
-                                    :data-parsley-equalto-message="$t('passwordsDoNotMatchMessage')">
+                                    :data-parsley-required-message="$t('register.confirmPasswordRequiredMessage')"
+                                    data-parsley-equalto-message="Passwords do not match.">
                                 <br>
                             </div>
                         </li>

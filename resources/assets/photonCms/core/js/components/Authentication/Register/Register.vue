@@ -34,9 +34,7 @@
                                     v-model="credentials.first_name"
                                     class="form-control input-lg"
                                     id="first_name"
-                                    :placeholder="$t('register.firstName')"
-                                    data-parsley-required="true"
-                                    :data-parsley-required-message="$t('register.firstNameRequiredMessage')">
+                                    :placeholder="$t('register.firstName')">
                                     <div id="first_name-error" class="form-field-error"></div>
                             </div>
                             <div class="form-group">
@@ -45,9 +43,7 @@
                                     v-model="credentials.last_name"
                                     class="form-control input-lg"
                                     id="last_name"
-                                    :placeholder="$t('register.lastName')"
-                                    data-parsley-required="true"
-                                    :data-parsley-required-message="$t('register.lastNameRequiredMessage')">
+                                    :placeholder="$t('register.lastName')">
                                     <div id="last_name-error" class="form-field-error"></div>
                             </div>
                             <div v-if="!invitationToken" class="form-group">
@@ -56,9 +52,7 @@
                                     v-model="credentials.email"
                                     class="form-control input-lg"
                                     id="email"
-                                    :placeholder="$t('register.email')"
-                                    data-parsley-required="true"
-                                    :data-parsley-required-message="$t('register.emailRequiredMessage')">
+                                    :placeholder="$t('register.email')">
                                     <div id="email-error" class="form-field-error"></div>
                             </div>
                             <div class="form-group">
@@ -67,9 +61,7 @@
                                     v-model="credentials.password"
                                     class="form-control input-lg"
                                     id="password"
-                                    :placeholder="$t('register.password')"
-                                    data-parsley-required="true"
-                                    :data-parsley-required-message="$t('register.passwordRequiredMessage')">
+                                    :placeholder="$t('register.password')">
                                     <div id="password-error" class="form-field-error"></div>
                             </div>
                             <div class="form-group">
@@ -83,7 +75,6 @@
                                     data-parsley-equalto="#password"
                                     :data-parsley-required-message="$t('register.confirmPasswordRequiredMessage')"
                                     data-parsley-equalto-message="Passwords do not match.">
-                                    <div id="confirm_password-error" class="form-field-error"></div>
                             </div>
                             <br>
                         </li>
