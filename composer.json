@@ -1,7 +1,7 @@
 {
     "name": "photoncms/cms",
     "description": "Photon CMS",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "keywords": ["cms", "photoncms", "laravel"],
     "homepage": "https://photoncms.com",
     "license": "proprietary",
