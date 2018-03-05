@@ -123,7 +123,11 @@ class Sync extends Command
                 }
             }
             $this->info('...Data backup performed');
+
+            $this->dynamicModuleRepository->backupSystemTables($gateway);
+            $this->info('...System Tables backed up');
         }
+
 
         ResetHelper::deleteModels();
         $this->info('...Models removed');
@@ -162,6 +166,9 @@ class Sync extends Command
                 }
             }
             $this->info('...Modules data restored');
+
+            $this->dynamicModuleRepository->restoreSystemTables($gateway);
+            $this->info('...System Tables restored');
         } else {
             ResetHelper::seedInitialValues();
             $this->info('...Initial Values seeded');
