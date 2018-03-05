@@ -25,16 +25,6 @@ class MigrationGateway implements MigrationGatewayInterface
             throw new BaseException('FILE_WRITING_FAILURE');
         }
 
-        if(!env("CAN_RESET_PHOTON")) {
-            $fileNameAndPathProduction = base_path(config("photon.production_model_migrations_dir").'/'.$template->getFileName());
-
-            $bytesWrittenProduction = \File::put($fileNameAndPathProduction, $content);
-            if ($bytesWrittenProduction === false)
-            {
-                throw new BaseException('FILE_WRITING_FAILURE');
-            }
-        }
-
         return true;
     }
 

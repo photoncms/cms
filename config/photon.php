@@ -101,17 +101,6 @@ return [
     */
     'dynamic_model_migrations_dir' => '/app/PhotonCms/Dependencies/PhotonMigrations',
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Production model migrations location
-    |--------------------------------------------------------------------------
-    |
-    | Location of production module migrations
-    |
-    */
-    'production_model_migrations_dir' => '/app/PhotonCms/Dependencies/ProductionMigrations',
-
     /*
     |--------------------------------------------------------------------------
     | Dynamic model migrations location
