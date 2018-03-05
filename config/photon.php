@@ -101,17 +101,6 @@ return [
     */
     'dynamic_model_migrations_dir' => '/app/PhotonCms/Dependencies/PhotonMigrations',
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Production model migrations location
-    |--------------------------------------------------------------------------
-    |
-    | Location of production module migrations
-    |
-    */
-    'production_model_migrations_dir' => '/app/PhotonCms/Dependencies/ProductionMigrations',
-
     /*
     |--------------------------------------------------------------------------
     | Dynamic model migrations location
@@ -242,11 +231,30 @@ return [
     |
     */
     'photon_sync_clear_tables' => [
-        'modules',
         'fields',
+        'field_types',
+        'modules',
+        'module_types',
         'model_meta_data',
-        'model_meta_types',
-        'field_types'
+        'model_meta_types',  
+        'menu_link_types'      
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Table names of tables which needs to be backed up during photon sync
+    |--------------------------------------------------------------------------
+    |
+    */
+    'photon_sync_backup_tables' => [
+        'email_change_requests',
+        'failed_jobs',
+        'menus',
+        'menu_items',        
+        'menu_link_types_menus',
+        'notifications',
+        'password_resets',
+        'used_passwords'
     ],
 
     /*

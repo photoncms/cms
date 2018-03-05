@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ModelMetaTypesTableSeeder::class);
         $this->call(FieldsTableSeeder::class);
         $this->call(ModelMetaDataTableSeeder::class);
-        $this->call(ImageSizesTableSeeder::class);
+        $this->call(ModuleTypesTableSeeder::class);
+        $this->call(MenuLinkTypesTableSeeder::class);
     }
 }

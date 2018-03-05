@@ -60,7 +60,7 @@ class DatabaseHelper
     {
         if ($force) { \Schema::disableForeignKeyConstraints(); }
         $seedName = StringConversionsHelper::snakeCaseToCamelCase($tableName);
-        \Artisan::call('db:seed', ['--class' => $seedName.'TableSeeder']);
+        \Artisan::call('db:seed', ['--class' => $seedName.'TableSeeder', '--force' => true]);
         if ($force) { \Schema::enableForeignKeyConstraints(); }
     }
 

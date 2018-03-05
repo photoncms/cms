@@ -561,9 +561,9 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
      * @param array $data
      * @return boolean
      */
-    public function pivotMassInsert(array $data, $pivotTableName)
+    public function tableMassInsert(array $data, $table)
     {
-        $columns = \Schema::getColumnListing($pivotTableName);
+        $columns = \Schema::getColumnListing($table);
 
         $dataKeys = array_keys(reset($data));
 
@@ -582,7 +582,7 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
         }
 
         \Schema::disableForeignKeyConstraints();
-        \DB::table($pivotTableName)->insert($insertData);
+        \DB::table($table)->insert($insertData);
         \Schema::enableForeignKeyConstraints();
 
         return true;
@@ -595,7 +595,7 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
      */
     public function backupModuleData()
     {
-        $this->clearModuleBackedUpData();
+        $this->clearTableBackedUpData($this->moduleTableName);
         $className = $this->modelClassName;
         $increment = 0;
         $className::chunk(1000, function ($data) use (&$increment) {
@@ -623,7 +623,7 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
      */
     public function backupPivotTableData($pivotRelation)
     {
-        $this->clearPivotTableBackedUpData($pivotRelation);
+        $this->clearTableBackedUpData($pivotRelation->pivotTable);
 
         if(!\Schema::hasTable($pivotRelation->pivotTable)) {
             throw new PhotonException('PIVOT_TABLE_NOT_FOUND', ['pivot_table_name' => $pivotTableName]);
@@ -648,28 +648,45 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
         return true;
     }
 
-    private function clearModuleBackedUpData()
-    {
-        $increment = 0;
+    /**
+     * Backs up system table data into php seed files.
+     *
+     * @return boolean
+     */
+    public function backupSystemTables()
+    {        
+        $systemTables = config('photon.photon_sync_backup_tables');
 
-        while (true) {
-            $fileName = config('photon.php_seed_backup_location')."/{$this->moduleTableName}_{$increment}.php";
-            if (file_exists($fileName)) {
-                unlink($fileName);
-            }
-            else {
-                break;
-            }
-            $increment++;
+        foreach ($systemTables as $table) {
+            $this->clearTableBackedUpData($table);
+
+            $increment = 0;
+            $columns = \DB::getSchemaBuilder()->getColumnListing($table);
+            \DB::table($table)->orderBy($columns[0], "asc")->chunk(1000, function($data) use (&$increment, $table) {
+                $data = $data->toArray();
+
+                $fileName = config('photon.php_seed_backup_location')."/{$table}_{$increment}.php";
+
+                $handle = fopen($fileName, "w");
+                fwrite($handle, '<?php ');
+                fwrite($handle, 'return \'');
+                fwrite($handle, json_encode($data, JSON_HEX_APOS));
+                fwrite($handle, '\';');
+                fclose($handle);
+
+                $increment++;
+            });
         }
+
+        return true;
     }
 
-    private function clearPivotTableBackedUpData($pivotRelation)
+    private function clearTableBackedUpData($tableName)
     {
         $increment = 0;
 
         while (true) {
-            $fileName = config('photon.php_seed_backup_location')."/{$pivotRelation->pivotTable}_{$increment}.php";
+            $fileName = config('photon.php_seed_backup_location')."/{$tableName}_{$increment}.php";
             if (file_exists($fileName)) {
                 unlink($fileName);
             }
@@ -734,7 +751,7 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
 
             if (file_exists($fileName)) {
                 $data = include $fileName;
-                $this->pivotMassInsert(json_decode($data, true), $pivotTableName);
+                $this->tableMassInsert(json_decode($data, true), $pivotTableName);
             }
             else {
                 break;
@@ -743,5 +760,42 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
         }
 
         return true;        
+    }
+
+
+    /**
+     * Restores system tables data from php seed files.
+     *
+     * @param string $pivotTableName
+     * @return boolean
+     */
+    public function restoreSystemTables()
+    {
+        $systemTables = config('photon.photon_sync_backup_tables');
+
+        foreach ($systemTables as $table) {
+            $increment = 0;
+
+            // Initial clear
+            $fileName = config('photon.php_seed_backup_location')."/{$table}_{$increment}.php";
+            if (file_exists($fileName)) {
+                DatabaseHelper::emptyTable($table, true);
+            }
+
+            // Restoring data
+            while (true) {
+                $fileName = config('photon.php_seed_backup_location')."/{$table}_{$increment}.php";
+                if (file_exists($fileName)) {
+                    $data = include $fileName;
+                    $this->tableMassInsert(json_decode($data, true), $table);
+                }
+                else {
+                    break;
+                }
+                $increment++;
+            }
+        }
+
+        return true;
     }
 }

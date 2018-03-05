@@ -156,9 +156,27 @@ class DynamicModuleRepository
         return $gateway->backupModuleData();
     }
 
+    /**
+     * Backs up pivot tables data.
+     *
+     * @param string $pivotTableName
+     * @param DynamicModuleGateway $gateway
+     * @return boolean
+     */
     public function backupPivotTableData($pivotTableName, DynamicModuleGateway $gateway)
     {
         return $gateway->backupPivotTableData($pivotTableName);
+    }
+
+    /**
+     * Backs up system tables data.
+     *
+     * @param DynamicModuleGateway $gateway
+     * @return boolean
+     */
+    public function backupSystemTables(DynamicModuleGateway $gateway)
+    {
+        return $gateway->backupSystemTables();
     }
 
     /**
@@ -182,5 +200,10 @@ class DynamicModuleRepository
     public function restorePivotTableData($pivotTableName, DynamicModuleGateway $gateway)
     {
         return $gateway->restorePivotTableData($pivotTableName);
+    }
+
+    public function restoreSystemTables(DynamicModuleGateway $gateway)
+    {        
+        return $gateway->restoreSystemTables();
     }
 }
