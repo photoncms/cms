@@ -532,7 +532,7 @@ class PhotonController extends Controller
 
         foreach ($seeds as $seed) {
             $className = basename($seed, ".php");
-            Artisan::call('db:seed', ['--class' => $className]);
+            Artisan::call('db:seed', ['--class' => $className, '--force' => true]);
         }
     }
 
@@ -546,7 +546,7 @@ class PhotonController extends Controller
 
         foreach ($seeds as $seed) {
             $className = basename($seed, ".php");
-            Artisan::call('db:seed', ['--class' => $className]);
+            Artisan::call('db:seed', ['--class' => $className, '--force' => true]);
         }
     }
 

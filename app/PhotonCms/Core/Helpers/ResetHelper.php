@@ -86,7 +86,7 @@ class ResetHelper
 
         foreach ($seeds as $seed) {
             $className = basename($seed, ".php");
-            Artisan::call('db:seed', ['--class' => $className]);
+            Artisan::call('db:seed', ['--class' => $className, '--force' => true]);
         }
     }
 
@@ -115,7 +115,7 @@ class ResetHelper
 
         foreach ($seeds as $seed) {
             $className = basename($seed, ".php");
-            Artisan::call('db:seed', ['--class' => $className]);
+            Artisan::call('db:seed', ['--class' => $className, '--force' => true]);
         }
     }
 
