@@ -20,6 +20,10 @@ class FieldTypeFactory
         $class = \Config::get('photon.dynamic_module_field_types_dir') . $className;
 
         if (!class_exists($class)) {
+            $class = \Config::get('photon.core_field_types_handlers_dir') . $className;
+        }
+
+        if (!class_exists($class)) {
             throw new PhotonException('CLASS_DOESNT_EXIST', ['class' => $class]);
         }
 
@@ -39,6 +43,10 @@ class FieldTypeFactory
         $class = \Config::get('photon.dynamic_module_field_types_dir') . $className;
 
         if (!class_exists($class)) {
+            $class = \Config::get('photon.core_field_types_handlers_dir') . $className;
+        }
+
+        if (!class_exists($class)) {
             throw new PhotonException('CLASS_DOESNT_EXIST', ['class' => $class]);
         }
 
@@ -53,7 +61,12 @@ class FieldTypeFactory
 
     public static function makeNewByClassName($className)
     {
+
         $class = \Config::get('photon.dynamic_module_field_types_dir') . $className;
+
+        if (!class_exists($class)) {
+            $class = \Config::get('photon.core_field_types_handlers_dir') . $className;
+        }
 
         if (!class_exists($class)) {
             throw new PhotonException('CLASS_DOESNT_EXIST', ['class' => $class]);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Photon\PhotonCms\Dependencies\DynamicModuleFieldTypes;
+namespace Photon\PhotonCms\Core\FieldType\FieldTypeHandlers;
 
 use Photon\PhotonCms\Core\Entities\FieldType\FieldType;
 
@@ -8,13 +8,14 @@ use Photon\PhotonCms\Core\Entities\DynamicModuleField\Contracts\TransformsInput;
 use Photon\PhotonCms\Core\Entities\DynamicModuleField\Contracts\TransformsOutput;
 //use Photon\PhotonCms\Core\Entities\DynamicModuleField\Contracts\HasValidation;
 
-class OneToManyExtended extends FieldType implements TransformsInput, TransformsOutput
+class ManyToMany extends FieldType implements TransformsInput, TransformsOutput
 {
     public function __construct()
     {
         $this->isAttribute = false;
         $this->isRelation = true;
-        $this->relationType = 'OneToMany';
+        $this->requiresPivot = true;
+        $this->relationType = 'ManyToMany';
     }
 
     public function input($object, $attributeName, $value)
@@ -35,8 +36,10 @@ class OneToManyExtended extends FieldType implements TransformsInput, Transforms
         return $object->$relationName;
     }
 
+// ToDo: We need a bit specific validator here. Accepted input is an array of integers, or CSV of integers. (Sasa|06/2016)
+// There is an example of writing custom validators for laravel in the answer here: http://stackoverflow.com/questions/24588975/how-do-i-validate-an-array-of-integers-in-laravel
 //    public function getValidationString()
 //    {
-//        // ToDo: We need a possibility here to compile a validation rule like 'exists:target_table,id' (Sasa|09/2016)
+//        return '';
 //    }
 }

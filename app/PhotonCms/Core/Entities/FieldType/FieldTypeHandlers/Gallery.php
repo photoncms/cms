@@ -1,6 +1,6 @@
 <?php
 
-namespace Photon\PhotonCms\Dependencies\DynamicModuleFieldTypes;
+namespace Photon\PhotonCms\Core\FieldType\FieldTypeHandlers;
 
 use Photon\PhotonCms\Core\Entities\FieldType\FieldType;
 
@@ -8,7 +8,7 @@ use Photon\PhotonCms\Core\Entities\DynamicModuleField\Contracts\TransformsInput;
 use Photon\PhotonCms\Core\Entities\DynamicModuleField\Contracts\TransformsOutput;
 //use Photon\PhotonCms\Core\Entities\DynamicModuleField\Contracts\HasValidation;
 
-class Asset extends FieldType implements TransformsInput, TransformsOutput
+class Gallery extends FieldType implements TransformsInput, TransformsOutput
 {
     public function __construct()
     {
@@ -18,7 +18,6 @@ class Asset extends FieldType implements TransformsInput, TransformsOutput
 
     public function input($object, $attributeName, $value)
     {
-        $value = ($value === '') ? null : $value;
         $object->$attributeName = $value;
     }
 
@@ -27,4 +26,9 @@ class Asset extends FieldType implements TransformsInput, TransformsOutput
         $relationName = $attributeName.'_relation';
         return $object->$relationName;
     }
+
+//    public function getValidationString()
+//    {
+//        // ToDo: We need a possibility here to compile a validation rule like 'exists:target_table,id' (Sasa|09/2016)
+//    }
 }
