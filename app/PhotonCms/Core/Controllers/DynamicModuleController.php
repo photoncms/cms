@@ -157,9 +157,8 @@ class DynamicModuleController extends Controller
         $filter = \Request::get('filter');
         $sorting = \Request::get('sorting');
         $pagination = \Request::get('pagination');
-        $includeRelations = \Request::get('include_relations');
 
-        $result = $this->getAllDynamicModuleEntries($tableName, $includeRelations, $filter, $sorting, $pagination);
+        $result = $this->getAllDynamicModuleEntries($tableName, $filter, $sorting, $pagination);
 
         return $this->responseRepository->make('LOAD_DYNAMIC_MODULE_ENTRIES_SUCCESS', $result);
     }
@@ -170,7 +169,7 @@ class DynamicModuleController extends Controller
      * @param string $tableName
      * @return \Illuminate\Http\Response
      */
-    public function getAllDynamicModuleEntries($tableName, $includeRelations = null, $filter = null, $sorting = null, $pagination = null)
+    public function getAllDynamicModuleEntries($tableName, $filter = null, $sorting = null, $pagination = null)
     {
         if(config("photon.use_photon_cache")) {
             $user = \Auth::user();
