@@ -1,6 +1,6 @@
 <?php
 
-namespace Photon\PhotonCms\Dependencies\AdditionalModuleClasses\Helpers;
+namespace Photon\PhotonCms\Core\AdditionalModuleClasses\Helpers;
 
 use Photon\PhotonCms\Dependencies\DynamicModels\Invitations;
 
