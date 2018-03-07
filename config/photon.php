@@ -144,6 +144,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Core exporters namespace
+    |--------------------------------------------------------------------------
+    |
+    | Namespace prefix of photon core module exporters
+    |
+    */
+    'core_module_exporters_namespace' => 'Photon\PhotonCms\Core\Entities\ModuleExporters\\',
+
+    /*
+    |--------------------------------------------------------------------------
     | Dynamic module exporters location
     |--------------------------------------------------------------------------
     |
@@ -151,6 +161,16 @@ return [
     |
     */
     'dynamic_module_exporters_location' => app_path('PhotonCms/Dependencies/ModuleExporters'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Core exporters location
+    |--------------------------------------------------------------------------
+    |
+    | Location of photon core module exporters
+    |
+    */
+    'core_module_exporters_location' => app_path('PhotonCms/Core/Entities/ModuleExporters'),
 
     /*
     |--------------------------------------------------------------------------

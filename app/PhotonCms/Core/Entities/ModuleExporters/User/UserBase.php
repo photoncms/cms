@@ -1,6 +1,6 @@
 <?php
 
-namespace Photon\PhotonCms\Dependencies\ModuleExporters\User;
+namespace Photon\PhotonCms\Core\Entities\ModuleExporters\User;
 
 use Photon\PhotonCms\Core\Entities\DynamicModuleExporter\DynamicModuleExporterBase;
 

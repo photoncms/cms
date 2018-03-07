@@ -875,11 +875,11 @@ class DynamicModuleController extends Controller
      */
     public function exportEntries($tableName)
     {
-        $filter     = \Request::get('filter');
-        $sorting    = \Request::get('sorting');
+        $filter     = \Request::get('filter') ? \Request::get('filter') : [];
+        $sorting    = \Request::get('sorting') ? \Request::get('sorting') : [];
         $fileType   = \Request::get('file_type');
         $action     = \Request::get('action');
-        $parameters = \Request::get('parameters');
+        $parameters = \Request::get('parameters') ? \Request::get('parameters') : [];
         $fileName   = \Request::get('file_name');
 
         $response = $this->exportDynamicModuleEntries($tableName, $fileType, $action, $fileName, $filter, $sorting, $parameters);

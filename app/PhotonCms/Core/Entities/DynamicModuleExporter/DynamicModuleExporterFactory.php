@@ -21,9 +21,13 @@ class DynamicModuleExporterFactory
         $class = config('photon.dynamic_module_exporters_namespace') . "$className\\" . $className .ucfirst($type);
 
         if (!class_exists($class)) {
-            throw new PhotonException('DYNAMIC_MODULE_EXPORTER_MISSING', ['class' => $class]);
+            $class = config('photon.core_module_exporters_namespace') . "$className\\" . $className .ucfirst($type);
         }
 
+        if (!class_exists($class)) {
+            throw new PhotonException('DYNAMIC_MODULE_EXPORTER_MISSING', ['class' => $class]);
+        }
+        
         return new $class(strtolower($type));
     }
 }
