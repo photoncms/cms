@@ -4,8 +4,8 @@ namespace Photon\PhotonCms\Core\AdditionalModuleClasses\Helpers;
 
 use Photon\PhotonCms\Dependencies\DynamicModels\Invitations;
 
-use Photon\PhotonCms\Dependencies\Notifications\InvitationIssued;
-use Photon\PhotonCms\Dependencies\Notifications\RegistrationSuccess;
+use Photon\PhotonCms\Core\Entities\Notifications\InvitationIssued;
+use Photon\PhotonCms\Core\Entities\Notifications\RegistrationSuccess;
 
 /**
  * This helper class contains all emailing functionality for user invitations.

@@ -16,10 +16,10 @@ use Photon\PhotonCms\Core\Entities\UsedPassword\UsedPasswordRepository;
 use Photon\PhotonCms\Core\Entities\UsedPassword\UsedPasswordGateway;
 use Carbon\Carbon;
 use Photon\PhotonCms\Core\Response\ResponseRepository;
-use Photon\PhotonCms\Dependencies\Notifications\RegistrationConfirmation;
 use Photon\PhotonCms\Core\Entities\EmailChangeRequest\EmailChangeRequest;
-use Photon\PhotonCms\Dependencies\Notifications\EmailChangeConfirmation;
-use Photon\PhotonCms\Dependencies\Notifications\EmailChangeSuccess;
+use Photon\PhotonCms\Core\Entities\Notifications\RegistrationConfirmation;
+use Photon\PhotonCms\Core\Entities\Notifications\EmailChangeConfirmation;
+use Photon\PhotonCms\Core\Entities\Notifications\EmailChangeSuccess;
 
 use Photon\PhotonCms\Core\Entities\DynamicModuleExtension\Contracts\ModuleExtensionHandlesPostCreate;
 use Photon\PhotonCms\Core\Entities\DynamicModuleExtension\Contracts\ModuleExtensionHandlesPreUpdate;

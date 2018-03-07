@@ -1,6 +1,6 @@
 <?php
 
-namespace Photon\PhotonCms\Dependencies\Notifications;
+namespace Photon\PhotonCms\Core\Entities\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;

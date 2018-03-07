@@ -7,7 +7,7 @@ class NotificationHelperFactory
 
     public static function makeByHelperName($helperName)
     {
-        $helpersNamespace = 'Photon\PhotonCms\Dependencies\Notifications\Helpers\\';
+        $helpersNamespace = 'Photon\PhotonCms\Core\Entities\Notifications\Helpers\\';
         $className = implode('',array_map('ucfirst',explode('_',$helperName)));
 
         $fullHelperClassName = $helpersNamespace.$className.'Helper';

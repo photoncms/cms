@@ -11,8 +11,8 @@ use Photon\PhotonCms\Dependencies\AdditionalModuleClasses\Workflows\InvitationWo
 use Carbon\Carbon;
 use Photon\PhotonCms\Core\Entities\NotificationHelpers\NotificationHelperFactory;
 
-use Photon\PhotonCms\Dependencies\Notifications\RegistrationConfirmation;
-use Photon\PhotonCms\Dependencies\Notifications\RegistrationSuccess;
+use Photon\PhotonCms\Core\Entities\Notifications\RegistrationConfirmation;
+use Photon\PhotonCms\Core\Entities\Notifications\RegistrationSuccess;
 use Photon\PhotonCms\Core\Entities\Module\ModuleRepository;
 use Illuminate\Support\Facades\Cache;
 use \Photon\PhotonCms\Core\Exceptions\PhotonException;

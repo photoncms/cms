@@ -1,6 +1,6 @@
 <?php
 
-namespace Photon\PhotonCms\Dependencies\Notifications;
+namespace Photon\PhotonCms\Core\Entities\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
@@ -8,23 +8,18 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Photon\PhotonCms\Core\Helpers\RoutesHelper;
 
-class EmailChangeConfirmation extends Notification implements ShouldQueue
+class EmailChangeSuccess extends Notification implements ShouldQueue
 {
     use Queueable;
-
-    private $confirmationCode = '';
-
-    private $newEmail = '';
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($newEmail, $confirmationCode)
+    public function __construct()
     {
-        $this->newEmail = $newEmail;
-        $this->confirmationCode = $confirmationCode;
+        //
     }
 
     /**
@@ -46,18 +41,13 @@ class EmailChangeConfirmation extends Notification implements ShouldQueue
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($item)
+    public function toMail($user)
     {
-        // Prepare confirmation URL for the email
-        $confirmationUrl = RoutesHelper::getEmailChangeConfirmationUrl($item->user_id, $this->confirmationCode);
-
         return (new MailMessage)
             ->from(config('photon.service_emails.registration'))
-            ->subject(trans('emails.email_change_request_title'))
-            ->greeting(trans('emails.email_change_request_greeting'))
-            ->line(trans('emails.email_change_request_intro'))
-            ->action(trans('emails.email_change_request_action'), $confirmationUrl)
-            ->line(trans('emails.email_change_request_outro'));
+            ->subject(trans('emails.email_change_success_title'))
+            ->greeting(trans('emails.email_change_success_greeting'))
+            ->line(trans('emails.email_change_success_intro'));
     }
 
     /**

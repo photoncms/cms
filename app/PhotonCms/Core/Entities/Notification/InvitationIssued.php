@@ -1,6 +1,6 @@
 <?php
 
-namespace Photon\PhotonCms\Dependencies\Notifications;
+namespace Photon\PhotonCms\Core\Entities\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Photon\PhotonCms\Core\Helpers\RoutesHelper;
 
-class EmailChangeSuccess extends Notification implements ShouldQueue
+class InvitationIssued extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -30,9 +30,7 @@ class EmailChangeSuccess extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return [
-            'mail'
-        ];
+        return ['mail'];
     }
 
     /**
@@ -41,13 +39,16 @@ class EmailChangeSuccess extends Notification implements ShouldQueue
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($user)
+    public function toMail($invitation)
     {
+        $invitationUrl = RoutesHelper::getAuthInvitationUrl($invitation->invitation_code);
+        
         return (new MailMessage)
-            ->from(config('photon.service_emails.registration'))
-            ->subject(trans('emails.email_change_success_title'))
-            ->greeting(trans('emails.email_change_success_greeting'))
-            ->line(trans('emails.email_change_success_intro'));
+            ->from(config('photon.service_emails.invitation'))
+            ->subject(trans('emails.invitation_title'))
+            ->greeting(trans('emails.invitation_greeting'))
+            ->line(trans('emails.invitation_intro'))
+            ->action(trans('emails.invitation_action'), $invitationUrl);
     }
 
     /**

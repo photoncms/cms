@@ -1,11 +1,11 @@
 <?php
 
-namespace Photon\PhotonCms\Dependencies\Notifications\Helpers;
+namespace Photon\PhotonCms\Core\Entities\Notifications\Helpers;
 
 use Photon\PhotonCms\Dependencies\DynamicModels\User;
 use Photon\PhotonCms\Core\Entities\NotificationHelpers\Contracts\NotificationHelperInterface;
 
-use Photon\PhotonCms\Dependencies\Notifications\UserUnsubscribed;
+use Photon\PhotonCms\Core\Entities\Notifications\UserUnsubscribed;
 
 class UserUnsubscribedHelper implements NotificationHelperInterface
 {

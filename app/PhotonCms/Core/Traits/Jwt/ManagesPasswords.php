@@ -6,7 +6,7 @@ use JWTAuth;
 use Illuminate\Http\Request;
 use Photon\PhotonCms\Dependencies\DynamicModels\User;
 use Photon\PhotonCms\Core\Helpers\RoutesHelper;
-use Photon\PhotonCms\Dependencies\Notifications\ResetPassword;
+use Photon\PhotonCms\Core\Entities\Notifications\ResetPassword;
 
 use Photon\PhotonCms\Core\Entities\Module\ModuleRepository;
 use Illuminate\Support\Facades\Cache;
