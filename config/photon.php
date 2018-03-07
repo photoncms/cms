@@ -120,7 +120,7 @@ return [
     | Location of handler classes for system field types
     |
     */
-    'core_field_types_handlers_dir' => '\Photon\PhotonCms\Core\FieldType\FieldTypeHandlers\\',
+    'core_field_types_handlers_dir' => '\Photon\PhotonCms\Core\Entities\FieldType\FieldTypeHandlers\\',
 
     /*
     |--------------------------------------------------------------------------

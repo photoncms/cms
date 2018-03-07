@@ -1,6 +1,6 @@
 <?php
 
-namespace Photon\PhotonCms\Core\FieldType\FieldTypeHandlers;
+namespace Photon\PhotonCms\Core\Entities\FieldType\FieldTypeHandlers;
 
 use Photon\PhotonCms\Core\Entities\FieldType\FieldType;
 
