@@ -15,11 +15,6 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \Photon\Console\Commands\Inspire::class
-        // \Photon\PhotonCms\Core\Commands\RebuildResizedImages::class,
-        // \Photon\PhotonCms\Core\Commands\UpdateAnchorFields::class,
-        // \Photon\PhotonCms\Core\Commands\Sync::class,
-        // \Photon\PhotonCms\Core\Commands\HardReset::class,
-        // \Photon\PhotonCms\Core\Commands\SoftReset::class
     ];
 
     /**
