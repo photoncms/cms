@@ -33,7 +33,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapPublicApiRoutes()
     {
-        Route::prefix('api')
+        Route::prefix('public-api')
             ->namespace('Photon\Http\Controllers')
             ->group(base_path('routes/api.php'));
     }
