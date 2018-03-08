@@ -160,6 +160,8 @@ return [
         Photon\PhotonCms\Core\Providers\BroadcastServiceProvider::class,
         Photon\Providers\EventServiceProvider::class,
         Photon\Providers\RouteServiceProvider::class,
+        Photon\PhotonCms\Core\Providers\CoreAppServiceProvider::class,
+        Photon\PhotonCms\Core\Providers\CoreRoutesServiceProvider::class,
         Photon\PhotonCms\Core\Providers\LogServiceProvider::class,
         Photon\PhotonCms\Core\Providers\MiddlewareServiceProvider::class,
 

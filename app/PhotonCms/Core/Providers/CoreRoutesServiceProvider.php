@@ -1,11 +1,11 @@
 <?php
 
-namespace Photon\Providers;
+namespace Photon\PhotonCms\Core\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
-class RouteServiceProvider extends ServiceProvider
+class CoreRoutesServiceProvider extends ServiceProvider
 {
     /**
      * The controller namespace for the application.
@@ -22,8 +22,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map()
     {
-        $this->mapPublicApiRoutes();
-        $this->mapWebRoutes();
+        $this->mapApiRoutes();
+
+        $this->mapCpRoutes();
     }
 
     /**
@@ -31,24 +32,24 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function mapPublicApiRoutes()
+    protected function mapApiRoutes()
     {
         Route::prefix('api')
-            ->namespace('Photon\Http\Controllers')
-            ->group(base_path('routes/api.php'));
+            ->namespace('Photon\PhotonCms\Core\Controllers')
+            ->group(base_path('app/PhotonCms/Core/Routes/api.php'));
     }
 
     /**
-     * Define the "web" routes for the application.
-     *
-     * These routes all receive session state, CSRF protection, etc.
+     * Define the "cp" routes for the application.
      *
      * @return void
      */
-    protected function mapWebRoutes()
+    protected function mapCpRoutes()
     {
         Route::middleware('public')
-            ->namespace('Photon\Http\Controllers')
-            ->group(base_path('routes/web.php'));
+            ->namespace('Photon\PhotonCms\Core\Controllers')
+            ->group(base_path('app/PhotonCms/Core/Routes/cp.php'));
+        
     }
+
 }
