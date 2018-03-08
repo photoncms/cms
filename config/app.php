@@ -161,6 +161,7 @@ return [
         Photon\Providers\EventServiceProvider::class,
         Photon\Providers\RouteServiceProvider::class,
         Photon\PhotonCms\Core\Providers\LogServiceProvider::class,
+        Photon\PhotonCms\Core\Providers\MiddlewareServiceProvider::class,
 
         /*
          * Additional Service Providers
