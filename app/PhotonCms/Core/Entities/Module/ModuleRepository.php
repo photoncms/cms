@@ -142,7 +142,7 @@ class ModuleRepository
                 $module->anchor_html = $data['anchor_html'];
             }
 
-            if (isset($data['slug']) && ($data['slug'] !== null || $data['slug'] !== 'null')) {
+            if (array_key_exists('slug', $data)) {
                 $module->slug = $data['slug'];
             }
 

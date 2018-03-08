@@ -30,6 +30,7 @@ class UpdateModuleRequest extends Request
             'module.name'       => 'string|max:255',
             'module.anchor_text'=> 'nullable|string|max:2000',
             'module.anchor_html'=> 'nullable|string',
+            'module.slug'       => 'nullable|string',
             'module.category'   => 'integer',
             'module.icon'       => 'string|max:255',
             'module.lazy_loading' => 'boolean',
