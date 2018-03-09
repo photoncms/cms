@@ -219,8 +219,9 @@ class UserModuleExtensions extends BaseDynamicModuleExtension implements
 
     public function preUpdate($item, $cloneBefore, $cloneAfter)
     {
-        if(\Auth::user()->id != $item->id)
+        if(\Auth::user()->id != $item->id || !\Config::get('photon.use_registration_service_email')) {
             return true;
+        }
 
         if (isset($cloneAfter->email) && $cloneBefore->email !== $cloneAfter->email) {
             $newEmail = $cloneAfter->email;
