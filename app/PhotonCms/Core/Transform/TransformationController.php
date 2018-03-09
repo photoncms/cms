@@ -71,7 +71,7 @@ class TransformationController
             $data = $this->transformObject($data);
             $this->transformRecursively($data);
         }
-
+        
         return $data;
     }
 

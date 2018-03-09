@@ -47,7 +47,7 @@ class IAPI
         $currentToken = \JWTAuth::getToken();
         if (!$currentToken) {
             $this->auth = app('Tymon\JWTAuth\Providers\Auth\IlluminateAuthAdapter');
-            $user = $this->auth->byId(config('iapi.iapi_user_id'));
+            $user = $this->auth->byId(config('photon.iapi_user_id'));
             $token = \JWTAuth::fromUser($user);
             \JWTAuth::setToken($token);
         }

@@ -50,7 +50,7 @@ class FieldTransformationController
     public static function output($object, $attributeName, $type)
     {
         $fieldTransformer = self::getTransformerByType($type);
-
+        
         return $fieldTransformer instanceof TransformsOutput
             ? $fieldTransformer->output($object, $attributeName)
             : $object->$attributeName;

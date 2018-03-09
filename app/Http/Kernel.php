@@ -33,6 +33,9 @@ class Kernel extends HttpKernel
         'public' => [ 
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class
+        ],
+        'throttle_protected' => [
+            \Photon\Http\Middleware\ThrottleRequests::class
         ]
     ];
 

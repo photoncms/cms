@@ -35,9 +35,6 @@ class MiddlewareServiceProvider extends ServiceProvider
         'adminpanel' => [
             \Photon\PhotonCms\Core\Middleware\GetUserFromToken::class,
             \Photon\PhotonCms\Core\Middleware\ConvertStringBooleans::class
-        ],
-        'throttle_protected' => [
-            \Photon\Http\Middleware\ThrottleRequests::class
         ]
     ];
 
