@@ -1,8 +1,10 @@
 <?php
 
+namespace Photon\PhotonCms\Core\Database\Seeds\InitialValues;
+
 use Illuminate\Database\Seeder;
 
-class InitialValuesMenusSeeder extends Seeder
+class MenusDataSeeder extends Seeder
 {
 
     /**

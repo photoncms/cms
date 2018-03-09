@@ -1,11 +1,14 @@
 <?php
 
+namespace Photon\PhotonCms\Core\Database\Seeds\InitialValues;
+
 use Illuminate\Database\Seeder;
 
-class InitialValuesZClientSeeder extends Seeder
+class ImageSizesModuleSeeder extends Seeder
 {
     public function run()
     {
+        \Schema::disableForeignKeyConstraints();
         // Image Sizes
         \DB::table('image_sizes')->delete();
         \DB::table('image_sizes')->insert(array (
@@ -36,5 +39,6 @@ class InitialValuesZClientSeeder extends Seeder
                 'anchor_text' => 'Large Image (960xauto)',
             ),
         ));
+        \Schema::enableForeignKeyConstraints();
     }
 }

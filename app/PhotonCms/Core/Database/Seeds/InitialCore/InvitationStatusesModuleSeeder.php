@@ -1,8 +1,10 @@
 <?php
 
+namespace Photon\PhotonCms\Core\Database\Seeds\InitialCore;
+
 use Illuminate\Database\Seeder;
 
-class InitialCoreInvitationStatusesModuleSeeder extends Seeder
+class InvitationStatusesModuleSeeder extends Seeder
 {
     public function run()
     {

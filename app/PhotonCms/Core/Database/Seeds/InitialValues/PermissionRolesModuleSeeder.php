@@ -1,8 +1,10 @@
 <?php
 
+namespace Photon\PhotonCms\Core\Database\Seeds\InitialValues;
+
 use Illuminate\Database\Seeder;
 
-class InitialValuesPermissionRolesModuleSeeder extends Seeder
+class PermissionRolesModuleSeeder extends Seeder
 {
     public function run()
     {

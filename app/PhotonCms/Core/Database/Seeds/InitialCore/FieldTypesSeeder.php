@@ -1,8 +1,10 @@
 <?php
 
+namespace Photon\PhotonCms\Core\Database\Seeds\InitialCore;
+
 use Illuminate\Database\Seeder;
 
-class InitialCoreFieldTypesSeeder extends Seeder
+class FieldTypesSeeder extends Seeder
 {
 
     /**

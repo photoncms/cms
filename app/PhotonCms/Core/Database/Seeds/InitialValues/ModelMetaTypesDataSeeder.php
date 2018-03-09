@@ -1,8 +1,10 @@
 <?php
 
+namespace Photon\PhotonCms\Core\Database\Seeds\InitialValues;
+
 use Illuminate\Database\Seeder;
 
-class InitialValuesModelMetaTypesSeeder extends Seeder
+class ModelMetaTypesDataSeeder extends Seeder
 {
 
     /**

@@ -1,11 +1,14 @@
 <?php
 
+namespace Photon\PhotonCms\Core\Database\Seeds\InitialCore;
+
 use Illuminate\Database\Seeder;
 
-class InitialCoreFileTagsModuleSeeder extends Seeder
+class FileTagsModuleSeeder extends Seeder
 {
     public function run()
     {
+        // Modules
         \DB::table('modules')->insert(array (
             29 =>
             array (

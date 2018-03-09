@@ -1,11 +1,14 @@
 <?php
 
+namespace Photon\PhotonCms\Core\Database\Seeds\InitialCore;
+
 use Illuminate\Database\Seeder;
 
-class InitialCoreGalleryModuleSeeder extends Seeder
+class GalleryModuleSeeder extends Seeder
 {
     public function run()
     {
+        // Modules
         \DB::table('modules')->insert(array (
             0 =>
             array (
