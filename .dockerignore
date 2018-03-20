@@ -1,13 +1,10 @@
-.*/
 .DS_Store
-.env
 .idea
 .ideas
 .todo
 /.env.testing
 /nbproject/private/
 /node_modules
-/config/horizon.php
 /public/storage
 /public/storage/assets/*
 /public/vendor/horizon
