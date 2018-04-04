@@ -64,6 +64,7 @@ class MigrationCompiler implements MigrationCompilerInterface
 
         // Custom migration code for table generation
         $tablesForCreation = $modelMigrationTemplate->getTablesForCreation();
+
         if (!empty($tablesForCreation)) {
             foreach ($tablesForCreation as $tableName) {
                 $tablePivotRelations = [];
@@ -171,6 +172,9 @@ class MigrationCompiler implements MigrationCompilerInterface
                         }
                         if ($field->isUnique()) {
                             $content .= "->unique()";
+                        }
+                        if ($field->isIndexed()) {
+                            $content .= "->index()";
                         }
                         if ($field->hasDefault()) {
                             if(is_null($field->getDefault()))
