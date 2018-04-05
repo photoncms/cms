@@ -59,6 +59,7 @@ class FieldFactory
             'order',
             'editable',
             'disabled',
+            'unique',
             'hidden',
             'is_system',
             'virtual',

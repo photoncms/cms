@@ -28,6 +28,7 @@ class CreateFieldsTable extends Migration
             $table->integer('order')->default(0);
             $table->boolean('editable')->default(1);
             $table->boolean('disabled')->default(0);
+            $table->boolean('unique')->default(0);
             $table->boolean('hidden')->default(0);
             $table->boolean('is_system')->default(0);
             $table->boolean('virtual')->default(0);
