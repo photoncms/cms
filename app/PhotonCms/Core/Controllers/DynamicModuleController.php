@@ -920,7 +920,7 @@ class DynamicModuleController extends Controller
             throw new PhotonException('EXPORTING_NOT_SUPPORTED');
         }
 
-        $response = $exporter->$action($entries, $fileName, $parameters);
+        $response = $exporter->$action($entries, $fileName, $parameters, $filter);
 
         if ($response instanceof Response) {
             return $response;
