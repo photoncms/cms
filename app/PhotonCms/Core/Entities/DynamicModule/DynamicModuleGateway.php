@@ -604,10 +604,7 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
             $fileName = config('photon.php_seed_backup_location')."/{$this->moduleTableName}_{$increment}.php";
 
             $handle = fopen($fileName, "w");
-            fwrite($handle, '<?php ');
-            fwrite($handle, 'return \'');
             fwrite($handle, json_encode($data, JSON_HEX_APOS));
-            fwrite($handle, '\';');
             fclose($handle);
 
             $increment++;
@@ -636,10 +633,7 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
             $fileName = config('photon.php_seed_backup_location')."/{$pivotRelation->pivotTable}_{$increment}.php";
 
             $handle = fopen($fileName, "w");
-            fwrite($handle, '<?php ');
-            fwrite($handle, 'return \'');
             fwrite($handle, json_encode($data, JSON_HEX_APOS));
-            fwrite($handle, '\';');
             fclose($handle);
 
             $increment++;
@@ -664,14 +658,10 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
             $columns = \DB::getSchemaBuilder()->getColumnListing($table);
             \DB::table($table)->orderBy($columns[0], "asc")->chunk(1000, function($data) use (&$increment, $table) {
                 $data = $data->toArray();
-
                 $fileName = config('photon.php_seed_backup_location')."/{$table}_{$increment}.php";
 
                 $handle = fopen($fileName, "w");
-                fwrite($handle, '<?php ');
-                fwrite($handle, 'return \'');
                 fwrite($handle, json_encode($data, JSON_HEX_APOS));
-                fwrite($handle, '\';');
                 fclose($handle);
 
                 $increment++;
@@ -716,7 +706,7 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
         while (true) {
             $fileName = config('photon.php_seed_backup_location')."/{$this->moduleTableName}_{$increment}.php";
             if (file_exists($fileName)) {
-                $data = include $fileName;
+                $data = file_get_contents($fileName);
                 $this->massInsert(json_decode($data, true));
             }
             else {
@@ -750,7 +740,7 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
             $fileName = config('photon.php_seed_backup_location')."/{$pivotTableName}_{$increment}.php";
 
             if (file_exists($fileName)) {
-                $data = include $fileName;
+                $data = file_get_contents($fileName);
                 $this->tableMassInsert(json_decode($data, true), $pivotTableName);
             }
             else {
@@ -786,7 +776,7 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
             while (true) {
                 $fileName = config('photon.php_seed_backup_location')."/{$table}_{$increment}.php";
                 if (file_exists($fileName)) {
-                    $data = include $fileName;
+                    $data = file_get_contents($fileName);
                     $this->tableMassInsert(json_decode($data, true), $table);
                 }
                 else {
