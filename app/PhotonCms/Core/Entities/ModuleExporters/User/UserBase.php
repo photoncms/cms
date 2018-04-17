@@ -9,14 +9,14 @@ use Photon\PhotonCms\Core\Entities\DynamicModuleExporter\Contracts\DynamicModule
 class UserBase extends DynamicModuleExporterBase implements DynamicModuleExporterMultipleInterface
 {
 
-    protected function makeExporter($entry, $filename, $parameters = [])
+    protected function makeExporter($entry, $filename, $parameters = [], $filter = [])
     {
         return \Excel::create($filename, function($excel) use ($entry) {
             // Ready for implementation
         });
     }
 
-    protected function makeMultipleExporter($entries, $filename, $parameters = [])
+    protected function makeMultipleExporter($entries, $filename, $parameters = [], $filter = [])
     {
         return \Excel::create($filename, function($excel) use ($entries) {
             $loggedInUser = \Auth::user();

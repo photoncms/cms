@@ -875,12 +875,12 @@ class DynamicModuleController extends Controller
      */
     public function exportEntries($tableName)
     {
-        $filter     = \Request::get('filter') ? \Request::get('filter') : [];
-        $sorting    = \Request::get('sorting') ? \Request::get('sorting') : [];
         $fileType   = \Request::get('file_type');
         $action     = \Request::get('action');
-        $parameters = \Request::get('parameters') ? \Request::get('parameters') : [];
         $fileName   = \Request::get('file_name');
+        $filter     = \Request::get('filter');
+        $sorting    = \Request::get('sorting') ? \Request::get('sorting') : [];
+        $parameters = \Request::get('parameters') ? \Request::get('parameters') : [];
 
         $response = $this->exportDynamicModuleEntries($tableName, $fileType, $action, $fileName, $filter, $sorting, $parameters);
 
@@ -920,7 +920,13 @@ class DynamicModuleController extends Controller
             throw new PhotonException('EXPORTING_NOT_SUPPORTED');
         }
 
-        $response = $exporter->$action($entries, $fileName, $parameters);
+        $response = $exporter->$action($entries, $fileName, $parameters, $filter);
+
+        if ($response instanceof Response) {
+            return $response;
+        }
+
+        return $this->responseRepository->make('MODULE_DATA_EXPORTED_SUCCESSFULLY', $response);
     }
 
     /**
@@ -935,7 +941,7 @@ class DynamicModuleController extends Controller
         $fileType = \Request::get('file_type');
         $action = \Request::get('action');
         $fileName = \Request::get('file_name');
-        $parameters = \Request::get('parameters');
+        $parameters = \Request::get('parameters') ? \Request::get('parameters') : [];
 
         $entry = $this->dynamicModuleLibrary->findEntryByTableNameAndId($tableName, $entryId);
 
