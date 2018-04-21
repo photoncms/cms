@@ -33,6 +33,34 @@ export default {
     },
 
     /**
+     * Creates a menu shortcut
+     *
+     * @param   {fucntion}  options.commit  
+     * @param   {object}  options.response  
+     * @return  {object}  
+     */
+    createMenuShortcut ({ commit }, { response }) {
+        const payload = {
+            'adminModule': response.id,
+            'menu_id': 1,
+            'menu_link_type_id': 1,
+            'resource_data': JSON.stringify(response),
+            'slug': response.table_name + '_' + moment().valueOf(),
+            'title': response.name,
+        };
+
+        return api['post']('menus/items', payload)
+            .then((response) => {
+                store.dispatch('ui/getMainMenu');
+                
+                return response.data.body;
+            })
+            .catch((response) => {
+                errorCommit({ commit }, response, 'MENU_ITEMS_EDITOR');
+            });
+    },
+
+    /**
      * Commits CREATE_GENERATOR_SELECTED_MODULE_FIELD mutation
      *
      * @param   {function}  options.commit
@@ -143,6 +171,17 @@ export default {
     },
 
     /**
+     * Sets the setCreateShortcut state property
+     *
+     * @param   {function}  options.commit
+     * @param   {boolean}  options.value
+     * @return  {void}
+     */
+    setCreateShortcut ({ commit }, { value }) {
+        commit('SET_CREATE_SHORTCUT', { value });
+    },
+
+    /**
      * Handles title, subtitle, text, icon for generator,
      * no arguments required should be called after any state change which requires updating the UI
      *
@@ -188,11 +227,12 @@ export default {
      * POST or PUT selected module to API route
      *
      * @param   {function}  options.commit
+     * @param   {function}  options.dispatch
      * @param   {object}  options.state
      * @param   {boolean}  options.reporting
      * @return  {promise}
      */
-    submitModuleForm ({ commit, state }, { reporting }) {
+    submitModuleForm ({ commit, dispatch, state }, { reporting }) {
         let action = 'post';
 
         // Default URI is just 'modules' (no module for POST)
@@ -237,6 +277,10 @@ export default {
         return api[action](uri, payload)
             .then((response) => {
                 apiResponseCommit({ commit }, response, 'GENERATOR');
+
+                if (state.newModule && state.createShortcut && !reporting) {
+                    dispatch('createMenuShortcut', { response: response.data.body.module });
+                }
 
                 return response.data.body;
             })

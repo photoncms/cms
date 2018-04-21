@@ -22,6 +22,13 @@ const fieldTypes = {
  */
 const state = {
     /**
+     * Should the main menu shortcut be created or not?
+     *
+     * @type  {boolean}
+     */
+    createShortcut: true,
+
+    /**
      * Object used to disply errors returned by the API
      *
      * @type  {Object}
@@ -213,6 +220,17 @@ const processReportItem = (apiReportItem, apiReport, output) => {
  * @type  {object}
  */
 const mutations = {
+    /**
+     * Sets the createShortcut property
+     *
+     * @param  {object}  state
+     * @param  {boolean}  options.value
+     * @return  {void}
+     */
+    [types.SET_CREATE_SHORTCUT](state, { value }) {
+        state.createShortcut = value;
+    },
+
     [types.CLEAR_GENERATOR_ERRORS](state) {
         state.error.message = null;
 

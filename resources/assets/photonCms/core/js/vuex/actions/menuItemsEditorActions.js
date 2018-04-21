@@ -287,6 +287,8 @@ export default {
                 .then((response) => {
                     apiResponseCommit({ commit }, response);
 
+                    store.dispatch('ui/getMainMenu');
+
                     if (action === 'post') {
                         if(!state.createAnother) {
                             router.push(`/menu-items-editor/${state.selectedMenu.id}/${response.data.body.menu_item.id}`);

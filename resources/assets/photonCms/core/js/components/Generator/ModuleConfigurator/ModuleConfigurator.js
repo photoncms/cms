@@ -123,6 +123,15 @@ export default {
             photonModules: 'photonModule/photonModules',
         }),
 
+        createShortcut: {
+            get () {
+                return this.generator.createShortcut;
+            },
+            set (value) {
+                return this.setCreateShortcut({ value });
+            }
+        },
+
         /**
          * Informs if module has fields
          *
@@ -160,6 +169,7 @@ export default {
             'clearGeneratorErrors',
             'createNewField',
             'deleteModule',
+            'setCreateShortcut',
             'submitModuleForm',
             'updateFieldProperty',
             'updateFieldsOrder',

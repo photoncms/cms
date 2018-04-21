@@ -90,6 +90,10 @@
                                 class="btn btn-default">
                                 <i class="fa fa-eye"></i> {{ $t('generator.viewModule') }}
                             </button>
+                            <input type="checkbox"
+                                id="createShortcut"
+                                v-model="createShortcut">
+                            <label for="createShortcut">{{ $t('generator.createMenuShortcut') }}</label>
                         </div>
                         <div v-if="serverError" class="form-group clearfix">
                             <div class="server-error pull-right" >{{serverError}}</div>
