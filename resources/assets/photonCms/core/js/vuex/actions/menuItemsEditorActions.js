@@ -142,6 +142,8 @@ export default {
             .then(() => {
                 router.push(`/menu-items-editor/${state.selectedMenu.id}`);
 
+                store.dispatch('ui/getMainMenu');
+
                 dispatch('setCreateEntryUI');
 
                 dispatch('setSubmitEntryInProgress', { value: false });
