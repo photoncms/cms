@@ -212,8 +212,8 @@ export default {
         api.post(uri, payload)
             .then((response) => {
                 if (response.data.message === 'USER_REGISTER_SUCCESS') {
-                    if (invitationToken) {
-                        // If there is a valid invitation token attempts to log the user in
+                    if (invitationToken || _.has(response.data.body, 'token')) {
+                        // If there is a valid token attempts to log the user in
                         response.data.message = 'USER_LOGIN_SUCCESS';
 
                         return _processLogin(commit, response, '/');

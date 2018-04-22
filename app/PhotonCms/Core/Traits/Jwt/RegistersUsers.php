@@ -72,7 +72,19 @@ trait RegistersUsers
             Cache::tags($relatedModules)->flush(); 
         }
 
-        return $this->responseRepository->make('USER_REGISTER_SUCCESS', ['user' => $user]);
+        $payload = ['user' => $user];
+
+        // If email confirmation is not required issue a token right away.
+        if(!\Config::get('photon.use_registration_service_email')) {
+            $token = JWTAuth::fromUser($user);
+
+            $payload['token'] = [
+                'token' => $token,
+                'ttl' => \Config::get('jwt.ttl'),
+            ];
+        }
+
+        return $this->responseRepository->make('USER_REGISTER_SUCCESS', $payload);
     }
 
     /**
