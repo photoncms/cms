@@ -101,6 +101,16 @@ const _processLogin = (commit, response, redirectPath) => {
 
 export default {
     /**
+     * Checks the environment property in the response header
+     *
+     * @param   {[type]}  options.response  [description]
+     * @return  {void}  
+     */
+    checkEnvironment ({}, { response }) {
+        debugger;
+    },
+
+    /**
      * Checks the license validity
      *
      * @param   {function}  options.commit
@@ -135,6 +145,10 @@ export default {
                     commit(types.SET_LICENSE_EXPIRING, { status: false });
                 }
 
+                if (licenseStatus.apiEnvironment == 'local') {
+                    commit(types.SET_API_ENVIRONMENT, { value: licenseStatus.apiEnvironment });
+                }
+
                 return licenseStatus.message;
             }
 
@@ -146,7 +160,16 @@ export default {
 
         return api.get('ping-home', payload)
             .then((response) => {
+                let apiEnvironment = 'production';
+
+                if (_.has(response.headers.map, 'photon-environment')) {
+                    apiEnvironment = 'local';
+                }
+
+                commit(types.SET_API_ENVIRONMENT, { value: apiEnvironment });
+
                 const message = response.data.message;
+
                 const body = response.data.body;
 
                 if (message === 'PHOTON_LICENSE_KEY_GENERATED'
@@ -156,6 +179,7 @@ export default {
                         domainType: body.domain_type,
                         licenseType: body.license_type,
                         timestamp: moment().valueOf(),
+                        apiEnvironment,
                         message,
                     };
 

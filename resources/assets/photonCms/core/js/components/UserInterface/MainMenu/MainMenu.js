@@ -3,7 +3,11 @@ import {
     mapActions
 } from 'vuex';
 
+import { showIntro } from '_/helpers/guidedTours';
+
 import { store } from '_/vuex/store';
+
+import { router } from '_/router/router';
 
 import { storage } from '_/services/storage';
 
@@ -226,6 +230,24 @@ export default {
          * @return  {bool}
          */
         userHasRole,
+
+        /**
+         * Starts the given guided tour
+         * 
+         * @param   {string}  uri
+         * @return  {void}  
+         */
+        startGuidedTour (uriSegment, storageKey) {
+            const uri = '/' + uriSegment;
+
+            storage.remove('intro-' + storageKey);
+
+            if (this.$route.path == uri) {
+                showIntro[storageKey](this);
+            } else {
+                router.push(uri);
+            }
+        }
     },
 
     /**

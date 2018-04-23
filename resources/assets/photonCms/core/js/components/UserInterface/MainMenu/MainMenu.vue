@@ -1,5 +1,5 @@
 <template>
-    <nav class="main-menu" data-step='2' data-intro='This is the extendable Main Navigation Menu.' data-position='right'>
+    <nav class="main-menu" id="intro-dashboard-main-menu">
         <ul>
             <li>
                 <router-link to="/">
@@ -37,7 +37,7 @@
         </ul>
         <ul class="logout">
             <li v-if="userHasRole('super_administrator')">
-                <router-link to="/generator">
+                <router-link to="/generator" id="intro-dashboard-generator-link">
                     <i class="fa fa-cogs nav-icon"></i>
                     <span class="nav-text">Generator</span>
                 </router-link>
@@ -98,6 +98,27 @@
                     <i class="nav-icon fa fa-image"></i>
                     <span class="nav-text">{{ $t('assetsManager.assetsManager') }}</span>
                 </span>
+            </li>
+            <li v-if="(userHasRole('super_administrator'))">
+                <span class="clickable" id="intro-dashboard-guided-tours">
+                    <i class="nav-icon fa fa-question-circle-o"></i>
+                    <span class="nav-text">Guided Tours</span>
+                    <i class="fa fa-angle-right"></i>
+                </span>
+                <ul>
+                    <li>
+                        <span @click="startGuidedTour('', 'dashboard')" class="clickable">
+                            <i class="fa fa-question nav-icon"></i>
+                            <span class="nav-text">Photon UI & Desktop</span>
+                        </span>
+                    </li>
+                    <li>
+                        <span @click="startGuidedTour('generator', 'generator')" class="clickable">
+                            <i class="fa fa-question nav-icon"></i>
+                            <span class="nav-text">Generator</span>
+                        </span>
+                    </li>
+                </ul>
             </li>
             <li v-if="user.impersonating">
                 <span @click="impersonateUser({ id: null })" class="clickable">

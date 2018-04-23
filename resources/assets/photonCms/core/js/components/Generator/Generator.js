@@ -2,6 +2,8 @@ import _ from 'lodash';
 
 import { userHasRole } from '_/vuex/actions/userActions';
 
+import { showIntro } from '_/helpers/guidedTours';
+
 import {
     mapGetters,
     mapActions,
@@ -179,6 +181,8 @@ export default {
             if(!userHasRole('super_administrator')) {
                 router.push('/error/resource-not-found');
             }
+
+            showIntro.generator(this);
 
             this.setBodyClass('generator');
 

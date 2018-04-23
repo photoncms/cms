@@ -11,6 +11,7 @@
                 v-if="userHasRole('super_administrator')"
                 data-toggle="modal"
                 href="#new-widget-modal"
+                id="intro-dashboard-new-widget"
                 class="placeholder drag-placeholder new-widget-placeholder">
             </div>
             <div

@@ -64,6 +64,9 @@ export default {
      */
     mounted: function() {
         this.$nextTick(function() {
+            // this.$intro().start();
+            this.$intro().showHints();
+
             if (this.$route.query.redirect) { // Set the redirect path if query parameter is present
                 this.redirectPath = this.$route.query.redirect;
             }

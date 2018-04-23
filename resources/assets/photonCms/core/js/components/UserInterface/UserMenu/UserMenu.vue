@@ -12,7 +12,7 @@
                     <i class="fa fa-comment-o"></i>
                     <div v-if="notifications.notificationsBadge" class="menu-counter">{{ notifications.notificationsBadge }}</div>
                 </a>
-                <router-link :to="`/admin/users/${user.meta.id}`">
+                <router-link :to="`/admin/users/${user.meta.id}`" id="intro-dashboard-user">
                     <span class="user-name">{{user.meta.first_name}} {{user.meta.last_name}}</span>
                     <i v-if="!user.impersonating" class="fa fa-user-circle"></i>
                     <i v-else class="fa fa-exclamation-triangle"></i>
