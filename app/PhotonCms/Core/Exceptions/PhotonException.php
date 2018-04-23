@@ -46,9 +46,15 @@ class PhotonException extends RuntimeException implements HttpExceptionInterface
         array $responseData = [],
         Exception $previous = null,
         array $headers = [],
-        $responseSource = 'responses'
+        $responseSource = null
     ) {
-        $this->statusCode = Config::get("$responseSource.$responseName");
+        if(!$responseSource) {
+            $data = include base_path("app/PhotonCms/Core/Config/responses.php");
+            $responseCode = $data[$responseName];
+        } else {
+            $responseCode = Config::get("$responseSource.$responseName");
+        }
+        $this->statusCode = $responseCode;
         $this->message = $responseName;
         $this->bodyParameters = (!empty($responseData))
             ? $this->prepareData($responseData)

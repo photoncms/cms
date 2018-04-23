@@ -40,7 +40,7 @@ class UsersModuleSeeder extends Seeder
                 'column_name' => 'email',
                 'virtual_name' => NULL,
                 'tooltip_text' => 'User email will be used as a username. If required, account confirmation will be sent to this email. Email will also be used in the event of recovering a lost password.',
-                'validation_rules' => 'required|unique:users,email|max:255',
+                'validation_rules' => 'required|unique:users,email|max:255|email',
                 'module_id' => 1,
                 'order' => 0,
                 'editable' => true,
