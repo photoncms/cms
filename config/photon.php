@@ -310,6 +310,7 @@ return [
     'photon_sync_backup_tables' => [
         'email_change_requests',
         'failed_jobs',
+        'fcm_tokens',
         'menus',
         'menu_items',        
         'menu_link_types_menus',
