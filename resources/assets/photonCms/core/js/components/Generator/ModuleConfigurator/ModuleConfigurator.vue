@@ -6,7 +6,7 @@
             <div class="panel panel-default panel-block">
                 <div class="list-group">
                     <div class="list-group-item">
-                        <div class="form-horizontal">
+                        <div class="form-horizontal" id="intro-generator-module">
                             <div class="form-group">
                                 <div class="col-lg-12">
                                     <div class="btn-group pull-right" style="margin-bottom: 10px;">
@@ -55,8 +55,8 @@
                 </div>
             </div>
             <input name="fields" type="hidden">
-            <div class="sortable-fields" v-if="moduleHasFields">
-                <div class="panel panel-default panel-block panel-title-block">
+            <div class="sortable-fields" id="intro-generator-fields">
+                <div class="panel panel-default panel-block panel-title-block" v-if="moduleHasFields">
                     <div class="panel-heading">
                         <div>
                             <h1>Module Fields
@@ -69,6 +69,7 @@
                     :form-fields-reset="formFieldsReset"
                     :key="moduleField.id"
                     :module-field="moduleField"
+                    v-if="moduleHasFields"
                     v-for="moduleField in generator.selectedModule.fields">
                 </module-field-configurator>
             </div>
@@ -77,6 +78,7 @@
                 style="margin-bottom: 20px;"
                 @click="createNewField"
                 type="button"
+                id="intro-generator-add-new-field"
                 class="btn btn-primary btn-block">
                 {{ $t('generator.addNewField') }}
             </button>

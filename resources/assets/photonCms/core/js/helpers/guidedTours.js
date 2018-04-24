@@ -2,6 +2,15 @@ import { storage } from '_/services/storage';
 
 import 'intro.js/introjs.css';
 
+const introOptions = {
+    showBullets: false,
+    exitOnOverlayClick: false,
+    showStepNumbers: false,
+    keyboardNavigation: true,
+    overlayOpacity: .25,
+    scrollToElement: true,
+};
+
 export const showIntro = {
     /**
     * Shows the generator guided tour
@@ -17,15 +26,25 @@ export const showIntro = {
 
         vueInstance.$intro()
             .exit()
-            .setOptions({
-                showBullets: false,
-                exitOnOverlayClick: false,
-                showStepNumbers: false,
-                keyboardNavigation: true
-            })
+            .setOptions(introOptions)
             .addSteps([
                 {
-                    intro: 'This is Photon CMS generator ⚙️. <br><br> You\'ll be using it to create and manage Photon CMS Modules. <br><br> <strong>Click the next button to learn how to create your first module!</strong>',
+                    intro: 'This is Photon CMS Generator. ⚙️ <br><br> You\'ll be using it to create and manage Photon CMS Modules. <br><br> <strong>Click the next button to learn how to create your first module!</strong>',
+                },
+                {
+                    element: '#intro-generator-module',
+                    intro: 'You only need to fill module name for now. Let\'s enter <strong>`Articles`</strong>.<br><br> Notice how table name is auto-generated for you.<br><br> <strong>Click next when you\'re done.</strong>',
+                    position: 'right',
+                },
+                {
+                    element: '#intro-generator-add-new-field',
+                    intro: 'Next, click the Add New Field button to add the first field to our module called Articles.<br><br><strong>Click next when you\'re done.</strong>',
+                    position: 'right',
+                },
+                {
+                    element: '#intro-generator-fields',
+                    intro: 'Finally, enter the field name. Just enter <strong>`Name`</strong>.<br><br><strong>Click next when you\'re done.</strong>',
+                    position: 'right',
                 },
             ])
             .start();
@@ -47,12 +66,7 @@ export const showIntro = {
 
         vueInstance.$intro()
             .exit()
-            .setOptions({
-                showBullets: false,
-                exitOnOverlayClick: false,
-                showStepNumbers: false,
-                keyboardNavigation: true
-            })
+            .setOptions(introOptions)
             .addSteps([
                 {
                     intro: 'Welcome to Photon CMS guided tour! 🎉<br><br>Click the Next button to continue exploring the dashboard.',
