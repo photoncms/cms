@@ -50,6 +50,17 @@ const GeneratorHelpBlock = Vue.component(
 
 export default {
     /**
+     * Set the component data
+     *
+     * @return  {object}
+     */
+    data () {
+        return {
+            intro: null,
+        };
+    },
+
+    /**
      * Set the beforeRouteEnter hook
      *
      * @return  {void}
@@ -182,7 +193,7 @@ export default {
                 router.push('/error/resource-not-found');
             }
 
-            showIntro.generator(this);
+            this.intro = showIntro.generator(this);
 
             this.setBodyClass('generator');
 
@@ -204,6 +215,12 @@ export default {
             const moduleTableName = newEntry.params.moduleTableName;
 
             this.getPhotonModulesHelper(moduleTableName);
+        },
+
+        'generator.selectedModule.fields' () {
+            if(this.generator.selectedModule.fields.length == 1 && this.intro) {
+                this.intro.nextStep();
+            }
         },
 
         'generator.refreshForm' () {

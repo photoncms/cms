@@ -380,6 +380,25 @@ class ModulesTableSeeder extends Seeder
             ),
             
             array (
+                'id' => 34601524652876,
+                'category' => NULL,
+                'type' => 'non_sortable',
+                'name' => 'Articles',
+                'model_name' => 'Articles',
+                'table_name' => 'articles',
+                'max_depth' => NULL,
+                'slug' => NULL,
+                'anchor_text' => NULL,
+                'anchor_html' => NULL,
+                'icon' => 'fa fa-bars',
+                'reporting' => 0,
+                'lazy_loading' => 0,
+                'is_system' => 0,
+                'created_at' => '2018-04-25 10:41:16',
+                'updated_at' => '2018-04-25 10:41:16',
+            ),
+            
+            array (
                 'id' => 34671520174290,
                 'category' => 0,
                 'type' => 'non_sortable',

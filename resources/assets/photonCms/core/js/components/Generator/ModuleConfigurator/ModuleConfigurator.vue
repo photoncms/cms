@@ -92,6 +92,7 @@
                                 class="btn btn-default">
                                 <i class="fa fa-eye"></i> {{ $t('generator.viewModule') }}
                             </button>
+
                             <input type="checkbox"
                                 id="createShortcut"
                                 v-model="createShortcut">
