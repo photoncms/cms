@@ -6,6 +6,7 @@ use JWTAuth;
 use Illuminate\Http\Request;
 use Photon\PhotonCms\Dependencies\DynamicModels\User;
 use Photon\PhotonCms\Dependencies\DynamicModels\Invitations;
+use Photon\PhotonCms\Dependencies\DynamicModels\Roles;
 use Photon\PhotonCms\Core\Helpers\CodeHelper;
 use Photon\PhotonCms\Dependencies\AdditionalModuleClasses\Workflows\InvitationWorkflow;
 use Carbon\Carbon;
@@ -61,6 +62,15 @@ trait RegistersUsers
             $user->save();
         }
 
+        // attach default role
+        $defaultRoleId = env("REGISTRATION_DEFAULT_ROLE", 0);
+        if($defaultRoleId) {
+            $defaultRole = Roles::find($defaultRoleId);
+            if($defaultRole) {
+                $user->roles_relation()->attach($defaultRoleId);
+            }
+        }
+        
         // Send an email
         if(\Config::get('photon.use_registration_service_email'))
             $user->notify(new RegistrationConfirmation($user));
