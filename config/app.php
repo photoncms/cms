@@ -173,6 +173,7 @@ return [
         Morrislaptop\LaravelQueueClear\LaravelQueueClearServiceProvider::class,
         LaravelFCM\FCMServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Talevskiigor\ComposerBump\ComposerBumpServiceProvider::class,
     ],
 
     /*
@@ -228,6 +229,7 @@ return [
         'FCM'           => LaravelFCM\Facades\FCM::class,
         'FCMGroup'      => LaravelFCM\Facades\FCMGroup::class,
         'PDF'           => Barryvdh\DomPDF\Facade::class,
+        'ComposerBump'  =>Talevskiigor\ComposerBump\Facades\ComposerBump::class,
     ],
 
 ];

@@ -462,6 +462,10 @@ class PhotonController extends Controller
         // ping home
         $validKey = LicenseKeyHelper::pingHome($key);
 
+        $currentVersion = \ComposerBump::getVersion();
+        $validKey['body']['current_version'] = $currentVersion;
+        $validKey['body']['upgrade_available'] = $validKey['body']['current_version'] == $validKey['body']['newest_version'] ? false : true;
+
         // store data in cache
         Cache::put('photon-license', $validKey, 60);
 
