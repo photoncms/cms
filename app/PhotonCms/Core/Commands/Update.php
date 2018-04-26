@@ -70,6 +70,9 @@ class Update extends Command
         $validKey = LicenseKeyHelper::pingHome($key);
 
         $currentVersion = ComposerBump::getVersion();
+        $this->info("...Installed version: " . $currentVersion);
+        $this->info("...Latest version: " . $validKey['body']['newest_version']);
+        
         if($validKey['body']['newest_version'] == $currentVersion) {
             $this->info("Photon instalation already up to date");
             return false;
