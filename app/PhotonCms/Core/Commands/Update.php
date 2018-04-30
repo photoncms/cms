@@ -67,7 +67,10 @@ class Update extends Command
         // check if license key exist
         $key = LicenseKeyHelper::checkLicenseKey();
         // ping home
-        $validKey = LicenseKeyHelper::pingHome($key);
+        $validKey = LicenseKeyHelper::pingHome($key);        
+        // store license key if it does not exist
+        if(!$key) 
+            LicenseKeyHelper::storeLiceseKey($validKey['body']['license_key']);
 
         $currentVersion = ComposerBump::getVersion();
         $this->info("...Installed version: " . $currentVersion);
