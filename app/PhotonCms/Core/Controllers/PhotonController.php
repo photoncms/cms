@@ -247,20 +247,19 @@ class PhotonController extends Controller
         }
         Cache::flush("all_permissions");
 
-        $this->removeLogFiles();
-        $this->deleteModels();
-        $this->deleteAssets();
-        $this->deleteMigrations();
-        $this->deleteTables();
-        $this->cleanDirectories();
-//        $this->rebuildDefaultModuleExtenders();
-        $this->runMigrations(); // Runs photon base migrations
-        $this->seedInitialCore();
-        $this->rebuildAndRunMigrations(); // Re/builds all photon module migrations and runs them
-        $this->seedInitialValues();
-        $this->rebuildModels();
-        $this->rebuildSeeders();
-        $this->updatePasswordCreationTime();
+        ResetHelper::removeLogFiles();
+        ResetHelper::deleteModels();
+        ResetHelper::deleteAssets();
+        ResetHelper::deleteMigrations();
+        ResetHelper::deleteTables();
+        ResetHelper::cleanDirectories();
+        ResetHelper::runMigrations();
+        ResetHelper::seedInitialCore();
+        ResetHelper::rebuildAndRunMigrations();
+        ResetHelper::seedInitialValues();
+        ResetHelper::rebuildModels();
+        ResetHelper::rebuildSeeders();
+        ResetHelper::updatePasswordCreationTime();
 
         return $this->responseRepository->make('PHOTON_SOFT_RESET_SUCCESS');
     }
@@ -442,192 +441,11 @@ class PhotonController extends Controller
     }
 
     /**
-     * Deletes all dynamic model files in the system.
-     */
-    private function deleteModels()
-    {
-        $pathToModels = app_path(Config::get('photon.dynamic_models_location'));
-        $this->deleteDirectoryFiles($pathToModels, '*.php');
-    }
-
-    private function rebuildModels()
-    {
-        $this->modelRepository->rebuildAllModels($this->modelCompiler, $this->modelGateway);
-    }
-
-    /**
-     * Deletes all dynamic model extender files in the system.
-     */
-    private function deleteModuleExtenders()
-    {
-        $pathToModelExtenders = app_path(Config::get('photon.dynamic_module_extenders_location'));
-        $this->deleteDirectoryFiles($pathToModelExtenders, '*.php');
-    }
-
-    /**
-     * Deletes all asset files
-     */
-    private function deleteAssets()
-    {
-        $pathToAssets = config('filesystems.disks.assets.root');
-        $this->deleteDirectoryFiles($pathToAssets, '*');
-    }
-
-    /**
-     * Deletes all dynamic migration files in the system.
-     */
-    private function deleteMigrations()
-    {
-        $pathToMigrations = base_path(Config::get('photon.dynamic_model_migrations_dir'));
-        $this->deleteDirectoryFiles($pathToMigrations, '*.php');
-    }
-
-    /**
-     * Deletes all tables in the DB.
-     */
-    private function deleteTables()
-    {
-        $tableNames = DB::select('SHOW TABLES');
-        Schema::disableForeignKeyConstraints();
-        foreach ($tableNames as $tableKey => $tableName) {
-            foreach ((array) $tableName as $name) {
-                Schema::dropIfExists($name);
-            }
-        }
-        Schema::enableForeignKeyConstraints();
-    }
-
-    /**
-     * Removes all files from directories which are designated to be emptied on photon reset
-     */
-    private function cleanDirectories()
-    {
-        $directories = config('photon.photon_reset_clean_directories');
-        foreach ($directories as $directory) {
-            $this->deleteDirectoryFiles($directory, '*');
-        }
-        $pathToMigrations = base_path(Config::get('photon.dynamic_model_migrations_dir'));
-        $this->deleteDirectoryFiles($pathToMigrations, '*.php');
-        $pathToPHPSeeds = Config::get('photon.php_seed_backup_location');
-        $this->deleteDirectoryFiles($pathToPHPSeeds, '*.php');
-    }
-
-    /**
-     * Runs all available migrations.
-     */
-    private function runMigrations()
-    {
-        Artisan::call('migrate', ['--quiet' => true, '--force' => true]);
-    }
-
-    private function rebuildAndRunMigrations()
-    {
-        $this->migrationRepository->rebuildAllModelMigrations($this->migrationCompiler, $this->migrationGateway);
-    }
-
-    private function seedInitialCore()
-    {
-        $seedsPath = database_path().'/seeds';
-        $seeds     = glob("$seedsPath/InitialCore*.php");
-
-        foreach ($seeds as $seed) {
-            $className = basename($seed, ".php");
-            Artisan::call('db:seed', ['--class' => $className, '--force' => true]);
-        }
-    }
-
-    /**
-     * Seeds initial data for the photon installation.
-     */
-    private function seedInitialValues()
-    {
-        $seedsPath = database_path().'/seeds';
-        $seeds     = glob("$seedsPath/InitialValues*.php");
-
-        foreach ($seeds as $seed) {
-            $className = basename($seed, ".php");
-            Artisan::call('db:seed', ['--class' => $className, '--force' => true]);
-        }
-    }
-
-    /**
-     * Rebuilds module seeders.
-     */
-    private function rebuildSeeders()
-    {
-        // ToDo: needs a SeedTemplateFactory here (Sasa|01/2016)
-        $seedTemplate = new SeedTemplate();
-        $seedTemplate->addTable('modules');
-        $seedTemplate->addTable('field_types');
-        $seedTemplate->addTable('model_meta_types');
-        $seedTemplate->useForce();
-        $this->seedRepository->create($seedTemplate, $this->seedGateway);
-
-        $seedTemplate = new SeedTemplate();
-        $seedTemplate->addTable('fields');
-        $seedTemplate->addTable('model_meta_data');
-        $seedTemplate->addExclusion('id');
-        $seedTemplate->useForce();
-        $this->seedRepository->create($seedTemplate, $this->seedGateway);
-    }
-
-    /**
-     * Sets all password_created_at values to current time
-     */
-    private function updatePasswordCreationTime()
-    {
-        $authClassName = config("auth.providers.users.model");
-        $user = new $authClassName();
-        $user->query()->update(['password_created_at' => Carbon::now()]);
-    }
-
-    /**
-     * Removes all log files created during photon usage.
-     */
-    private function removeLogFiles()
-    {
-        $logFiles = [
-            Config::get('photon.error_log')
-        ];
-
-        foreach ($logFiles as $logFile) {
-            if (file_exists($logFile)) {
-                unlink($logFile);
-            }
-        }
-    }
-
-    /**
-     * Creates new module extender files from default module extender files from the core.
-     */
-    private function rebuildDefaultModuleExtenders()
-    {
-        $pathToDefaultModuleExtenders = app_path('/PhotonCms/Core/DefaultCoreModuleExtensions');
-        $extenders                    = glob("$pathToDefaultModuleExtenders/*.stub");
-        $pathToModuleExtenders        = app_path(Config::get('photon.dynamic_module_extenders_location'));
-
-        foreach ($extenders as $extender) {
-            $extendername = basename($extender);
-            $extendername = preg_replace('/\\.[^.\\s]{3,4}$/', '', $extendername);
-            $this->filesystem->copy($extender, "$pathToModuleExtenders/$extendername.php");
-        }
-    }
-
-    /**
-     * Loops through the specified directory and removes all files that match the specified filename expression.
+     * Pings photon haven and generates license.
      *
-     * @param string $directoryPath
-     * @param string $filenameExpression
+     * @return \Illuminate\Http\Response
+     * @throws PhotonException
      */
-    private function deleteDirectoryFiles($directoryPath, $filenameExpression = '*')
-    {
-        foreach (glob("$directoryPath/$filenameExpression") as $file) {
-            if(is_file($file)) {
-                unlink($file);
-            }
-        }
-    }
-
     public function pingHome()
     {
         $force = \Request::get("force");
@@ -643,6 +461,10 @@ class PhotonController extends Controller
 
         // ping home
         $validKey = LicenseKeyHelper::pingHome($key);
+
+        $currentVersion = \ComposerBump::getVersion();
+        $validKey['body']['current_version'] = $currentVersion;
+        $validKey['body']['upgrade_available'] = $validKey['body']['current_version'] == $validKey['body']['newest_version'] ? false : true;
 
         // store data in cache
         Cache::put('photon-license', $validKey, 60);

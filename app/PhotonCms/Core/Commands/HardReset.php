@@ -124,7 +124,7 @@ class HardReset extends Command
         $this->info('...Directories cleared');
 
         ResetHelper::rebuildDefaultModuleExtenders();
-        $this->info('...Default Module Extenders rebuilded');
+        $this->info('...Default Module Extenders rebuilt');
 
         ResetHelper::runMigrations();
         $this->info('...Base migrations ran');
@@ -136,7 +136,7 @@ class HardReset extends Command
         $this->info('...Migrations rebuilt and ran');
 
         ResetHelper::seedInitialValues();
-        $this->info('...Initial Values seeded');
+        $this->info('...Initial values seeded');
 
         ResetHelper::rebuildModels();
         $this->info('...Models rebuilt');
@@ -147,6 +147,6 @@ class HardReset extends Command
         ResetHelper::updatePasswordCreationTime();
         $this->info('...Password Creation Time updated');
 
-        $this->info("Photon CMS Hard Reseted");
+        $this->info("Photon CMS hard reset completed successfully.");
     }
 }

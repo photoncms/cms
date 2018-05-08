@@ -69,7 +69,7 @@ trait AuthenticatesUsers
                 return $this->responseRepository->make('PASSWORD_EXPIRED');
             }
         }
-
+        
         // all good so return the token
         return $this->responseRepository->make('USER_LOGIN_SUCCESS', ['user' => $user, 'token' => ['token' => $token, 'ttl' => \Config::get('jwt.ttl')]]);
     }

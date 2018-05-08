@@ -2,6 +2,8 @@ import _ from 'lodash';
 
 import { userHasRole } from '_/vuex/actions/userActions';
 
+import { showIntro } from '_/helpers/guidedTours';
+
 import {
     mapGetters,
     mapActions,
@@ -47,6 +49,17 @@ const GeneratorHelpBlock = Vue.component(
     );
 
 export default {
+    /**
+     * Set the component data
+     *
+     * @return  {object}
+     */
+    data () {
+        return {
+            intro: null,
+        };
+    },
+
     /**
      * Set the beforeRouteEnter hook
      *
@@ -180,6 +193,8 @@ export default {
                 router.push('/error/resource-not-found');
             }
 
+            this.intro = showIntro.generator(this);
+
             this.setBodyClass('generator');
 
             this.setSidebarType('GeneratorSidebar');
@@ -200,6 +215,12 @@ export default {
             const moduleTableName = newEntry.params.moduleTableName;
 
             this.getPhotonModulesHelper(moduleTableName);
+        },
+
+        'generator.selectedModule.fields' () {
+            if(this.generator.selectedModule.fields.length == 1 && this.intro && this.generator.newModule) {
+                this.intro.nextStep();
+            }
         },
 
         'generator.refreshForm' () {

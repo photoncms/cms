@@ -29,7 +29,7 @@ class ModelAttributeFactory
         $visibility  = (key_exists('visibility', $data)) ? $data['visibility'] : 'public';
         $default     = (key_exists('default', $data)) ? $data['default'] : null;
         $nullable    = (key_exists('nullable', $data)) ? $data['nullable'] : false;
-        $indexed    = (key_exists('indexed', $data)) ? $data['indexed'] : false;
+        $indexed     = (key_exists('indexed', $data)) ? $data['indexed'] : false;
         $fillable    = (key_exists('fillable', $data)) ? $data['fillable'] : true;
         $unique      = (key_exists('unique', $data)) ? $data['unique'] : false;
         $parameters  = (key_exists('parameters', $data)) ? $data['parameters'] : [];

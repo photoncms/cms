@@ -159,8 +159,11 @@ return [
         Photon\Providers\AuthServiceProvider::class,
         Photon\PhotonCms\Core\Providers\BroadcastServiceProvider::class,
         Photon\Providers\EventServiceProvider::class,
+        Photon\PhotonCms\Core\Providers\CoreRoutesServiceProvider::class,
         Photon\Providers\RouteServiceProvider::class,
+        Photon\PhotonCms\Core\Providers\CoreAppServiceProvider::class,
         Photon\PhotonCms\Core\Providers\LogServiceProvider::class,
+        Photon\PhotonCms\Core\Providers\MiddlewareServiceProvider::class,
 
         /*
          * Additional Service Providers
@@ -170,6 +173,7 @@ return [
         Morrislaptop\LaravelQueueClear\LaravelQueueClearServiceProvider::class,
         LaravelFCM\FCMServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Talevskiigor\ComposerBump\ComposerBumpServiceProvider::class,
     ],
 
     /*
@@ -225,6 +229,7 @@ return [
         'FCM'           => LaravelFCM\Facades\FCM::class,
         'FCMGroup'      => LaravelFCM\Facades\FCMGroup::class,
         'PDF'           => Barryvdh\DomPDF\Facade::class,
+        'ComposerBump'  =>Talevskiigor\ComposerBump\Facades\ComposerBump::class,
     ],
 
 ];

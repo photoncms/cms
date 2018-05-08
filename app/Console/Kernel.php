@@ -14,13 +14,18 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \Photon\Console\Commands\Inspire::class,
-        \Photon\PhotonCms\Core\Commands\RebuildResizedImages::class,
-        \Photon\PhotonCms\Core\Commands\UpdateAnchorFields::class,
-        \Photon\PhotonCms\Core\Commands\Sync::class,
-        \Photon\PhotonCms\Core\Commands\HardReset::class,
-        \Photon\PhotonCms\Core\Commands\SoftReset::class
+        \Photon\Console\Commands\Inspire::class
     ];
+
+    /**
+     * Register the commands for the application.
+     *
+     * @return void
+     */
+    protected function commands()
+    {
+        $this->load(base_path('app/PhotonCms/Core/Commands'));
+    }
 
     /**
      * Define the application's command schedule.

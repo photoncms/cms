@@ -55,16 +55,18 @@ class DynamicModuleExporterBase
     public function __call($name, $arguments)
     {
         $entries = $arguments[0];
+
         $filename = ($arguments[1]) ? $arguments[1] : null;
         $parameters = ($arguments[2]) ? $arguments[2] : [];
+        $filter = ($arguments[3]) ? $arguments[3] : [];
 
         $filename = $this->prepareFileName($filename, $entries);
 
         if (in_array($name, $this->callable)) {
             if (is_array($entries) || $entries instanceof Collection) {
-                $exporter = $this->makeMultipleExporter($entries, $filename, $parameters);
+                $exporter = $this->makeMultipleExporter($entries, $filename, $parameters, $filter);
             } else {
-                $exporter = $this->makeExporter($entries, $filename, $parameters);
+                $exporter = $this->makeExporter($entries, $filename, $parameters, $filter);
             }
             switch ($exporter) {
                 case ($exporter instanceof \Maatwebsite\Excel\Writers\LaravelExcelWriter) :

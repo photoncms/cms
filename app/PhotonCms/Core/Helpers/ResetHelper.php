@@ -81,12 +81,18 @@ class ResetHelper
 
     public static function seedInitialCore()
     {
-        $seedsPath = database_path().'/seeds';
-        $seeds     = glob("$seedsPath/InitialCore*.php");
+        $seedsPath = app_path('PhotonCms/Core/Database/Seeds/InitialCore');
+        $seeds     = glob("$seedsPath/*.php");
 
         foreach ($seeds as $seed) {
             $className = basename($seed, ".php");
-            Artisan::call('db:seed', ['--class' => $className, '--force' => true]);
+            Artisan::call(
+                'db:seed', 
+                [
+                    '--class'   => 'Photon\PhotonCms\Core\Database\Seeds\InitialCore\\' . $className, 
+                    '--force'   => true
+                ]
+            );
         }
     }
 
@@ -110,12 +116,18 @@ class ResetHelper
      */
     public static function seedInitialValues()
     {
-        $seedsPath = database_path().'/seeds';
-        $seeds     = glob("$seedsPath/InitialValues*.php");
+        $seedsPath = app_path('PhotonCms/Core/Database/Seeds/InitialValues');
+        $seeds     = glob("$seedsPath/*.php");
 
         foreach ($seeds as $seed) {
             $className = basename($seed, ".php");
-            Artisan::call('db:seed', ['--class' => $className, '--force' => true]);
+            Artisan::call(
+                'db:seed', 
+                [
+                    '--class'   => 'Photon\PhotonCms\Core\Database\Seeds\InitialValues\\' . $className, 
+                    '--force'   => true
+                ]
+            );
         }
     }
 
@@ -176,7 +188,14 @@ class ResetHelper
      */
     public static function runMigrations()
     {
-        Artisan::call('migrate', ['--quiet' => true, '--force' => true]);
+        Artisan::call(
+            'migrate', 
+            [
+                '--quiet'   => true, 
+                '--force'   => true, 
+                '--path'    => "app/PhotonCms/Core/Database/Migrations"
+            ]
+        );
     }
 
     /**

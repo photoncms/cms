@@ -13,7 +13,9 @@
 /public/vendor/horizon
 /storage/license.key
 /vendor
+/tmp
 composer.lock
+composer.json-backup
 Homestead.json
 Homestead.yaml
 npm-debug.log

@@ -23,5 +23,6 @@ class PrivateApiController extends Controller
     )
     {
         $this->responseRepository = $responseRepository;
+        $this->middleware('jwt.auth');
     }
 }

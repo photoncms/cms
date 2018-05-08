@@ -2,6 +2,8 @@ import { mapActions } from 'vuex';
 
 import i18n from '_/i18n';
 
+import { showIntro } from '_/helpers/guidedTours';
+
 import Vue from 'vue';
 
 import {
@@ -62,6 +64,8 @@ export default {
      */
     mounted () {
         this.$nextTick(function() {
+            showIntro.dashboard(this);
+
             this.setBodyClass('dashboard-page');
 
             this.setTitle(i18n.t('errors.dashboard'));

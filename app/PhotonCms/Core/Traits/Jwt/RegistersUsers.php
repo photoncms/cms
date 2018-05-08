@@ -6,13 +6,14 @@ use JWTAuth;
 use Illuminate\Http\Request;
 use Photon\PhotonCms\Dependencies\DynamicModels\User;
 use Photon\PhotonCms\Dependencies\DynamicModels\Invitations;
+use Photon\PhotonCms\Dependencies\DynamicModels\Roles;
 use Photon\PhotonCms\Core\Helpers\CodeHelper;
 use Photon\PhotonCms\Dependencies\AdditionalModuleClasses\Workflows\InvitationWorkflow;
 use Carbon\Carbon;
 use Photon\PhotonCms\Core\Entities\NotificationHelpers\NotificationHelperFactory;
 
-use Photon\PhotonCms\Dependencies\Notifications\RegistrationConfirmation;
-use Photon\PhotonCms\Dependencies\Notifications\RegistrationSuccess;
+use Photon\PhotonCms\Core\Entities\Notifications\RegistrationConfirmation;
+use Photon\PhotonCms\Core\Entities\Notifications\RegistrationSuccess;
 use Photon\PhotonCms\Core\Entities\Module\ModuleRepository;
 use Illuminate\Support\Facades\Cache;
 use \Photon\PhotonCms\Core\Exceptions\PhotonException;
@@ -61,6 +62,15 @@ trait RegistersUsers
             $user->save();
         }
 
+        // attach default role
+        $defaultRoleId = env("REGISTRATION_DEFAULT_ROLE", 0);
+        if($defaultRoleId) {
+            $defaultRole = Roles::find($defaultRoleId);
+            if($defaultRole) {
+                $user->roles_relation()->attach($defaultRoleId);
+            }
+        }
+        
         // Send an email
         if(\Config::get('photon.use_registration_service_email'))
             $user->notify(new RegistrationConfirmation($user));
@@ -72,7 +82,19 @@ trait RegistersUsers
             Cache::tags($relatedModules)->flush(); 
         }
 
-        return $this->responseRepository->make('USER_REGISTER_SUCCESS', ['user' => $user]);
+        $payload = ['user' => $user];
+
+        // If email confirmation is not required issue a token right away.
+        if(!\Config::get('photon.use_registration_service_email')) {
+            $token = JWTAuth::fromUser($user);
+
+            $payload['token'] = [
+                'token' => $token,
+                'ttl' => \Config::get('jwt.ttl'),
+            ];
+        }
+
+        return $this->responseRepository->make('USER_REGISTER_SUCCESS', $payload);
     }
 
     /**

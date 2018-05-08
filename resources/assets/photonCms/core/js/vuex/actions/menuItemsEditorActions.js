@@ -142,6 +142,8 @@ export default {
             .then(() => {
                 router.push(`/menu-items-editor/${state.selectedMenu.id}`);
 
+                store.dispatch('ui/getMainMenu');
+
                 dispatch('setCreateEntryUI');
 
                 dispatch('setSubmitEntryInProgress', { value: false });
@@ -286,6 +288,8 @@ export default {
             return api[action](uri, payload)
                 .then((response) => {
                     apiResponseCommit({ commit }, response);
+
+                    store.dispatch('ui/getMainMenu');
 
                     if (action === 'post') {
                         if(!state.createAnother) {

@@ -1,8 +1,12 @@
 {
     "name": "photoncms/cms",
     "description": "Photon CMS",
-    "version": "1.0.9",
-    "keywords": ["cms", "photoncms", "laravel"],
+    "version": "1.1.0",
+    "keywords": [
+        "cms",
+        "photoncms",
+        "laravel"
+    ],
     "homepage": "https://photoncms.com",
     "license": "proprietary",
     "support": {
@@ -19,17 +23,18 @@
         "orangehill/generators": "dev-master",
         "orangehill/iseed": "dev-master",
         "tymon/jwt-auth": "0.5.*",
-        "league/csv" : "^8.0",
+        "league/csv": "^8.0",
         "spatie/laravel-permission": "^1.5.2",
         "pusher/pusher-php-server": "^3.0",
         "maatwebsite/excel": "~2.1.0",
         "dompdf/dompdf": "~0.7",
-        "predis/predis" : "~1.0",
+        "predis/predis": "~1.0",
         "morrislaptop/laravel-queue-clear": "~1.0",
         "brozot/laravel-fcm": "^1.2.0",
         "barryvdh/laravel-dompdf": "^0.8.0",
         "doctrine/dbal": "^2.5",
-        "laravel/horizon": "^1.1"
+        "laravel/horizon": "^1.1",
+        "talevskiigor/composer-bump": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -49,8 +54,7 @@
             "Tests\\": "tests/",
             "Orangehill\\Photon\\": "vendor/orangehill/photon/src/"
         },
-        "files": [
-        ]
+        "files": []
     },
     "autoload-dev": {
         "classmap": [
@@ -62,8 +66,7 @@
             "php artisan clear-compiled",
             "php artisan optimize"
         ],
-        "pre-update-cmd": [
-        ],
+        "pre-update-cmd": [],
         "post-update-cmd": [
             "php artisan optimize"
         ],
