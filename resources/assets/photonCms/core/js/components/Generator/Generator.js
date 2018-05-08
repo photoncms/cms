@@ -218,7 +218,7 @@ export default {
         },
 
         'generator.selectedModule.fields' () {
-            if(this.generator.selectedModule.fields.length == 1 && this.intro) {
+            if(this.generator.selectedModule.fields.length == 1 && this.intro && this.generator.newModule) {
                 this.intro.nextStep();
             }
         },
