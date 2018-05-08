@@ -13,6 +13,7 @@ const state = {
     },
     impersonating: false,
     licenseExpiring: false,
+    apiEnvironment: 'production',
     loggedIn: false,
     meta: { },
 };
@@ -74,6 +75,17 @@ const mutations = {
         state.error.message = null;
 
         state.error.fields = null;
+    },
+
+    /**
+     * Sets the apiEnvironment state property
+     *
+     * @param  {object}  state
+     * @param  {boolean}  value
+     * @return  void
+     */
+    [types.SET_API_ENVIRONMENT](state, { value }) {
+        state.apiEnvironment = value;
     },
 
     /**

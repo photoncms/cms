@@ -9,6 +9,7 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+        <link href="/css/vendor/introjs.min.css" rel="stylesheet" type="text/css">
 
         <!-- Styles -->
         <style>
@@ -72,7 +73,7 @@
                 </div>
 
                 <div class="links">
-                    <a href="/cp">Control Panel</a>
+                    <a href="/cp" data-hint='Click here to login to your admin panel.'>Control Panel</a>
                     <a href="https://photoncms.com/resources">Resources</a>
                     <a href="https://docs.photoncms.com/">API Docs</a>
                     <a href="https://github.com/photoncms/cms">GitHub</a>
@@ -80,5 +81,11 @@
                 </div>
             </div>
         </div>
+        <script src="/scripts/vendor/intro.min.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function(event) { 
+                introJs().addHints();
+            });
+        </script>
     </body>
 </html>

@@ -1,3 +1,5 @@
+const webpack = require('webpack');
+
 let mix = require('laravel-mix');
 
 var path = require('path');
@@ -74,10 +76,18 @@ mix.disableSuccessNotifications()
         .version()
 
     .browserSync({
-        proxy: 'photoncms.test'
+        proxy: 'photoncms.test',
+        files: [
+            'resources/**'
+        ],
     });
 
 mix.webpackConfig({
+    plugins: [
+        new webpack.ProvidePlugin({
+            introJs: ['intro.js', 'introJs']
+        })
+    ],
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'resources/assets/photonCms/core/js/config'),

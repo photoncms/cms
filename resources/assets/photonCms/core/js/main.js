@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import VueIntro from 'vue-introjs';
 import VueResource from 'vue-resource';
 import VueI18n from 'vue-i18n';
 import { store } from '_/vuex/store';
@@ -6,6 +7,9 @@ import { storage } from '_/services/storage';
 import { api } from '_/services/api';
 import { router } from '_/router/router';
 import i18n from '_/i18n';
+import 'intro.js/introjs.css';
+
+Vue.use(VueIntro);
 
 Vue.use(VueResource);
 

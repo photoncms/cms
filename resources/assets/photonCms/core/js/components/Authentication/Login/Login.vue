@@ -28,6 +28,10 @@
                             </div>
                         </li>
                         <li class="list-group-item form-login-inputs">
+                            <div class="form-group text-success" v-if="user.apiEnvironment == 'local'" v-intro-hint="'You only see this in local dev environment. Once you change the .env environment parameter from local to e.g. production this hint will be hidden.'">
+                                Try using email <strong>super.administrator@photoncms.test</strong> <br>
+                                and password <strong>L!gthsp44d</strong>
+                            </div>
                             <div class="form-group">
                                 <input name="email"
                                     type="email"

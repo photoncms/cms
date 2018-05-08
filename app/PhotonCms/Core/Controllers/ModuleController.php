@@ -678,6 +678,11 @@ class ModuleController extends Controller
             ModuleHelpers::validateAnchorTextAgainstFieldNames($moduleData['anchor_html'], $preservedFieldNames);
         }
 
+        // Validate anchor html against field names
+        if (key_exists('slug', $moduleData)) {
+            ModuleHelpers::validateAnchorTextAgainstFieldNames($moduleData['slug'], $preservedFieldNames);
+        }
+
         // Queue module update into transaction
         $transactionController->queue(
             function () use (&$moduleData) {

@@ -88,8 +88,9 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'email' => [
+            'email' => 'Email address is not valid.',
+            'unique' => 'An account with this email address already exists.',
         ],
     ],
 

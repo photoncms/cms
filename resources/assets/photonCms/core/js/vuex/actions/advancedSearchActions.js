@@ -30,16 +30,16 @@ export default {
      * @param   {integer}  options.entryId
      * @return  {promise}
      */
-    downloadFile ({ dispatch, state }, { fileType, entryId }) {
+    downloadFile ({ commit, dispatch, state }, { fileType, entryId }) {
         const payload = {};
 
-        payload.filter = Object.assign({}, state.admin.advancedSearch.filter);
+        payload.filter = Object.assign({}, state.payload.filter);
 
         payload.action = 'store';
 
         payload.file_type = fileType;
 
-        let uri = `export/${state.admin.selectedModule.table_name}`;
+        let uri = `export/${store.state.admin.selectedModule.table_name}`;
 
         if (entryId) {
             uri = `${uri}/${entryId}`;

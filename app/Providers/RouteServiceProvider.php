@@ -22,11 +22,20 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map()
     {
+        $this->mapPublicApiRoutes();
         $this->mapWebRoutes();
+    }
 
-        $this->mapApiRoutes();
-
-        $this->mapCpRoutes();
+    /**
+     * Define the "api" routes for the application.
+     *
+     * @return void
+     */
+    protected function mapPublicApiRoutes()
+    {
+        Route::prefix('public-api')
+            ->namespace('Photon\Http\Controllers')
+            ->group(base_path('routes/api.php'));
     }
 
     /**
@@ -41,29 +50,5 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware('public')
             ->namespace('Photon\Http\Controllers')
             ->group(base_path('routes/web.php'));
-    }
-
-    /**
-     * Define the "api" routes for the application.
-     *
-     * @return void
-     */
-    protected function mapApiRoutes()
-    {
-        Route::prefix('api')
-            ->namespace('Photon\PhotonCms\Core\Controllers')
-            ->group(base_path('routes/api.php'));
-    }
-
-    /**
-     * Define the "cp" routes for the application.
-     *
-     * @return void
-     */
-    protected function mapCpRoutes()
-    {
-        Route::middleware('public')
-            ->group(base_path('routes/cp.php'));
-        
     }
 }

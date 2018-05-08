@@ -50,10 +50,11 @@ class ResponseRepository
     public function make($responseName, $responseData = [], $responseSource = null)
     {
         if (!$responseSource) {
-            $responseSource = 'responses';
+            $data = include base_path("app/PhotonCms/Core/Config/responses.php");
+            $responseCode = $data[$responseName];
+        } else {
+            $responseCode = Config::get("$responseSource.$responseName");
         }
-
-        $responseCode = Config::get("$responseSource.$responseName");
 
         if (!$responseCode) {
             throw new PhotonException('UNDEFINED_RESPONSE_CODE', ['name' => $responseName]);

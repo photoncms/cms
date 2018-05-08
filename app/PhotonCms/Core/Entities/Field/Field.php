@@ -21,6 +21,7 @@ class Field extends Model
         'order',
         'editable',
         'disabled',
+        'unique',
         'hidden',
         'is_system',
         'virtual',

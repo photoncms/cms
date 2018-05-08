@@ -10,6 +10,8 @@ import {
     resetValidator
 } from '_/services/formValidator';
 
+import { storage } from '_/services/storage';
+
 const photonConfig = require('~/config/config.json');
 
 export default {
@@ -64,6 +66,13 @@ export default {
      */
     mounted: function() {
         this.$nextTick(function() {
+            if (!storage.get('intro-login-hint', true)) {
+                this.$intro().showHints();
+
+                storage.save('intro-login-hint', true, true);
+            }
+
+
             if (this.$route.query.redirect) { // Set the redirect path if query parameter is present
                 this.redirectPath = this.$route.query.redirect;
             }

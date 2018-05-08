@@ -20,7 +20,7 @@
                         <span class="nav-text">{{menuListItem.title}}</span>
                     </a>
                 </li>
-                <li v-if="userHasRole('super_administrator')">
+                <li v-if="userHasRole('super_administrator')" id="intro-dashboard-quick-launch">
                     <router-link :to="`/menu-items-editor/2`">
                         <i class="nav-icon fa fa-pencil-square-o"></i>
                         <span class="nav-text">{{ $t('dashboard.addShortcut') }}</span>

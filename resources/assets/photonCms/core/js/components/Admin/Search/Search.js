@@ -88,6 +88,7 @@ export default {
      */
     methods: {
         ...mapActions('advancedSearch', [
+            'downloadFile',
             'hideMassEditor',
             'navigateToEntry',
             'navigateToPage',
