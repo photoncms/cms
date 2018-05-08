@@ -115,7 +115,7 @@ class Update extends Command
 
     protected function copyCoreFeFiles()
     {
-        $source = getcwd().'/tmp/cms-update/resources/assets/photonCms/core'; 
+        $source = getcwd().'/tmp/cms-master/resources/assets/photonCms/core'; 
         $destination = getcwd().'/resources/assets/photonCms/core'; 
 
         \File::deleteDirectory($destination);
@@ -124,7 +124,7 @@ class Update extends Command
 
     protected function copyCoreBeFiles()
     {
-        $source = getcwd().'/tmp/cms-update/app/PhotonCms/Core'; 
+        $source = getcwd().'/tmp/cms-master/app/PhotonCms/Core'; 
         $destination = getcwd().'/app/PhotonCms/Core'; 
 
         \File::deleteDirectory($destination);
@@ -175,7 +175,7 @@ class Update extends Command
             ]
         ]);
         
-        $response = (new Client)->get('https://github.com/photoncms/cms/archive/update.zip');
+        $response = (new Client)->get('https://github.com/photoncms/cms/archive/master.zip');
 
         file_put_contents($zipFile, $response->getBody());
 
