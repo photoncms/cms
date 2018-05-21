@@ -99,7 +99,7 @@
                     <span class="nav-text">{{ $t('assetsManager.assetsManager') }}</span>
                 </span>
             </li>
-            <li v-if="(userHasRole('super_administrator'))">
+            <li v-if="(userHasRole('super_administrator') && user.apiEnvironment == 'local')">
                 <span class="clickable" id="intro-dashboard-guided-tours">
                     <i class="nav-icon fa fa-question-circle-o"></i>
                     <span class="nav-text">Guided Tours</span>

@@ -103,6 +103,7 @@ export default {
         ...mapGetters({
             generator: 'generator/generator',
             ui: 'ui/ui',
+            user: 'user/user',
         })
     },
 
@@ -193,7 +194,9 @@ export default {
                 router.push('/error/resource-not-found');
             }
 
-            this.intro = showIntro.generator(this);
+            if(this.user.apiEnvironment == 'local') {
+                this.intro = showIntro.generator(this);
+            }
 
             this.setBodyClass('generator');
 
@@ -218,7 +221,7 @@ export default {
         },
 
         'generator.selectedModule.fields' () {
-            if(this.generator.selectedModule.fields.length == 1 && this.intro && this.generator.newModule) {
+            if(this.generator.selectedModule.fields.length == 1 && this.intro) {
                 this.intro.nextStep();
             }
         },
