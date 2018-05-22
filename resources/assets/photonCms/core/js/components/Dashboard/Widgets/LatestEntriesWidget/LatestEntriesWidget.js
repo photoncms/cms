@@ -171,7 +171,7 @@ export default {
 
                 for (var index = 0; index < length; index++) {
                     items[index] = this.sourceModule.items[index] || {
-                        id: 'blank.' + index
+                        id: null
                     };
 
                     if (items[index] && items[index].created_at) {

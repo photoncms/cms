@@ -63,7 +63,7 @@
                         :widget="widget"
                         v-for="item in items"
                         track-by="id">
-                        <router-link :to="`admin/${widget.module}/${item.id}`">
+                        <router-link :to="`admin/${widget.module}/${item.id}`" v-if="item.id">
                             <i v-if="item[metaData.image_field]">
                                 <img :src="addThumbSuffix(item[metaData.image_field].file_url)" :alt="item.anchor_text">
                             </i>
