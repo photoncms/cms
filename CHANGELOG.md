@@ -1,5 +1,14 @@
 # Release Notes
 
+## v1.1.1 (2018-05-22)
+
+### Added
+- Added a not_in parameter to filter method
+
+### Fixed
+- Fixed an issue of intro not hiding if .env is set to production
+- Fixed a mismatched parameter issue in FilterModuleEntriesDecoder.php
+
 ## v1.1.0 (2018-05-08)
 
 ### Added
