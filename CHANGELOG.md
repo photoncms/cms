@@ -1,5 +1,10 @@
 # Release Notes
 
+## v1.1.2 (2018-05-22)
+
+### Fixed
+- Fixed an issue of being able to click the empty row in dashboard widget
+
 ## v1.1.1 (2018-05-22)
 
 ### Added
