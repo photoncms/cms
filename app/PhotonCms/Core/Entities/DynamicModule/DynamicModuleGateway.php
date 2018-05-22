@@ -230,6 +230,17 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
 
                     $queryBuilder->whereIn($fieldName, $compareValue);
                 }
+                elseif($compareCommand === 'not_in') {
+                    if ($compareValue === '' || !$compareValue) {
+                        $compareValue = [];
+                    }
+
+                    if (!is_array($compareValue)) {
+                        $compareValue = explode(',', $compareValue);
+                    }
+
+                    $queryBuilder->whereNotIn($fieldName, $compareValue);
+                }
                 elseif ($compareCommand === 'like') {
                     // $likeWords = explode(' ', $compareValue);
 

@@ -1,4 +1,7 @@
-import { mapActions } from 'vuex';
+import {
+    mapGetters,
+    mapActions
+} from 'vuex';
 
 import i18n from '_/i18n';
 
@@ -41,6 +44,15 @@ export default {
     },
 
     /**
+     * Set the computed variables
+     *
+     * @type  {object}
+     */
+    computed: mapGetters({
+        user: 'user/user',
+    }),
+
+    /**
      * Set the methods
      *
      * @type {Object}
@@ -64,7 +76,9 @@ export default {
      */
     mounted () {
         this.$nextTick(function() {
-            showIntro.dashboard(this);
+            if(this.user.apiEnvironment == 'local') {
+                showIntro.dashboard(this);
+            }
 
             this.setBodyClass('dashboard-page');
 

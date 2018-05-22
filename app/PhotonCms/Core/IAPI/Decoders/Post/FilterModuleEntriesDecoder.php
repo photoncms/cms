@@ -31,6 +31,6 @@ class FilterModuleEntriesDecoder implements IAPIDecoderInterface
             $sorting = null;
         }
 
-        return app('Photon\PhotonCms\Core\Controllers\DynamicModuleController')->getAllDynamicModuleEntries($step2->getName(), $includeRelations, $filter, $sorting, $pagination);
+        return app('Photon\PhotonCms\Core\Controllers\DynamicModuleController')->getAllDynamicModuleEntries($step2->getName(), $filter, $sorting, $pagination);
     }
 }
