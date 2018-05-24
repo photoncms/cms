@@ -374,6 +374,9 @@ export default {
                         }
                     },
                 },
+                sorting: {
+                    lft: 'asc',
+                },
             };
 
             return api.post('filter/gallery_items', payload)
