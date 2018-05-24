@@ -677,6 +677,8 @@ export default {
             this.initEventBusListener();
 
             this.initializeAssetManager();
+
+            this.initializeUISortable();
         });
     },
 
