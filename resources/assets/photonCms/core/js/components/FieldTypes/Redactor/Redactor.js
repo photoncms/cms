@@ -12,19 +12,19 @@ import '~/components/FieldTypes/Redactor/Redactor.alignment.plugin';
 
 import '~/components/FieldTypes/Redactor/Redactor.clips.plugin';
 
+import '~/components/FieldTypes/Redactor/Redactor.counter.plugin';
+
 import '~/components/FieldTypes/Redactor/Redactor.editPhotonImage.plugin';
 
 import '~/components/FieldTypes/Redactor/Redactor.fontcolor.plugin';
 
 import '~/components/FieldTypes/Redactor/Redactor.fontsize.plugin';
 
-import '~/components/FieldTypes/Redactor/Redactor.source.plugin';
-
 import '~/components/FieldTypes/Redactor/Redactor.video.plugin';
 
 import '~/components/FieldTypes/Redactor/Redactor.fullscreen.plugin';
 
-import '~/components/FieldTypes/Redactor/Redactor.embedCode.plugin';
+import '~/components/FieldTypes/Redactor/Redactor.widget.plugin';
 
 import { eventBus } from '_/helpers/eventBus';
 
@@ -209,27 +209,49 @@ export default {
 
             this.$redactorContainer = $(self.$el).find('textarea');
 
-            this.$redactorContainer.redactor({
+            $R('textarea', {
                 ...redactorConfig,
                 callbacks: {
-                    change: function () {
-                        self.onChange(self.id, self.name, this.code.get());
+                    started: function () {
+                        let imageButton = this.toolbar.addButton('image', { title: 'Upload Image' });
+
+                        imageButton.setIcon('<i class="fa fa-picture-o"></i>');
+
+                        // this.button.addCallback(imageButton, function () {
+                        //     self.$redactorContainer.redactor('selection.save');
+
+                        //     self.openAssetsManager();
+                        // });
                     },
-                    init: function () {
-                        let imageButton = this.button.add('image', 'Upload Image');
-
-                        this.button.setIcon(imageButton, '<i class="fa fa-picture-o"></i>');
-
-                        this.button.addCallback(imageButton, function () {
-                            self.$redactorContainer.redactor('selection.save');
-
-                            self.openAssetsManager();
-                        });
-                    }
                 },
-                // pass a reference to Vue so that we can use the instance in plugins
-                Vue: this,
+                openAssetsManager: self.openAssetsManager,
             });
+
+            // this.$redactorContainer.redactor({
+            //     ...redactorConfig,
+            //     });
+
+            // this.$redactorContainer.redactor({
+            //     ...redactorConfig,
+            //     callbacks: {
+            //         change: function () {
+            //             self.onChange(self.id, self.name, this.code.get());
+            //         },
+            //         init: function () {
+            //             let imageButton = this.button.add('image', 'Upload Image');
+
+            //             this.button.setIcon(imageButton, '<i class="fa fa-picture-o"></i>');
+
+            //             this.button.addCallback(imageButton, function () {
+            //                 self.$redactorContainer.redactor('selection.save');
+
+            //                 self.openAssetsManager();
+            //             });
+            //         }
+            //     },
+            //     // pass a reference to Vue so that we can use the instance in plugins
+                // Vue: this,
+            // });
         },
 
         /**

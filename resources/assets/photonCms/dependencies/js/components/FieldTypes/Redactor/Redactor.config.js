@@ -1,13 +1,17 @@
+import { clipsItems } from '~/components/FieldTypes/Redactor/Redactor.clips.plugin.items';
+
 const config = require('~/config/config.json');
 
 export const redactorConfig = {
     'buttons': [
+        'html',
         'format',
         'bold',
         'italic',
         'lists',
         'link',
     ],
+    'clips': clipsItems,
     'formatting': [
         'p',
         'blockquote',
@@ -24,18 +28,18 @@ export const redactorConfig = {
     'minHeight': '300px',
     'maxWidth': '660px',
     'plugins': [
-        'advanced',
         'alignment',
         'clips',
-        'embedCode',
+        'counter',
         'editPhotonImage',
         'fontcolor',
         'fontsize',
         'fullscreen',
-        'source',
         'video',
+        'widget',
     ],
     'script': true,
+    'source': true,
     'spellcheck': config.spellcheck,
     'toolbarFixed': false,
     'toolbarOverflow': true,

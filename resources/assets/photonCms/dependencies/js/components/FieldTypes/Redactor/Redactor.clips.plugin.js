@@ -1,58 +1,115 @@
-import { items } from '~/components/FieldTypes/Redactor/Redactor.clips.plugin.items';
-
-(function($)
+(function($R)
 {
-    $.Redactor.prototype.clips = function()
-    {
-        return {
-            init: function()
-            {
-                this.clips.template = $('<ul id="redactor-modal-list">');
-
-                for (var i = 0; i < items.length; i++)
-                {
-                    var li = $('<li>');
-                    var anchor = '<span style="float: left; padding-top: 25px;">' + items[i][0] + '</span><img src="' + items[i][2] + '" style="float: right;"/>';
-                    var a = $('<a href="#" class="redactor-clips-link" style="height: auto; overflow: hidden;">').html(anchor);
-                    var div = $('<div class="redactor-clips">').hide().html(items[i][1]);
-
-                    li.append(a);
-                    li.append(div);
-                    this.clips.template.append(li);
-                }
-
-                this.modal.addTemplate('clips', '<div class="modal-section">' + this.utils.getOuterHtml(this.clips.template) + '</div>');
-
-                var button = this.button.add('clips', 'Clips');
-                this.button.setIcon(button, '<i class="re-icon-clips"></i>');
-                this.button.addCallback(button, this.clips.show);
-
-            },
-            show: function()
-            {
-                this.modal.load('clips', 'Insert Clips', 500);
-
-                $('#redactor-modal-list').find('.redactor-clips-link').each($.proxy(this.clips.load, this));
-
-                this.modal.show();
-            },
-            load: function(i,s)
-            {
-                $(s).on('click', $.proxy(function(e)
-                {
-                    e.preventDefault();
-                    this.clips.insert($(s).next().html());
-
-                }, this));
-            },
-            insert: function(html)
-            {
-                this.buffer.set();
-                this.air.collapsedEnd();
-                this.insert.html(html);
-                this.modal.close();
+    $R.add('plugin', 'clips', {
+        translations: {
+            en: {
+                "clips": "Clips",
+                "clips-select": "Please, select a clip"
             }
-        };
-    };
-})(jQuery, items);
+        },
+        modals: {
+            'clips': ''
+        },
+        init: function(app)
+        {
+            this.app = app;
+            this.opts = app.opts;
+            this.lang = app.lang;
+            this.toolbar = app.toolbar;
+            this.insertion = app.insertion;
+        },
+        // messages
+        onmodal: {
+            clips: {
+                open: function($modal)
+                {
+                    this._build($modal);
+                }
+            }
+        },
 
+        // public
+        start: function()
+        {
+            if (!this.opts.clips) return;
+
+            var data = {
+                title: this.lang.get('clips'),
+                api: 'plugin.clips.open'
+            };
+
+            var $button = this.toolbar.addButton('clips', data);
+            $button.setIcon('<i class="re-icon-clips"></i>');
+        },
+        open: function(type)
+        {
+            var options = {
+                title: this.lang.get('clips'),
+                width: '600px',
+                name: 'clips'
+            };
+
+            this.app.api('module.modal.build', options);
+        },
+
+        // private
+        _build: function($modal)
+        {
+            var $body = $modal.getBody();
+            var $label = this._buildLabel();
+            var $list = this._buildList();
+
+            this._buildItems($list);
+
+            $body.html('');
+            $body.append($label);
+            $body.append($list);
+
+        },
+        _buildLabel: function()
+        {
+            var $label = $R.dom('<label>');
+            $label.html(this.lang.parse('## clips-select ##:'));
+
+            return $label;
+        },
+        _buildList: function()
+        {
+            var $list = $R.dom('<ul>');
+            $list.addClass('redactor-clips-list');
+
+            return $list;
+        },
+        _buildItems: function($list)
+        {
+            var items = this.opts.clips;
+            for (var i = 0; i < items.length; i++)
+            {
+                var $li = $R.dom('<li>');
+                var $item = $R.dom('<span>');
+
+                $item.attr('data-index', i);
+                $item.html(items[i][0]);
+                $item.on('click', this._insert.bind(this));
+
+                $li.append($item);
+
+                var $itemImg = $R.dom('<img>');
+                $itemImg.attr('src', items[i][2]);
+
+                $li.append($itemImg);
+
+                $list.append($li);
+            }
+        },
+        _insert: function(e)
+        {
+            var $item = $R.dom(e.target);
+            var index = $item.attr('data-index');
+            var html = this.opts.clips[index][1];
+
+            this.app.api('module.modal.close');
+            this.insertion.insertRaw(html);
+        }
+    });
+})(Redactor);

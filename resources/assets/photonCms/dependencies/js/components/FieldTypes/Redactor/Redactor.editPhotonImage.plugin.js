@@ -1,5 +1,7 @@
 import _ from 'lodash';
 
+import Vue from 'vue';
+
 import { api } from '_/services/api';
 
 import { config } from '_/config/config';
@@ -8,239 +10,256 @@ import { imageTagTemplate } from '~/components/FieldTypes/Redactor/Redactor.imag
 
 import { pError } from '_/helpers/logger';
 
-(function($) {
-    $.Redactor.prototype.editPhotonImage = function() {
-        return {
-            /**
-             * Defines the template for the modal window
-             *
-             * @param   {array}  imageSizes
-             * @return  {string}
-             */
-            getTemplate (imageSizes) {
-                let photonImageSizeDropdownOptions = '';
+(function($R) {
+    // console.error('clog $R', $R);
 
-                if (!_.isEmpty(imageSizes)) {
-                    this.editPhotonImage.imageSizes.forEach(imageSize => {
-                        photonImageSizeDropdownOptions += `<option value="${imageSize.id}">${imageSize.anchor_text}</option>`;
-                    });
-                }
+    // console.error('clog $', $);
 
-                let photonImageAlignmentOptions = `<option value="article-photo pull-left">${this.lang.get('align-left')}</option>`;
+    $R.add('plugin', 'editPhotonImage', {
+        init: function(app)
+        {
+            this.app = app;
 
-                photonImageAlignmentOptions += `<option value="article-photo" selected>${this.lang.get('center')}</option>`;
+            this.opts = app.opts;
 
-                photonImageAlignmentOptions += `<option value="article-photo pull-right">${this.lang.get('align-right')}</option>`;
+            // console.error(this.opts.Vue);
 
-                return String()
-                + '<div class="redactor-modal-tab redactor-group" data-title="General">'
-                    + '<div id="photon-image-preview" class="redactor-modal-tab-side">'
-                    + '</div>'
-                    + '<div class="redactor-modal-tab-area">'
-                        + '<input type="hidden" id="photon-asset-id" value=""/>'
-                        + '<input type="hidden" id="photon-file_url" value=""/>'
-                        + '<section>'
-                            + '<button id="redactor-modal-button-change-photo">' + this.lang.get('change-photo') + '</button>'
-                        + '</section>'
-                        + '<section>'
-                            + '<label class="redactor-image-position-option">' + this.lang.get('image-size') + '</label>'
-                            + '<select class="redactor-image-position-option" id="photon-image-size" aria-label="' + this.lang.get('image-size') + '">'
-                                + photonImageSizeDropdownOptions
-                            + '</select>'
-                        + '</section>'
-                        + '<section>'
-                            + '<label class="redactor-image-position-option">' + this.lang.get('image-alignment') + '</label>'
-                            + '<select class="redactor-image-position-option" id="photon-image-alignment" aria-label="' + this.lang.get('image-alignment') + '">'
-                                + photonImageAlignmentOptions
-                            + '</select>'
-                        + '</section>'
-                        + '<section>'
-                            + '<label>' + this.lang.get('title') + '</label>'
-                            + '<input type="text" id="photon-image-title" />'
-                        + '</section>'
-                        + '<section>'
-                            + '<label>' + this.lang.get('source') + '</label>'
-                            + '<input type="text" id="photon-image-source" />'
-                        + '</section>'
-                        + '<section>'
-                            + '<button id="redactor-modal-button-save">' + this.lang.get('save') + '</button>'
-                            + '<button id="redactor-modal-button-cancel">' + this.lang.get('cancel') + '</button>'
-                            + '<button id="redactor-modal-button-delete" class="redactor-modal-button-offset">' + this.lang.get('delete') + '</button>'
-                        + '</section>'
-                    + '</div>'
-                + '</div>';
-            },
+            this.opts.openAssetsManager();
+        },
+    });
 
-            /**
-             * Stores available image sizes objects
-             *
-             * @type  {Array}
-             */
-            imageSizes: [],
+    // $.Redactor.prototype.editPhotonImage = function() {
+    //     return {
+    //         /**
+    //          * Defines the template for the modal window
+    //          *
+    //          * @param   {array}  imageSizes
+    //          * @return  {string}
+    //          */
+    //         getTemplate (imageSizes) {
+    //             let photonImageSizeDropdownOptions = '';
 
-            /**
-             * Redactor plugin Init method, ran as the constructor
-             *
-             * @return  {void}
-             */
-            init () {
-                $(this.$editor).click(event => {
-                    if (!$(event.target).is('img')) {
-                        return;
-                    }
+    //             if (!_.isEmpty(imageSizes)) {
+    //                 this.editPhotonImage.imageSizes.forEach(imageSize => {
+    //                     photonImageSizeDropdownOptions += `<option value="${imageSize.id}">${imageSize.anchor_text}</option>`;
+    //                 });
+    //             }
 
-                    api.post(`${config.ENV.apiBasePath}/filter/image_sizes`, { include_relations: false })
-                        .then(response => {
-                            this.editPhotonImage.imageSizes = response.body.body.entries;
+    //             let photonImageAlignmentOptions = `<option value="article-photo pull-left">${this.lang.get('align-left')}</option>`;
 
-                            this.editPhotonImage.show(event, this.editPhotonImage.imageSizes);
-                        })
-                        .catch((response) => {
-                            pError('Failed to load values for image sizes dropdown from the API.', response);
-                        });
-                });
-            },
+    //             photonImageAlignmentOptions += `<option value="article-photo" selected>${this.lang.get('center')}</option>`;
 
-            /**
-             * Removes the image from the editor HTML
-             *
-             * @return  {[type]}  [description]
-             */
-            remove ($photonImageCodeSnippet) {
-                $photonImageCodeSnippet.remove();
+    //             photonImageAlignmentOptions += `<option value="article-photo pull-right">${this.lang.get('align-right')}</option>`;
 
-                this.modal.close();
+    //             return String()
+    //             + '<div class="redactor-modal-tab redactor-group" data-title="General">'
+    //                 + '<div id="photon-image-preview" class="redactor-modal-tab-side">'
+    //                 + '</div>'
+    //                 + '<div class="redactor-modal-tab-area">'
+    //                     + '<input type="hidden" id="photon-asset-id" value=""/>'
+    //                     + '<input type="hidden" id="photon-file_url" value=""/>'
+    //                     + '<section>'
+    //                         + '<button id="redactor-modal-button-change-photo">' + this.lang.get('change-photo') + '</button>'
+    //                     + '</section>'
+    //                     + '<section>'
+    //                         + '<label class="redactor-image-position-option">' + this.lang.get('image-size') + '</label>'
+    //                         + '<select class="redactor-image-position-option" id="photon-image-size" aria-label="' + this.lang.get('image-size') + '">'
+    //                             + photonImageSizeDropdownOptions
+    //                         + '</select>'
+    //                     + '</section>'
+    //                     + '<section>'
+    //                         + '<label class="redactor-image-position-option">' + this.lang.get('image-alignment') + '</label>'
+    //                         + '<select class="redactor-image-position-option" id="photon-image-alignment" aria-label="' + this.lang.get('image-alignment') + '">'
+    //                             + photonImageAlignmentOptions
+    //                         + '</select>'
+    //                     + '</section>'
+    //                     + '<section>'
+    //                         + '<label>' + this.lang.get('title') + '</label>'
+    //                         + '<input type="text" id="photon-image-title" />'
+    //                     + '</section>'
+    //                     + '<section>'
+    //                         + '<label>' + this.lang.get('source') + '</label>'
+    //                         + '<input type="text" id="photon-image-source" />'
+    //                     + '</section>'
+    //                     + '<section>'
+    //                         + '<button id="redactor-modal-button-save">' + this.lang.get('save') + '</button>'
+    //                         + '<button id="redactor-modal-button-cancel">' + this.lang.get('cancel') + '</button>'
+    //                         + '<button id="redactor-modal-button-delete" class="redactor-modal-button-offset">' + this.lang.get('delete') + '</button>'
+    //                     + '</section>'
+    //                 + '</div>'
+    //             + '</div>';
+    //         },
 
-                this.buffer.set();
+    //         /**
+    //          * Stores available image sizes objects
+    //          *
+    //          * @type  {Array}
+    //          */
+    //         imageSizes: [],
 
-                this.code.sync();
-            },
+    //         /**
+    //          * Redactor plugin Init method, ran as the constructor
+    //          *
+    //          * @return  {void}
+    //          */
+    //         init () {
+    //             $(this.$editor).click(event => {
+    //                 if (!$(event.target).is('img')) {
+    //                     return;
+    //                 }
 
-            /**
-             * Performs the update of the code as per parameters set in the modal window
-             *
-             * @return  {void}
-             */
-            save ($photonImageCodeSnippet) {
-                const assetId = $('#photon-asset-id').val();
+    //                 api.post(`${config.ENV.apiBasePath}/filter/image_sizes`, { include_relations: false })
+    //                     .then(response => {
+    //                         this.editPhotonImage.imageSizes = response.body.body.entries;
 
-                api.get(`assets/${assetId}`)
-                    .then(response => {
-                        let asset = response.body.body.entry;
+    //                         this.editPhotonImage.show(event, this.editPhotonImage.imageSizes);
+    //                     })
+    //                     .catch((response) => {
+    //                         pError('Failed to load values for image sizes dropdown from the API.', response);
+    //                     });
+    //             });
+    //         },
 
-                        asset['imageSizeId'] = $('#photon-image-size').val();
+    //         /**
+    //          * Removes the image from the editor HTML
+    //          *
+    //          * @return  {[type]}  [description]
+    //          */
+    //         remove ($photonImageCodeSnippet) {
+    //             $photonImageCodeSnippet.remove();
 
-                        asset['imageAlignment'] = $('#photon-image-alignment').val();
+    //             this.modal.close();
 
-                        asset['source'] = {
-                            anchor_text: $('#photon-image-source').val(),
-                        };
+    //             this.buffer.set();
 
-                        asset['title'] = $('#photon-image-title').val();
+    //             this.code.sync();
+    //         },
 
-                        const template = imageTagTemplate(asset);
+    //         /**
+    //          * Performs the update of the code as per parameters set in the modal window
+    //          *
+    //          * @return  {void}
+    //          */
+    //         save ($photonImageCodeSnippet) {
+    //             const assetId = $('#photon-asset-id').val();
 
-                        $photonImageCodeSnippet.replaceWith(template);
+    //             api.get(`assets/${assetId}`)
+    //                 .then(response => {
+    //                     let asset = response.body.body.entry;
 
-                        this.modal.close();
+    //                     asset['imageSizeId'] = $('#photon-image-size').val();
 
-                        this.buffer.set();
+    //                     asset['imageAlignment'] = $('#photon-image-alignment').val();
 
-                        this.code.sync();
-                    })
-                    .catch((response) => {
-                        pError('Failed to load asset details from the API.', response);
-                    });
-            },
+    //                     asset['source'] = {
+    //                         anchor_text: $('#photon-image-source').val(),
+    //                     };
 
-            /**
-             * Reveals the modal window
-             *
-             * @param   {event}  event
-             * @param   {array}  imageSizes
-             * @return  {void}
-             */
-            show (event, imageSizes) {
-                const $image = $(event.target);
+    //                     asset['title'] = $('#photon-image-title').val();
 
-                const fileUrl = $image.attr('src');
+    //                     const template = imageTagTemplate(asset);
 
-                const title = $image.attr('alt');
+    //                     $photonImageCodeSnippet.replaceWith(template);
 
-                const assetId = $image.data('assetId');
+    //                     this.modal.close();
 
-                const imageSizeId = $image.data('imageSizeId');
+    //                     this.buffer.set();
 
-                const imageAlignment = $image.data('imageAlignment');
+    //                     this.code.sync();
+    //                 })
+    //                 .catch((response) => {
+    //                     pError('Failed to load asset details from the API.', response);
+    //                 });
+    //         },
 
-                const $photonImageCodeSnippet = $image.parent();
+    //         /**
+    //          * Reveals the modal window
+    //          *
+    //          * @param   {event}  event
+    //          * @param   {array}  imageSizes
+    //          * @return  {void}
+    //          */
+    //         show (event, imageSizes) {
+    //             const $image = $(event.target);
 
-                const $source = $photonImageCodeSnippet.find('span');
+    //             const fileUrl = $image.attr('src');
 
-                this.modal.addTemplate('editPhotonImage', this.editPhotonImage.getTemplate(imageSizes));
+    //             const title = $image.attr('alt');
 
-                this.modal.load('editPhotonImage', this.lang.get('edit-image'), 705);
+    //             const assetId = $image.data('assetId');
 
-                $('#photon-asset-id').val(assetId);
+    //             const imageSizeId = $image.data('imageSizeId');
 
-                $('#photon-file_url').val(fileUrl);
+    //             const imageAlignment = $image.data('imageAlignment');
 
-                $('#photon-image-preview').html($('<img src="' + $image.attr('src') + '" style="max-width: 100%;">'));
+    //             const $photonImageCodeSnippet = $image.parent();
 
-                $('#photon-image-size').val(imageSizeId);
+    //             const $source = $photonImageCodeSnippet.find('span');
 
-                $('#photon-image-alignment').val(imageAlignment);
+    //             this.modal.addTemplate('editPhotonImage', this.editPhotonImage.getTemplate(imageSizes));
 
-                if (title !== 'undefined') {
-                    $('#photon-image-title').val(title);
-                }
+    //             this.modal.load('editPhotonImage', this.lang.get('edit-image'), 705);
 
-                if ($source) {
-                    $('#photon-image-source').val($source.text());
-                }
+    //             $('#photon-asset-id').val(assetId);
 
-                $('#redactor-modal-button-save').on('click', () => {
-                    this.editPhotonImage.save($photonImageCodeSnippet);
-                });
+    //             $('#photon-file_url').val(fileUrl);
 
-                $('#redactor-modal-button-delete').on('click', () => {
-                    this.editPhotonImage.remove($photonImageCodeSnippet);
-                });
+    //             $('#photon-image-preview').html($('<img src="' + $image.attr('src') + '" style="max-width: 100%;">'));
 
-                $('#redactor-modal-button-change-photo').on('click', () => {
-                    this.opts.Vue.openAssetsManager();
-                });
+    //             $('#photon-image-size').val(imageSizeId);
 
-                this.modal.show();
+    //             $('#photon-image-alignment').val(imageAlignment);
 
-                if (this.detect.isDesktop()) {
-                    $('#photon-image-title').focus();
-                }
-            },
+    //             if (title !== 'undefined') {
+    //                 $('#photon-image-title').val(title);
+    //             }
 
-            /**
-             * Language object, to be used with Redactor native translation system
-             *
-             * @type  {Object}
-             */
-            langs: {
-                en: {
-                    'align-center': 'Align center',
-                    'align-left': 'Align left',
-                    'align-right': 'Align right',
-                    'cancel': 'Cancel',
-                    'change-photo': 'Change photo',
-                    'delete': 'Delete',
-                    'edit-image': 'Edit Image',
-                    'image-alignment': 'Image alignment',
-                    'image-size': 'Image size',
-                    'insert': 'Insert',
-                    'save': 'Save',
-                    'source': 'Source',
-                    'title': 'Title',
-                }
-            },
+    //             if ($source) {
+    //                 $('#photon-image-source').val($source.text());
+    //             }
 
-        };
-    };
-})(jQuery);
+    //             $('#redactor-modal-button-save').on('click', () => {
+    //                 this.editPhotonImage.save($photonImageCodeSnippet);
+    //             });
+
+    //             $('#redactor-modal-button-delete').on('click', () => {
+    //                 this.editPhotonImage.remove($photonImageCodeSnippet);
+    //             });
+
+    //             $('#redactor-modal-button-change-photo').on('click', () => {
+    //                 this.opts.Vue.openAssetsManager();
+    //             });
+
+    //             this.modal.show();
+
+    //             if (this.detect.isDesktop()) {
+    //                 $('#photon-image-title').focus();
+    //             }
+    //         },
+
+    //         /**
+    //          * Language object, to be used with Redactor native translation system
+    //          *
+    //          * @type  {Object}
+    //          */
+    //         langs: {
+    //             en: {
+    //                 'align-center': 'Align center',
+    //                 'align-left': 'Align left',
+    //                 'align-right': 'Align right',
+    //                 'cancel': 'Cancel',
+    //                 'change-photo': 'Change photo',
+    //                 'delete': 'Delete',
+    //                 'edit-image': 'Edit Image',
+    //                 'image-alignment': 'Image alignment',
+    //                 'image-size': 'Image size',
+    //                 'insert': 'Insert',
+    //                 'save': 'Save',
+    //                 'source': 'Source',
+    //                 'title': 'Title',
+    //             }
+    //         },
+
+    //     };
+    // };
+})(Redactor);

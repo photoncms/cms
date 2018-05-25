@@ -1,10 +1,33 @@
-b.label-red {
-	color: #fff;
-	background: #c92020;
-	padding: 0 7px;
-	font-size: 11px;
-	text-transform: uppercase;
-	font-weight: normal;
-	display: inline-block;
-	border-radius: 4px;
+.redactor-clips-list {
+    margin-left: 0;
+    padding-left: 0;
+    list-style: none;
+    max-height: 250px;
+    overflow-x: auto;
+}
+
+.redactor-clips-list li {
+    border-bottom: 1px solid rgba(0,0,0,.07);
+    height: auto;
+    overflow: hidden;
+    padding: 16px 4px;
+    color: #000;
+    text-decoration: none;
+    font-size: 15px;
+    display: block;
+    position: relative;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #eee;
+    }
+}
+
+.redactor-clips-list span {
+    float: left;
+    padding-top: 25px;
+}
+
+.redactor-clips-list img {
+    float: right;
 }
