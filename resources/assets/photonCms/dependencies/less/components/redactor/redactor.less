@@ -1,3 +1,34 @@
 .redactor-styles {
     border: 1px solid rgba(0,0,0,.07);
 }
+
+.redactor-group {
+    display: block;
+    height: auto;
+    overflow: hidden;
+}
+
+.redactor-modal-tab-side {
+    float: left;
+    width: 26%;
+    margin-right: 6%;
+    min-height: 1px;
+}
+
+.redactor-modal-tab-area {
+    float: left;
+    width: 66%;
+}
+
+@media (max-width: 768px) {
+    .redactor-modal-tab-side {
+        float: none;
+        width: auto;
+        margin-right: 0;
+        margin-bottom: 24px;
+    }
+    .redactor-modal-tab-area {
+        float: none;
+        width: auto;
+    }
+}

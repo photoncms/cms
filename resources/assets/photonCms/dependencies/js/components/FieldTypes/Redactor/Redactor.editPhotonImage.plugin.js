@@ -11,21 +11,201 @@ import { imageTagTemplate } from '~/components/FieldTypes/Redactor/Redactor.imag
 import { pError } from '_/helpers/logger';
 
 (function($R) {
-    // console.error('clog $R', $R);
-
-    // console.error('clog $', $);
-
     $R.add('plugin', 'editPhotonImage', {
+        /**
+         * Language object, to be used with Redactor native translation system
+         *
+         * @type  {Object}
+         */
+        translations: {
+            en: {
+                'align-center': 'Align center',
+                'align-left': 'Align left',
+                'align-right': 'Align right',
+                'cancel': 'Cancel',
+                'change-photo': 'Change photo',
+                'delete': 'Delete',
+                'edit-image': 'Edit Image',
+                'image-alignment': 'Image alignment',
+                'image-size': 'Image size',
+                'insert': 'Insert',
+                'save': 'Save',
+                'source': 'Source',
+                'title': 'Title',
+            },
+        },
+
         init: function(app)
         {
             this.app = app;
 
             this.opts = app.opts;
 
-            // console.error(this.opts.Vue);
+            this.lang = app.lang;
+
+            this.toolbar = app.toolbar;
+
+            this.selection = app.selection;
+
+            this.modalOptions = {
+                title: 'Edit Image',
+                name: 'photonImage',
+                commands: {
+                    insert: { title: 'Insert' },
+                    cancel: { title: 'Cancel' },
+                    remove: { title: 'Delete', type: 'danger' },
+                }
+            };
+
+            $(this.$editor).click(event => {
+                if (!$(event.target).is('img')) {
+                    return;
+                }
+
+                api.post(`${config.ENV.apiBasePath}/filter/image_sizes`, { include_relations: false })
+                    .then(response => {
+                        this.editPhotonImage.imageSizes = response.body.body.entries;
+
+                        this.editPhotonImage.show(event, this.editPhotonImage.imageSizes);
+                    })
+                    .catch((response) => {
+                        pError('Failed to load values for image sizes dropdown from the API.', response);
+                    });
+            });
+
+        },
+
+        start: function()
+        {
+            var data = {
+                title: 'Upload Image',
+                api: 'plugin.editPhotonImage.open'
+            };
+
+            var $button = this.toolbar.addButton('editPhotonImage', data);
+
+            $button.setIcon('<i class="fa fa-picture-o"></i>');
+
+            console.error(this);
+        },
+
+        open: function() {
+            this.selection.save();
 
             this.opts.openAssetsManager();
+
+            // open the modal with API
+            // this.app.api('module.modal.build', this.modalOptions);
         },
+
+        modals: {
+            photonImage: (function (imageSizes) {
+                let photonImageSizeDropdownOptions = '';
+
+                if (!_.isEmpty(imageSizes)) {
+                    this.editPhotonImage.imageSizes.forEach(imageSize => {
+                        photonImageSizeDropdownOptions += `<option value="${imageSize.id}">${imageSize.anchor_text}</option>`;
+                    });
+                }
+
+                let photonImageAlignmentOptions = '<option value="article-photo pull-left">## align-left ##</option>';
+
+                photonImageAlignmentOptions += '<option value="article-photo" selected>## center ##</option>';
+
+                photonImageAlignmentOptions += '<option value="article-photo pull-right">## align-right ##</option>';
+
+                return String()
+                + '<form action="">'
+                    + '<div class="redactor-modal-tab redactor-group" data-title="General">'
+                        + '<div id="photon-image-preview" class="redactor-modal-tab-side">'
+                        + '</div>'
+                        + '<div class="redactor-modal-tab-area">'
+                            + '<input type="hidden" id="photon-asset-id" value=""/>'
+                            + '<input type="hidden" id="photon-file_url" value=""/>'
+                            + '<div class="form-item">'
+                                + '<button id="redactor-modal-button-change-photo">## change-photo ##</button>'
+                            + '</div>'
+                            + '<div class="form-item">'
+                                + '<label class="redactor-image-position-option">## image-size ##</label>'
+                                + '<select class="redactor-image-position-option" id="photon-image-size" aria-label="## image-size ##">'
+                                    + photonImageSizeDropdownOptions
+                                + '</select>'
+                            + '</div>'
+                            + '<div class="form-item">'
+                                + '<label class="redactor-image-position-option">## image-alignment ##</label>'
+                                + '<select class="redactor-image-position-option" id="photon-image-alignment" aria-label="## image-alignment ##">'
+                                    + photonImageAlignmentOptions
+                                + '</select>'
+                            + '</div>'
+                            + '<div class="form-item">'
+                                + '<label>## title ##</label>'
+                                + '<input type="text" id="photon-image-title" />'
+                            + '</div>'
+                            + '<div class="form-item">'
+                                + '<label>## source ##</label>'
+                                + '<input type="text" id="photon-image-source" />'
+                            + '</div>'
+                        + '</div>'
+                    + '</div>'
+                + '</form>';
+            })(),
+        },
+
+        /**
+         * Stores available image sizes objects
+         *
+         * @type  {Array}
+         */
+        imageSizes: [],
+
+        /**
+         * Removes the image from the editor HTML
+         *
+         * @return  {[type]}  [description]
+         */
+        remove ($photonImageCodeSnippet) {
+            $photonImageCodeSnippet.remove();
+
+            this.app.api('module.modal.close');
+
+            this.app.api('module.source.sync');
+        },
+
+        /**
+         * Performs the update of the code as per parameters set in the modal window
+         *
+         * @return  {void}
+         */
+        save ($photonImageCodeSnippet) {
+            const assetId = $('#photon-asset-id').val();
+
+            api.get(`assets/${assetId}`)
+                .then(response => {
+                    let asset = response.body.body.entry;
+
+                    asset['imageSizeId'] = $('#photon-image-size').val();
+
+                    asset['imageAlignment'] = $('#photon-image-alignment').val();
+
+                    asset['source'] = {
+                        anchor_text: $('#photon-image-source').val(),
+                    };
+
+                    asset['title'] = $('#photon-image-title').val();
+
+                    const template = imageTagTemplate(asset);
+
+                    $photonImageCodeSnippet.replaceWith(template);
+
+                    this.app.api('module.modal.close');
+
+                    this.app.api('module.source.sync');
+                })
+                .catch((response) => {
+                    pError('Failed to load asset details from the API.', response);
+                });
+        },
+
     });
 
     // $.Redactor.prototype.editPhotonImage = function() {

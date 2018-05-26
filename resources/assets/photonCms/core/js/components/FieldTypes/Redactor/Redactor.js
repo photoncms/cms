@@ -213,9 +213,9 @@ export default {
                 ...redactorConfig,
                 callbacks: {
                     started: function () {
-                        let imageButton = this.toolbar.addButton('image', { title: 'Upload Image' });
+                        // let imageButton = this.toolbar.addButton('image', { title: 'Upload Image' });
 
-                        imageButton.setIcon('<i class="fa fa-picture-o"></i>');
+                        // imageButton.setIcon('<i class="fa fa-picture-o"></i>');
 
                         // this.button.addCallback(imageButton, function () {
                         //     self.$redactorContainer.redactor('selection.save');
@@ -316,9 +316,7 @@ export default {
 
                 const template = imageTagTemplate(asset, tempId);
 
-                this.$redactorContainer.redactor('insert.raw', template);
-
-                this.$redactorContainer.redactor('code.sync');
+                this.$redactorContainer.redactor('insertion.insertRaw', template);
 
                 $(`#${tempId}`).click()
                     .removeAttr('id');
