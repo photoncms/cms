@@ -50,7 +50,8 @@
         oncontextbar: function(e, contextbar)
         {
             var data = this.inspector.parse(e.target)
-            if (!data.isFigcaption() && data.isComponentType('widget'))
+
+            if (!data.isFigcaption() && data.isComponentType('widget') && $(e.target).data('widget-type') !== 'photon-image')
             {
                 var node = data.getComponent();
                 var buttons = {

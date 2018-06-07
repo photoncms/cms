@@ -312,14 +312,9 @@ export default {
                     return;
                 }
 
-                const tempId = `image-tag-${moment().valueOf()}`;
+                const template = imageTagTemplate(asset);
 
-                const template = imageTagTemplate(asset, tempId);
-
-                this.$redactorContainer.redactor('insertion.insertRaw', template);
-
-                $(`#${tempId}`).click()
-                    .removeAttr('id');
+                this.$redactorContainer.redactor('insertion.insertHtml', `<figure class="photon-image-container" data-widget-type="photon-image" data-open-first="true">${template}</figure>`);
             }
         },
 
