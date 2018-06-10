@@ -90,7 +90,7 @@
 
                 $item.attr('data-index', i);
                 $item.html(items[i][0]);
-                $item.on('click', this._insert.bind(this));
+                $li.on('click', this._insert.bind(this));
 
                 $li.append($item);
 
@@ -104,7 +104,7 @@
         },
         _insert: function(e)
         {
-            var $item = $R.dom(e.target);
+            var $item = $R.dom(e.currentTarget).find('span');
             var index = $item.attr('data-index');
             var html = this.opts.clips[index][1];
 
