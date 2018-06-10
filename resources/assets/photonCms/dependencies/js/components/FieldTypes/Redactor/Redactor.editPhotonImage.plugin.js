@@ -24,12 +24,13 @@ import { pError } from '_/helpers/logger';
                 'change-photo': 'Change photo',
                 'delete': 'Delete',
                 'edit-image': 'Edit Image',
+                'form-title': 'Title',
                 'image-alignment': 'Image alignment',
                 'image-size': 'Image size',
                 'insert': 'Insert',
                 'save': 'Save',
                 'source': 'Source',
-                'form-title': 'Title',
+                'upload-image': 'Upload Image',
             },
         },
 
@@ -47,6 +48,8 @@ import { pError } from '_/helpers/logger';
 
             this.toolbar = app.toolbar;
 
+            this.module = app.module;
+
             this.selection = app.selection;
 
             this.detector = app.detector;
@@ -54,21 +57,29 @@ import { pError } from '_/helpers/logger';
             this.insertion = app.insertion;
 
             this.modalOptions = {
-                title: 'Edit Image',
                 name: 'photonImage',
                 commands: {
-                    insert: { title: 'Save' },
-                    cancel: { title: 'Cancel' },
-                    remove: { title: 'Delete', type: 'danger' },
-                }
+                    cancel: { title: this.lang.get('cancel') },
+                    insert: { title: this.lang.get('save') },
+                    remove: {
+                        title: this.lang.get('delete'),
+                        type: 'danger'
+                    },
+                },
+                title: this.lang.get('edit-image'),
             };
         },
 
-        // messages
         onmodal: {
             photonImage: {
-                open: function($modal, $form)
-                {
+                /**
+                 * On Photon Image modal open event
+                 *
+                 * @param   {Object}  $modal
+                 * @param   {Object}  $form
+                 * @return  {void}
+                 */
+                open: function ($modal, $form) {
                     api.post(`${config.ENV.apiBasePath}/filter/image_sizes`, { include_relations: false })
                         .then(response => {
                             const imageSizes = response.body.body.entries;
@@ -87,13 +98,14 @@ import { pError } from '_/helpers/logger';
 
                             const $photonImageCodeSnippet = $image.parent();
 
-                            const $source = $photonImageCodeSnippet.find('span');
+                            const $source = $photonImageCodeSnippet.find('div.source');
 
                             let photonImageSizeDropdownOptions = '';
 
                             if (!_.isEmpty(imageSizes)) {
                                 imageSizes.forEach(imageSize => {
-                                    photonImageSizeDropdownOptions += `<option value="${imageSize.id}">${imageSize.anchor_text}</option>`;
+                                    photonImageSizeDropdownOptions
+                                        += `<option value="${imageSize.id}">${imageSize.anchor_text}</option>`;
                                 });
                             }
 
@@ -103,7 +115,9 @@ import { pError } from '_/helpers/logger';
 
                             $form.setData({ 'photon-file_url': fileUrl });
 
-                            $('#photon-image-preview').html($('<img src="' + $image.attr('src') + '" style="max-width: 100%;">'));
+                            $('#photon-image-preview').html(
+                                    $('<img src="' + $image.attr('src') + '" style="max-width: 100%;">')
+                                );
 
                             $form.setData({ 'photon-image-size': imageSizeId });
 
@@ -120,31 +134,57 @@ import { pError } from '_/helpers/logger';
                             $('#redactor-modal-button-change-photo').on('click', (event) => {
                                 event.preventDefault();
 
-                                this.app.api('module.modal.close');
-
                                 this.opts.openAssetsManager();
-                            });
 
+                                $($form.nodes[0]).off('assetChanged')
+                                    .on('assetChanged', (event, asset) => {
+                                        const data = $form.getData();
+
+                                        $form.setData({ 'photon-asset-id': asset.id });
+
+                                        const previewUrl = _.find(asset.resized_images, { image_size: parseInt(data['photon-image-size']) });
+
+                                        $form.setData({ 'photon-file_url': previewUrl.file_url });
+
+                                        $('#photon-image-preview img').attr('src', previewUrl.file_url);
+                                    });
+                            });
                         })
                         .catch((response) => {
                             pError('Failed to load values for image sizes dropdown from the API.', response);
                         });
                 },
+
+                /**
+                 * On Photon Image modal opened event
+                 *
+                 * @return  {void}
+                 */
                 opened: function()
                 {
-                    // this.app.api('insertion.insertHtml', 'A');
-
-                    // setTimeout(() => {
-                    //     this.app.api('insertion.insertHtml', 'B');
-                    // }, 1000);
-
-                    // if (this.detector.isDesktop()) {
-                    //     $('#photon-image-title').focus();
-                    // }
+                    if (this.detector.isDesktop()) {
+                        $('#photon-image-title').focus();
+                    }
                 },
+
+                /**
+                 * On Photon Image modal insert event
+                 *
+                 * @param   {Object}  $modal
+                 * @param   {Object}  $form
+                 * @return  {void}
+                 */
                 insert: function($modal, $form) {
                     this.save(this.node, $form);
                 },
+
+                /**
+                 * On Photon Image modal remove event
+                 *
+                 * @param   {Object}  $modal
+                 * @param   {Object}  $form
+                 * @return  {void}
+                 */
                 remove: function()
                 {
                     this.remove(this.node);
@@ -155,7 +195,7 @@ import { pError } from '_/helpers/logger';
         /**
          * Reveals the modal window
          *
-         * @param   {event}  event
+         * @param   {Object}  node
          * @return  {void}
          */
         show (node) {
@@ -164,28 +204,74 @@ import { pError } from '_/helpers/logger';
             this.app.api('module.modal.build', this.modalOptions);
         },
 
-        start: function()
-        {
-            var data = {
-                title: 'Upload Image',
-                api: 'plugin.editPhotonImage.open'
+        /**
+         * This method will launch at the same time as Redactor
+         *
+         * @return  {void}
+         */
+        start: function() {
+            const data = {
+                title: this.lang.get('upload-image'),
+                api: 'plugin.editPhotonImage.open',
+                observe: 'asset'
             };
 
-            var $button = this.toolbar.addButton('editPhotonImage', data);
+            const $button = this.toolbar.addButton('asset', data);
 
             $button.setIcon('<i class="fa fa-picture-o"></i>');
         },
 
+
+        /**
+         * Initated on toolbar button click
+         *
+         * @return  {void}
+         */
         open: function() {
             this.selection.save();
 
             this.opts.openAssetsManager();
+        },
 
-            // open the modal with API
-            // this.app.api('module.modal.build', this.modalOptions);
+        onbutton: {
+            asset: {
+                observe: function(button)
+                {
+                    this.observeButton(button);
+                }
+            }
+        },
+
+        /**
+         * Observes the Redactor selection and disables the button in given circumstances
+         *
+         * @param   {Object}  button
+         * @return  {void}
+         */
+        observeButton: function(button)
+        {
+            var current = this.selection.getCurrent();
+            var data = this.inspector.parse(current);
+
+            if (data.isComponentType('widget')
+                || data.isComponentType('video')) {
+                return button.disable();
+            }
+
+            if (!this.selection.isCollapsed()) {
+                return button.disable();
+            }
+
+            button.enable();
         },
 
         modals: {
+            /**
+             * Renders the modal form HTML
+             *
+             * @param   {array}  imageSizes
+             * @return  {string}
+             */
             photonImage: (function (imageSizes) {
                 let photonImageSizeDropdownOptions = '';
 
@@ -248,19 +334,22 @@ import { pError } from '_/helpers/logger';
         /**
          * Removes the image from the editor HTML
          *
-         * @return  {[type]}  [description]
+         * @param   {object}  $photonImageCodeSnippet
+         * @return  {void}
          */
         remove ($photonImageCodeSnippet) {
             $photonImageCodeSnippet.remove();
 
             this.app.api('module.modal.close');
 
-            this.app.api('module.source.sync');
+            this.module.source.sync();
         },
 
         /**
          * Performs the update of the code as per parameters set in the modal window
          *
+         * @param   {object}  $photonImageCodeSnippet
+         * @param   {object}  $form
          * @return  {void}
          */
         save ($photonImageCodeSnippet, $form) {
@@ -284,13 +373,14 @@ import { pError } from '_/helpers/logger';
 
                     const template = imageTagTemplate(asset);
 
-                    $R.dom($photonImageCodeSnippet).html(template);
+                    $R.dom($photonImageCodeSnippet).html($R.dom(template));
 
-                    // this.app.api('insertion.insertHtml', template);
+                    $R.dom($photonImageCodeSnippet).attr(
+                            'data-widget-code',
+                            encodeURI($R.dom($photonImageCodeSnippet).nodes[0].innerHTML.trim())
+                        );
 
                     this.app.api('module.modal.close');
-
-                    this.app.api('module.source.sync');
 
                     this.app.api('editor.focus');
                 })
@@ -299,7 +389,12 @@ import { pError } from '_/helpers/logger';
                 });
         },
 
-        // messages
+        /**
+         * Triggered after HTML is inserted via Insertion API
+         *
+         * @param   {array}  nodes
+         * @return  {void}
+         */
         oninserted: function(nodes)
         {
             if(nodes.length > 0) {
@@ -314,14 +409,19 @@ import { pError } from '_/helpers/logger';
             }
         },
 
-        oncontextbar: function(e, contextbar)
-        {
+        /**
+         * Triggered after context bar is invoked
+         *
+         * @param   {event}  e
+         * @param   {object}  contextbar
+         * @return  {void}
+         */
+        oncontextbar: function(e, contextbar) {
             const data = this.inspector.parse(e.target);
 
             if (!data.isFigcaption()
                 && data.isComponentType('widget')
-                && $(e.target).data('widget-type') === 'photon-image')
-            {
+                && $(e.target).data('widget-type') === 'photon-image') {
                 const node = data.getComponent();
 
                 const buttons = {
@@ -340,6 +440,5 @@ import { pError } from '_/helpers/logger';
                 contextbar.set(e, node, buttons, 'bottom');
             }
         },
-
     });
 })(Redactor);

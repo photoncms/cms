@@ -209,49 +209,25 @@ export default {
 
             this.$redactorContainer = $(self.$el).find('textarea');
 
-            $R('textarea', {
+            // make sure that the existing instance is destroyed before initializing a new one
+            if(this.$redactorContainer.redactor('isStarted')) {
+                this.$redactorContainer.redactor('destroy');
+            }
+
+            this.$redactorContainer.redactor({
                 ...redactorConfig,
+                openAssetsManager: self.openAssetsManager,
                 callbacks: {
-                    started: function () {
-                        // let imageButton = this.toolbar.addButton('image', { title: 'Upload Image' });
-
-                        // imageButton.setIcon('<i class="fa fa-picture-o"></i>');
-
-                        // this.button.addCallback(imageButton, function () {
-                        //     self.$redactorContainer.redactor('selection.save');
-
-                        //     self.openAssetsManager();
-                        // });
+                    changed: function (html) {
+                        self.onChange(self.id, self.name, html);
+                    },
+                    source: {
+                        changed: function (html) {
+                            self.onChange(self.id, self.name, html);
+                        },
                     },
                 },
-                openAssetsManager: self.openAssetsManager,
             });
-
-            // this.$redactorContainer.redactor({
-            //     ...redactorConfig,
-            //     });
-
-            // this.$redactorContainer.redactor({
-            //     ...redactorConfig,
-            //     callbacks: {
-            //         change: function () {
-            //             self.onChange(self.id, self.name, this.code.get());
-            //         },
-            //         init: function () {
-            //             let imageButton = this.button.add('image', 'Upload Image');
-
-            //             this.button.setIcon(imageButton, '<i class="fa fa-picture-o"></i>');
-
-            //             this.button.addCallback(imageButton, function () {
-            //                 self.$redactorContainer.redactor('selection.save');
-
-            //                 self.openAssetsManager();
-            //             });
-            //         }
-            //     },
-            //     // pass a reference to Vue so that we can use the instance in plugins
-                // Vue: this,
-            // });
         },
 
         /**
@@ -283,10 +259,13 @@ export default {
             });
         },
 
+        /**
+         * Triggered on asset selection
+         *
+         * @return  {void}
+         */
         onAssetSelection () {
-            // const this.$redactorContainer = $(this.$el).find(`#${this.id}`);
-
-            const isModalVisible = $('#redactor-modal-box').is(':visible');
+            const isModalVisible = $('#redactor-modal').is(':visible');
 
             if (!_.isEmpty(this.assetsManager.selectedAssets)) {
                 this.$redactorContainer.redactor('selection.restore');
@@ -299,22 +278,24 @@ export default {
                  * If Redactor modal is visible, update the modal content only
                  */
                 if(isModalVisible) {
-                    let $modal = this.$redactorContainer.redactor('modal.getModal');
-
-                    $($modal).find('#photon-asset-id').val(asset.id);
-
-                    const imageSizeId = $($modal).find('#photon-image-size').val();
-
-                    const previewUrl = _.find(asset.resized_images, { image_size: parseInt(imageSizeId) });
-
-                    $($modal).find('#photon-image-preview img').attr('src', previewUrl.file_url);
+                    $('#redactor-modal form').trigger('assetChanged', [ asset ]);
 
                     return;
                 }
 
-                const template = imageTagTemplate(asset);
+                const $template = imageTagTemplate(asset);
 
-                this.$redactorContainer.redactor('insertion.insertHtml', `<figure class="photon-image-container" data-widget-type="photon-image" data-open-first="true">${template}</figure>`);
+                const $node = $R.dom('<figure>')
+                    .addClass('redactor-component')
+                    .addClass('photon-image-container')
+                    .data('redactor-type', 'widget')
+                    .data('widget-type', 'photon-image')
+                    .data('open-first', true)
+                    .html($template);
+
+                    $node.attr('data-widget-code', encodeURI($node.nodes[0].innerHTML.trim()));
+
+                this.$redactorContainer.redactor('insertion.insertNode', $node);
             }
         },
 
@@ -324,7 +305,6 @@ export default {
          * @return  {void}
          */
         openAssetsManager() {
-            // Initialize the asset manager state
             store.dispatch(
                 `${this.registeredModuleName}/initializeState`, {
                     multiple: this.multiple,
@@ -371,6 +351,11 @@ export default {
         }
     },
 
+    /**
+     * Set the mounted hook
+     *
+     * @return  {void}
+     */
     mounted: function() {
         this.$nextTick(() => {
             $(this.$el).find('.close-footer input[type="checkbox"]').uniform();
@@ -383,18 +368,24 @@ export default {
         });
     },
 
+    /**
+     * Set the beforeDestroy hook
+     *
+     * @return  {void}
+     */
     beforeDestroy: function() {
         $(this.$el).find(`#${this.id}`).redactor('core.destroy');
     },
 
+    /**
+     * Define watched properties
+     *
+     * @type  {Object}
+     */
     watch: {
         'refreshFields' (newEntry, oldEntry) {
             if (newEntry !== oldEntry) {
                 this.$forceUpdate();
-
-                // const this.$redactorContainer = $(this.$el).find(`#${this.id}`);
-
-                this.$redactorContainer.redactor('core.destroy');
 
                 this.$redactorContainer.val(this.value);
 

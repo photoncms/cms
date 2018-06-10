@@ -42,6 +42,4 @@ export const redactorConfig = {
     'script': true,
     'source': true,
     'spellcheck': config.spellcheck,
-    'toolbarFixed': false,
-    'toolbarOverflow': true,
 };

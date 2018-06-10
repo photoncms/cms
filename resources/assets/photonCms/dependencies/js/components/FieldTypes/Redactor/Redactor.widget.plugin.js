@@ -147,8 +147,15 @@
             var current = this.selection.getCurrent();
             var data = this.inspector.parse(current);
 
-            if (data.isComponentType('table')) button.disable();
-            else button.enable();
+            if (data.isComponentType('table')) {
+                return button.disable();
+            }
+
+            if (data.isComponentType('widget') && $(data.el).data('widget-type') === 'photon-image') {
+                return button.disable();
+            }
+
+            button.enable();
         }
     });
 })(Redactor);

@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 (function($R)
 {
     $R.add('plugin', 'counter', {
@@ -28,8 +30,10 @@
             var $editor = this.editor.getElement();
             $editor.off('.redactor-plugin-counter');
 
-            this.statusbar.removeItem('words');
-            this.statusbar.removeItem('chars');
+            if(_.has(this, 'statusbar.removeItem')) {
+                this.statusbar.removeItem('words');
+                this.statusbar.removeItem('chars');
+            }
         },
         count: function()
         {

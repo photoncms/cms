@@ -6363,6 +6363,7 @@ $R.add('class', 'cleaner.figure', {
             }).unwrap();
         }
 
+
         // extra rules
         this._acceptExtraRules($wrapper, rules);
 

@@ -281,7 +281,7 @@ class ModulesTableSeeder extends Seeder
                 'lazy_loading' => 0,
                 'is_system' => 0,
                 'created_at' => '2018-04-26 09:20:45',
-                'updated_at' => '2018-05-25 11:43:51',
+                'updated_at' => '2018-06-10 14:51:52',
             ),
             
             array (
