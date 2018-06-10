@@ -1,0 +1,49 @@
+.redactor-box {
+    .article-photo {
+        position: relative;
+        width: 100%;
+        max-width: 100%;
+
+        img {
+            width: 100%;
+            max-width: 100%;
+            max-width: 100%;
+            cursor: pointer;
+        }
+
+        &.pull-left {
+            width: auto;
+            margin-right: 10px;
+
+            img {
+                width: auto;
+            }
+        }
+
+        &.pull-right{
+            width: auto;
+            margin-left: 10px;
+
+            img {
+                width: auto;
+            }
+        }
+
+        .source {
+            font-size: 12px;
+            line-height: 14px;
+            padding: 3px 10px;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #000;
+            color: #fff;
+            font-style: italic;
+        }
+    }
+
+    p {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
