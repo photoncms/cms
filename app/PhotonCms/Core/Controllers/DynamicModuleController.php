@@ -171,22 +171,19 @@ class DynamicModuleController extends Controller
      */
     public function getAllDynamicModuleEntries($tableName, $filter = null, $sorting = null, $pagination = null)
     {
-        if(config("photon.use_photon_cache")) {
-            $user = \Auth::user();
-            $permissions = PermissionHelper::getCurrentUserPermissions(); 
+        $user = \Auth::user();
+        $permissions = PermissionHelper::getCurrentUserPermissions();
+        $cacheKeyName = json_encode([
+            "tableName"     => $tableName,
+            "user"          => $user->id,
+            "filter"        => $filter,
+            "sorting"       => $sorting,
+            "pagination"    => $pagination,
+            "permissions"   => $permissions
+        ]);
 
-            $cacheKeyName = json_encode([
-                "tableName"     => $tableName, 
-                "user"          => $user->id, 
-                "filter"        => $filter, 
-                "sorting"       => $sorting, 
-                "pagination"    => $pagination, 
-                "permissions"   => $permissions
-            ]);
-            
-            if(Cache::tags([env("APPLICATION_URL"), $tableName])->has($cacheKeyName)) {
-                return Cache::tags([env("APPLICATION_URL"), $tableName])->get($cacheKeyName);
-            }
+        if(config("photon.use_photon_cache") && Cache::tags([env("APPLICATION_URL"), $tableName])->has($cacheKeyName)) {     
+            return Cache::tags([env("APPLICATION_URL"), $tableName])->get($cacheKeyName);   
         }
 
         $entries = $this->dynamicModuleLibrary->getAllEntries($tableName, $filter, $pagination, $sorting);
@@ -211,6 +208,7 @@ class DynamicModuleController extends Controller
         if(config("photon.use_photon_cache")) {
             Cache::tags([env("APPLICATION_URL"), $tableName])->put($cacheKeyName, $result, config("photon.photon_caching_time"));
         }
+
         return $result;
     }
 
