@@ -171,19 +171,21 @@ class DynamicModuleController extends Controller
      */
     public function getAllDynamicModuleEntries($tableName, $filter = null, $sorting = null, $pagination = null)
     {
-        $user = \Auth::user();
-        $permissions = PermissionHelper::getCurrentUserPermissions();
-        $cacheKeyName = json_encode([
-            "tableName"     => $tableName,
-            "user"          => $user->id,
-            "filter"        => $filter,
-            "sorting"       => $sorting,
-            "pagination"    => $pagination,
-            "permissions"   => $permissions
-        ]);
+        if(config("photon.use_photon_cache")) {
+            $user = \Auth::user();
+            $permissions = PermissionHelper::getCurrentUserPermissions();
+            $cacheKeyName = json_encode([
+                "tableName"     => $tableName,
+                "user"          => $user->id,
+                "filter"        => $filter,
+                "sorting"       => $sorting,
+                "pagination"    => $pagination,
+                "permissions"   => $permissions
+            ]);  
 
-        if(config("photon.use_photon_cache") && Cache::tags([env("APPLICATION_URL"), $tableName])->has($cacheKeyName)) {     
-            return Cache::tags([env("APPLICATION_URL"), $tableName])->get($cacheKeyName);   
+            if(Cache::tags([env("APPLICATION_URL"), $tableName])->has($cacheKeyName)) {
+                return Cache::tags([env("APPLICATION_URL"), $tableName])->get($cacheKeyName);   
+            }   
         }
 
         $entries = $this->dynamicModuleLibrary->getAllEntries($tableName, $filter, $pagination, $sorting);
