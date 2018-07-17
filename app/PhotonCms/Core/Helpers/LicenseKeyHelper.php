@@ -29,16 +29,24 @@ class LicenseKeyHelper
 	*/
 	public static function pingHome($key)
 	{
-		$client = new \GuzzleHttp\Client();
+		$config = [
+			'CURLOPT_SSL_VERIFYPEER' => false,
+		];
+		$client = new \GuzzleHttp\Client($config);
+
 		$userCount = User::count();
 		try {
 			$res = $client->request('POST', 'https://haven.photoncms.com/license-call-home', [
 	    		'headers' => [
 	    			'Accept' => 'application/json'
 	    		],
-	            'form_params' => ['license_key' => $key, 'domain_name' => url("/"), 'user_count' => $userCount],
+	            'form_params' => [
+	            	'license_key' => $key, 
+	            	'domain_name' => url("/"), 
+	            	'user_count' => $userCount,
+	            ],
 	            'timeout' => 30,
-        		'connect_timeout' => 30
+        		'connect_timeout' => 30,
 	        ]);
 		} catch (\GuzzleHttp\Exception\RequestException $e) {
 			$response = $e->getResponse();
