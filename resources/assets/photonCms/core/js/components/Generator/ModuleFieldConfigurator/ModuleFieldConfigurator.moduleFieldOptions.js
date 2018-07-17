@@ -230,6 +230,21 @@ export const getModuleFieldOptions = (ModuleFieldsConfigurator) => {
         },
 
         /**
+         * Unique field
+         */
+        {
+            defaultValue: false,
+            id: `${ModuleFieldsConfigurator.moduleField.id}|unique`,
+            label: 'Unique',
+            mutation: 'generator/UPDATE_GENERATOR_SELECTED_MODULE_FIELD_UNIQUE',
+            name: `fields[${ModuleFieldsConfigurator.moduleField.order}][unique]`,
+            optionGroup: 1,
+            tooltip: 'Adds the field unique key in the database.',
+            value: ModuleFieldsConfigurator.moduleField.unique,
+            vueComponent: 'Boolean',
+        },
+
+        /**
          * Is default search choice field
          */
         {

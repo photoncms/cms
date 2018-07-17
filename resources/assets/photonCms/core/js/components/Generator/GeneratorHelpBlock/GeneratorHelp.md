@@ -58,6 +58,7 @@ Each field has attributes according to its purpose. Following is the list in alp
 | Foreign Key              | mixed   | No       | Yes      | automatic assignment if not supplied |
 | Hidden                   | boolean | No       | Yes      | false                                |
 | Indexed                  | boolean | No       | Yes      | false                                |
+| Unique                   | boolean | No       | Yes      | false                                |
 | Is Default Search Choice | boolean | No       | Yes      | false                                |
 | Is System                | boolean | No       | Yes      | false                                |
 | Lazy Loading             | boolean | No       | Yes      | false                                |
