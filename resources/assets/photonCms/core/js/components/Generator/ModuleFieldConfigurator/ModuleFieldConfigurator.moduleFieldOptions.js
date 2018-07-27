@@ -385,7 +385,7 @@ export const getModuleFieldOptions = (ModuleFieldsConfigurator) => {
                 mutation: 'generator/UPDATE_GENERATOR_SELECTED_MODULE_FIELD_FLATTEN_TO_OPTGROUPS',
                 name: `fields[${ModuleFieldsConfigurator.moduleField.order}][flatten_to_optgroups]`,
                 optionGroup: 1,
-                tooltip: 'If set to true, select2.js plugin will flatten all entries fetched from multilevel sortable module, and use the root level as optgorups, and everything below as options.',
+                tooltip: 'If set to true, select2.js plugin will flatten all entries fetched from multilevel sortable module, and use the root level as optgroups, and everything below as options.',
                 value: ModuleFieldsConfigurator.moduleField.flatten_to_optgroups,
                 vueComponent: 'Boolean',
             },
