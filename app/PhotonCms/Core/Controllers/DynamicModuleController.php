@@ -483,8 +483,6 @@ class DynamicModuleController extends Controller
         if(config("photon.use_photon_cache")) {
             $relatedModules = $this->dynamicModuleLibrary->findRelatedModules($module);
             Cache::tags($relatedModules)->flush();
-
-            Cache::tags([env("APPLICATION_URL"), $tableName])->put($tableName . ":" . $entry->id, $entry, config("photon.photon_caching_time"));
         }
 
         return $entry;
@@ -584,8 +582,6 @@ class DynamicModuleController extends Controller
         if(config("photon.use_photon_cache")) {
             $relatedModules = $this->dynamicModuleLibrary->findRelatedModules($module);
             Cache::tags($relatedModules)->flush(); 
-
-            Cache::tags([env("APPLICATION_URL"), $tableName])->put($tableName . ":" . $entry->id, $entry, config("photon.photon_caching_time"));
         }
 
         return $entry;
