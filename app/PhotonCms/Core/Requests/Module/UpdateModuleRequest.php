@@ -63,6 +63,7 @@ class UpdateModuleRequest extends Request
                 $rules['fields.' . $key . '.validation_rules'] = 'nullable|string|max:255';
                 $rules['fields.' . $key . '.editable'] = 'boolean';
                 $rules['fields.' . $key . '.disabled'] = 'boolean';
+                $rules['fields.' . $key . '.unique'] = 'boolean';
                 $rules['fields.' . $key . '.hidden'] = 'boolean';
                 $rules['fields.' . $key . '.is_system'] = 'boolean';
                 $rules['fields.' . $key . '.lazy_loading'] = 'boolean';

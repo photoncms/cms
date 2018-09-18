@@ -230,6 +230,21 @@ export const getModuleFieldOptions = (ModuleFieldsConfigurator) => {
         },
 
         /**
+         * Unique field
+         */
+        {
+            defaultValue: false,
+            id: `${ModuleFieldsConfigurator.moduleField.id}|unique`,
+            label: 'Unique',
+            mutation: 'generator/UPDATE_GENERATOR_SELECTED_MODULE_FIELD_UNIQUE',
+            name: `fields[${ModuleFieldsConfigurator.moduleField.order}][unique]`,
+            optionGroup: 1,
+            tooltip: 'Adds the field unique key in the database.',
+            value: ModuleFieldsConfigurator.moduleField.unique,
+            vueComponent: 'Boolean',
+        },
+
+        /**
          * Is default search choice field
          */
         {
@@ -370,7 +385,7 @@ export const getModuleFieldOptions = (ModuleFieldsConfigurator) => {
                 mutation: 'generator/UPDATE_GENERATOR_SELECTED_MODULE_FIELD_FLATTEN_TO_OPTGROUPS',
                 name: `fields[${ModuleFieldsConfigurator.moduleField.order}][flatten_to_optgroups]`,
                 optionGroup: 1,
-                tooltip: 'If set to true, select2.js plugin will flatten all entries fetched from multilevel sortable module, and use the root level as optgorups, and everything below as options.',
+                tooltip: 'If set to true, select2.js plugin will flatten all entries fetched from multilevel sortable module, and use the root level as optgroups, and everything below as options.',
                 value: ModuleFieldsConfigurator.moduleField.flatten_to_optgroups,
                 vueComponent: 'Boolean',
             },

@@ -88,6 +88,10 @@ class FieldRepository
                 $field->disabled = $data['disabled'];
             }
 
+            if (array_key_exists('unique', $data)) {
+                $field->unique = $data['unique'];
+            }
+
             if (array_key_exists('hidden', $data)) {
                 $field->hidden = $data['hidden'];
             }

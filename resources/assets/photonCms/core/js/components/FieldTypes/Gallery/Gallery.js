@@ -374,6 +374,9 @@ export default {
                         }
                     },
                 },
+                sorting: {
+                    lft: 'asc',
+                },
             };
 
             return api.post('filter/gallery_items', payload)
@@ -677,6 +680,8 @@ export default {
             this.initEventBusListener();
 
             this.initializeAssetManager();
+
+            this.initializeUISortable();
         });
     },
 

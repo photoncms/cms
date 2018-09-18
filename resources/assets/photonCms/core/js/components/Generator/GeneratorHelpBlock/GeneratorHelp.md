@@ -58,6 +58,7 @@ Each field has attributes according to its purpose. Following is the list in alp
 | Foreign Key              | mixed   | No       | Yes      | automatic assignment if not supplied |
 | Hidden                   | boolean | No       | Yes      | false                                |
 | Indexed                  | boolean | No       | Yes      | false                                |
+| Unique                   | boolean | No       | Yes      | false                                |
 | Is Default Search Choice | boolean | No       | Yes      | false                                |
 | Is System                | boolean | No       | Yes      | false                                |
 | Lazy Loading             | boolean | No       | Yes      | false                                |
@@ -83,7 +84,7 @@ Each field has attributes according to its purpose. Following is the list in alp
 | Default                  | Sets the default parameter in the DB.                                                                                                                                                                                                                              |
 | Disabled                 | Use this to determine if the field in the form should be disabled.                                                                                                                                                                                                 |
 | Editable                 | Use this to determine if the field in the form should be editable.                                                                                                                                                                                                 |
-| Flatten To Optgroups     | If set to true, select2.js plugin will flatten all entries fetched from multilevel sortable module, and use the root level as optgorups, and everything below as options.                                                                                          |
+| Flatten To Optgroups     | If set to true, select2.js plugin will flatten all entries fetched from multilevel sortable module, and use the root level as optgroups, and everything below as options.                                                                                          |
 | Foreign Key              | Custom foreign key in snake_case notation that will be used for relation. If the value is not provided, it will be auto-generated. In case of One to many field user must provide custom foreign_key in order for relation within module to be properly generated. |
 | Hidden                   | Use this to determine if the field in the form should be hidden.                                                                                                                                                                                                   |
 | Indexed                  | Adds/removes the field indexing in the DB.                                                                                                                                                                                                                         |

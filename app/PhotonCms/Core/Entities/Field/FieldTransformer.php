@@ -192,6 +192,7 @@ class FieldTransformer extends BaseTransformer implements TransformerFullTransfo
             'order' => null,
             'editable' => null,
             'disabled' => null,
+            'unique' => null,
             'hidden' => null,
             'is_system' => null,
             'virtual' => null,
