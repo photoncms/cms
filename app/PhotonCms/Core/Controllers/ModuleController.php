@@ -34,6 +34,7 @@ use Photon\PhotonCms\Core\Entities\DynamicModuleMigration\DynamicModuleMigration
 use Photon\PhotonCms\Core\Entities\DynamicModuleMigration\DynamicModuleMigrationFactory;
 use Photon\PhotonCms\Core\Entities\Migration\MigrationCompiler;
 use Photon\PhotonCms\Core\Helpers\MigrationsHelper;
+use Photon\PhotonCms\Core\Helpers\DatabaseHelper;
 use Photon\PhotonCms\Core\Entities\Seed\Contracts\SeedGatewayInterface;
 use Photon\PhotonCms\Core\Entities\FieldType\FieldTypeRepository;
 use Photon\PhotonCms\Core\Entities\FieldType\FieldTypeGateway;
@@ -521,7 +522,7 @@ class ModuleController extends Controller
         $transactionController->commit();
 
         // Rebuild field and module seeders
-        $this->rebuildSeeders();
+        DatabaseHelper::rebuildSeeders();
 
         // Reload module fields from the DB
         $module->load('fields');
@@ -834,7 +835,7 @@ class ModuleController extends Controller
         $transactionController->commit();
 
         // Rebuild module and field seeders
-        $this->rebuildSeeders();
+        DatabaseHelper::rebuildSeeders();
 
         // Reload module fields from the DB
         $module = $module->fresh('fields');
@@ -964,7 +965,7 @@ class ModuleController extends Controller
         $transactionController->commit();
 
         // Rebuild module and field seeders
-        $this->rebuildSeeders();
+        DatabaseHelper::rebuildSeeders();
 
         $responseData = [
             'module' => $module
@@ -978,27 +979,6 @@ class ModuleController extends Controller
             ),
             $responseData
         );
-    }
-
-    /**
-     * Rebuilds module and field seeders.
-     */
-    private function rebuildSeeders()
-    {
-        // ToDo: needs a SeedTemplateFactory here (Sasa|01/2016)
-        $seedTemplate = new SeedTemplate();
-        $seedTemplate->addTable('modules');
-        $seedTemplate->addTable('field_types');
-        $seedTemplate->addTable('model_meta_types');
-        $seedTemplate->useForce();
-        $this->seedRepository->create($seedTemplate, $this->seedGateway);
-
-        $seedTemplate = new SeedTemplate();
-        $seedTemplate->addTable('fields');
-        $seedTemplate->addTable('model_meta_data');
-        $seedTemplate->addExclusion('id');
-        $seedTemplate->useForce();
-        $this->seedRepository->create($seedTemplate, $this->seedGateway);
     }
 
     /**

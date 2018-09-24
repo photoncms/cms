@@ -22,5 +22,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ModelMetaDataTableSeeder::class);
         $this->call(ModuleTypesTableSeeder::class);
         $this->call(MenuLinkTypesTableSeeder::class);
+        $this->call(FieldGroupsTableSeeder::class);
     }
 }

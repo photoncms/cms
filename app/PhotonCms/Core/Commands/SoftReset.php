@@ -135,7 +135,7 @@ class SoftReset extends Command
         ResetHelper::rebuildModels();
         $this->info('...Models rebuilt');
 
-        ResetHelper::rebuildSeeders();
+        DatabaseHelper::rebuildSeeders();
         $this->info('...Seeders rebuilt');
 
         ResetHelper::updatePasswordCreationTime();

@@ -106,6 +106,11 @@ class Sync extends Command
             $backedUpTableNames = [];
             $backedUpPivotTables = [];
             foreach ($modules as $module) {
+                // skip field groups
+                if($module->table_name == 'field_groups') {
+                    continue;
+                }
+
                 $gateway = $this->dynamicModuleLibrary->getGatewayInstanceByTableName($module->table_name);
                 $this->dynamicModuleRepository->backupModuleData($gateway);
                 $backedUpTableNames[] = $module->table_name;
@@ -153,6 +158,11 @@ class Sync extends Command
         if(!$isEmptyDb) {
             $modules = $this->moduleRepository->getAll($this->moduleGateway);
             foreach ($modules as $module) {
+                // skip field groups
+                if($module->table_name == 'field_groups') {
+                    continue;
+                }
+
                 $gateway = $this->dynamicModuleLibrary->getGatewayInstanceByTableName($module->table_name);
                 $this->dynamicModuleRepository->restoreModuleData($gateway);
 
@@ -169,6 +179,9 @@ class Sync extends Command
 
             $this->dynamicModuleRepository->restoreSystemTables($gateway);
             $this->info('...System Tables restored');
+
+            DatabaseHelper::seedTableData('field_groups', true);
+            $this->info('...Field groups seeder ran');
         } else {
             ResetHelper::seedInitialValues();
             $this->info('...Initial Values seeded');

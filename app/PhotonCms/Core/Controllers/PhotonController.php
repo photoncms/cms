@@ -222,7 +222,7 @@ class PhotonController extends Controller
         ResetHelper::rebuildAndRunMigrations();
         ResetHelper::seedInitialValues();
         ResetHelper::rebuildModels();
-        ResetHelper::rebuildSeeders();
+        DatabaseHelper::rebuildSeeders();
         ResetHelper::updatePasswordCreationTime();
 
         return $this->responseRepository->make('PHOTON_HARD_RESET_SUCCESS');
@@ -258,7 +258,7 @@ class PhotonController extends Controller
         ResetHelper::rebuildAndRunMigrations();
         ResetHelper::seedInitialValues();
         ResetHelper::rebuildModels();
-        ResetHelper::rebuildSeeders();
+        DatabaseHelper::rebuildSeeders();
         ResetHelper::updatePasswordCreationTime();
 
         return $this->responseRepository->make('PHOTON_SOFT_RESET_SUCCESS');
