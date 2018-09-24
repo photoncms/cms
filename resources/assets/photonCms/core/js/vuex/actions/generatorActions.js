@@ -35,9 +35,9 @@ export default {
     /**
      * Creates a menu shortcut
      *
-     * @param   {fucntion}  options.commit  
-     * @param   {object}  options.response  
-     * @return  {object}  
+     * @param   {fucntion}  options.commit
+     * @param   {object}  options.response
+     * @return  {object}
      */
     createMenuShortcut ({ commit }, { response }) {
         const payload = {
@@ -52,7 +52,7 @@ export default {
         return api['post']('menus/items', payload)
             .then((response) => {
                 store.dispatch('ui/getMainMenu');
-                
+
                 return response.data.body;
             })
             .catch((response) => {

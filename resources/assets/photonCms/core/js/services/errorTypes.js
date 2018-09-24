@@ -8,6 +8,8 @@ export const errorTypes = {
     // API message translations
     ADMIN_CANNOT_DELETE_ENTRY_HAS_RELATIONS: i18n.t('errorTypes.adminCannotDeleteEntryHasRelations'),
     ADMIN_CANNOT_DELETE_ENTRY_HAS_CHILDREN: i18n.t('errorTypes.adminCannotDeleteEntryHasChildren'),
+    ADMIN_FIELD_GROUP_DELETE_FAILED_FIELD_GROUP_HAS_FIELDS: i18n.t('errorTypes.adminFieldGroupDeleteFailedFieldGroupHasFields'),
+    ADMIN_CANNOT_LOCK_SELF: i18n.t('errorTypes.adminCannotLockSelf'),
     ADMIN_INSUFICIENT_PERMISSIONS: i18n.t('errorTypes.adminInsuficientPermissions'),
     ADMIN_INVALID_CSV_FILE: i18n.t('errorTypes.adminInvalidCsvFile'),
     ADMIN_PASSWORD_ALREADY_USED: i18n.t('errorTypes.adminPasswordAlreadyUsed'),

@@ -33,8 +33,13 @@ class Field extends Model
         'is_default_search_choice',
         'can_create_search_choice',
         'nullable',
+        'field_group_id',
         'indexed'
     ];
+
+    public function fieldGroup() {
+        return $this->hasOne('\Photon\PhotonCms\Dependencies\DynamicModels\FieldGroups', 'id', 'field_group_id');
+    }
 
     public function fieldType() {
         return $this->hasOne('\Photon\PhotonCms\Core\Entities\FieldType\FieldType', 'id', 'type');

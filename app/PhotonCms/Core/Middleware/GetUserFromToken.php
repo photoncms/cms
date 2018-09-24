@@ -64,7 +64,7 @@ class GetUserFromToken extends BaseMiddleware
             return $this->responseRepository->make('TOKEN_INVALID');
         }
 
-        if (! $user) {
+        if (! $user || $user->locked) {
             return $this->responseRepository->make('USER_NOT_FOUND');
         }
         

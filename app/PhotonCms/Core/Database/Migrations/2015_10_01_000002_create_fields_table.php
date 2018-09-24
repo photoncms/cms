@@ -26,6 +26,7 @@ class CreateFieldsTable extends Migration
             $table->bigInteger('module_id')->unsigned()->index();
             $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');
             $table->integer('order')->default(0);
+            $table->integer('field_group_id')->nullable()->default(null);
             $table->boolean('editable')->default(1);
             $table->boolean('disabled')->default(0);
             $table->boolean('unique')->default(0);

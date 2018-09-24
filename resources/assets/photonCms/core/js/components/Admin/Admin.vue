@@ -57,6 +57,8 @@
 
                     <info-panel vuexModule="admin"></info-panel>
 
+                    <field-groups-helper v-if="admin.selectedModule.table_name === 'field_groups'"></field-groups-helper>
+
                     <admin-slot-below-info-panel></admin-slot-below-info-panel>
 
                     <help-block></help-block>

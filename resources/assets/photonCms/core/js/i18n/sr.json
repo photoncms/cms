@@ -33,6 +33,7 @@
         "exportAsCSV": "Izvezi kao CSV",
         "exportAsPDF": "Izvezi kao PDF",
         "exportAsXLSX": "Izvezi kao XLSX",
+        "fetchAModuleIdByModuleNameHelper": "Pronadji ID modula po imenu modula",
         "hidePermissionGenerator": "Sakrij generator permisija",
         "id": "ID",
         "ifYouBelieveThisIsAnErrorPleaseContactTheAdministrator": "Ako predpostavljate da je ovo greška, kontaktirajte administratora.",
@@ -116,6 +117,8 @@
     "errorTypes": {
         "adminCannotDeleteEntryHasRelations": "Ovaj unos se koristi u sprezi sa drugim unosom i ne može biti obrisan.",
         "adminCannotDeleteEntryHasChildren": "Ovaj unos se koristi kao parent drugog unosa i ne može biti obrisan.",
+        "adminFieldGroupDeleteFailedFieldGroupHasFields": "Ovaj unos se koristi u sprezi sa drugim unosom i ne može biti obrisan.",
+        "adminCannotLockSelf": "Nije dozvoljeno zaključavanje sopstvenog korisničkog naloga.",
         "adminInsuficientPermissions": "Nemaš dovoljne privilegije za sprovođenje ove akcije.",
         "adminInvalidCsvFile": "Nevalidan CSV format. Proverite fajl.",
         "adminPasswordAlreadyUsed": "Password was already used.",

@@ -65,6 +65,7 @@ class FieldFactory
             'virtual',
             'lazy_loading',
             'nullable',
+            'field_group_id',
             'indexed',
             'default',
             'local_key',

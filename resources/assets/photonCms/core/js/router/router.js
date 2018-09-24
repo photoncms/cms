@@ -375,6 +375,7 @@ const init = function (to, from, next, apiToken) {
     Promise.all([
         store.dispatch('photonModule/getPhotonModules', {}),
         store.dispatch('photonField/getPhotonFields', {}),
+        store.dispatch('photonField/getPhotonFieldGroups', {}),
     ]).then(() => {
         runLaravelEcho(apiToken, store.state.user.meta.id);
 

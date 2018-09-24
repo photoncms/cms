@@ -11,7 +11,22 @@ class Module extends Model
      *
      * @var array
      */
-    protected $fillable = ['id', 'type', 'name', 'model_name', 'table_name', 'anchor_text', 'anchor_html', 'icon', 'category', 'reporting', 'lazy_loading', 'slug', 'max_depth'];
+    protected $fillable = [
+        'id', 
+        'type', 
+        'name', 
+        'model_name', 
+        'table_name', 
+        'anchor_text', 
+        'anchor_html', 
+        'icon', 
+        'category', 
+        'reporting', 
+        'lazy_loading', 
+        'non_grouped_to_bottom', 
+        'slug', 
+        'max_depth',
+    ];
 
     /**
      * If false prevents auto ID assignment. This is important when we generate a uid and manually assign it.
@@ -33,6 +48,16 @@ class Module extends Model
     public function fields()
     {
         return $this->hasMany('Photon\PhotonCms\Core\Entities\Field\Field', 'module_id', 'id');
+    }
+
+    /**
+     * Returns related module field groups
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function fieldGroups()
+    {
+        return $this->hasMany('Photon\PhotonCms\Dependencies\DynamicModels\FieldGroups', 'module_id', 'id');
     }
 
     /**

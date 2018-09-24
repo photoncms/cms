@@ -203,6 +203,16 @@ export default {
         },
 
         /**
+         * Checks if a group has assigned fields
+         *
+         * @param   {object}  fieldGroup
+         * @return  {boolean}
+         */
+        groupHasFields (fieldGroup) {
+            return _.some(this.fields, { fieldGroupId: fieldGroup.id });
+        },
+
+        /**
          * Bind evenBus listeners
          *
          * @return  {void}
@@ -337,6 +347,7 @@ export default {
      */
     computed: {
         ...mapGetters({
+            photonFields: 'photonField/photonField',
             user: 'user/user',
         }),
 
@@ -358,6 +369,35 @@ export default {
             set (value) {
                 this.createAnotherEntry(value);
             }
+        },
+
+        /**
+         * Returns a field groups array
+         *
+         * @return  {array}
+         */
+        fieldGroups () {
+            const ungroupedFields = [{
+                    id: null,
+                    name: null,
+                }];
+
+            let fieldGroups = this.photonFields.fieldGroups
+                    .filter((group) => {
+                        return group.module_id === this.admin.selectedModule.id;
+                    })
+                    .map((group) => {
+                        return {
+                            id: group.id,
+                            name: group.name
+                        };
+                    });
+
+            if(this.admin.selectedModule.non_grouped_to_bottom) {
+                return fieldGroups.concat(ungroupedFields);
+            }
+
+            return ungroupedFields.concat(fieldGroups);
         },
 
         /**

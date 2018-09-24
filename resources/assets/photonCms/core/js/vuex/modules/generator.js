@@ -367,10 +367,18 @@ const mutations = {
     },
 
     [types.UPDATE_GENERATOR_SELECTED_MODULE_CATEGORY](state, {newValue}) {
-        state.selectedModule.category = newValue;
+        state.selectedModule.category = newValue == 0 ? null : newValue;
+    },
+
+    [types.UPDATE_GENERATOR_NON_GROUPED_FIELDS_TO_BOTTOM](state, {newValue}) {
+        state.selectedModule.non_grouped_to_bottom = newValue;
     },
 
     [types.UPDATE_GENERATOR_FIELD_PROPERTY]: updateFieldProperty,
+
+    [types.UPDATE_GENERATOR_GROUP_FIELD_PROPERTY](state, { id, newValue }) {
+        updateFieldProperty(state, { id, newValue: newValue == 0 ? null : newValue });
+    },
 
     [types.UPDATE_GENERATOR_SELECTED_MODULE_FIELD_CAN_CREATE_SEARCH_CHOICE]: updateFieldProperty,
 

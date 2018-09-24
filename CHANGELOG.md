@@ -1,5 +1,17 @@
 # Release Notes
 
+## v1.2.0 (2018-09-24)
+
+### Added
+- Added field groups functionality
+- Added a Big Integer field type
+- Added a user account lock functionality
+- Added interrupt login and register events
+- Added post login and register events
+
+### Fixed
+- Fixed a generator validation error bug
+
 ## v1.1.3 (2018-09-18)
 
 ### Added
