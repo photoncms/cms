@@ -38,7 +38,7 @@
                                 :value="field.value"
                                 :vuexModule="vuexModule"
                                 v-for="field in fields"
-                                v-if="fieldGroup.id === field.fieldGroupId"
+                                v-if="shouldShowField(field, fieldGroup)"
                                 >
                             </form-field>
                         </div>

@@ -38,6 +38,7 @@
                 <div v-if="admin.editorMode === 'edit' || admin.editorMode === 'create'">
                     <entry-form
                         :fields="fields"
+                        :should-group-fields="true"
                         :form-fields-reset-prop="formFieldsReset"
                         vuexModule="admin">
                     </entry-form>

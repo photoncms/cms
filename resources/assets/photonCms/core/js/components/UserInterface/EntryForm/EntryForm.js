@@ -79,6 +79,10 @@ export default {
             default: false,
             type: Boolean,
         },
+        shouldGroupFields: {
+            default: false,
+            type: Boolean,
+        },
         shouldRouterPush: {
             default: true,
             type: Boolean,
@@ -209,7 +213,27 @@ export default {
          * @return  {boolean}
          */
         groupHasFields (fieldGroup) {
+            if(!this.shouldGroupFields) {
+                return true;
+            }
+
             return _.some(this.fields, { fieldGroupId: fieldGroup.id });
+        },
+
+        /**
+         * Checks if a field should be shown
+         *
+         * @return  {boolean}
+         */
+        shouldShowField (field, fieldGroup) {
+            // If a field has a fieldGroupId property it's a dynamic module field,
+            // so it should be checked for grouping
+            if (_.has(field, 'fieldGroupId')) {
+                return fieldGroup.id === field.fieldGroupId;
+            }
+
+            // otherwise, the field is a custom system one (e.g. menu-item)
+            return true;
         },
 
         /**
