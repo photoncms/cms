@@ -13,7 +13,19 @@ const upperCamelCase = require('uppercamelcase');
  * @type  {object}
  */
 const state = {
-    fieldTypes: {},  // A list of all custom fields
+    /**
+     * A list of all Group Fields
+     *
+     * @type  {Object}
+     */
+    fieldGroups: {},
+
+    /**
+     * A list of all field
+     *
+     * @type  {Object}
+     */
+    fieldTypes: {},
 };
 
 /**
@@ -23,13 +35,24 @@ const state = {
  */
 const mutations = {
     /**
+     * Creates a list of all field groups and stores them indexed by module ID
+     *
+     * @param  {object}  state
+     * @param  {array}  field_types
+     * @return  {void}
+     */
+    [types.GET_ALL_FIELD_GROUPS_SUCCESS](state, { response }) {
+        state.fieldGroups = response.body.body.entries;
+    },
+
+    /**
      * Creates a list of all field types and stores them indexed by ID
      *
      * @param  {object}  state
      * @param  {array}  field_types
      * @return  {void}
      */
-    [types.GET_ALL_FIELD_TYPES_SUCCESS](state, {field_types}) {
+    [types.GET_ALL_FIELD_TYPES_SUCCESS](state, { field_types }) {
         let types = {};
 
         field_types.forEach(function(fieldType) {
@@ -38,9 +61,8 @@ const mutations = {
         });
 
         state.fieldTypes = types;
-    }
+    },
 };
-
 
 /**
  * Define the module getters

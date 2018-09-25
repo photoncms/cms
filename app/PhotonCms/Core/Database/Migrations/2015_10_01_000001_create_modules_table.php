@@ -30,6 +30,7 @@ class CreateModulesTable extends Migration
             $table->boolean('reporting')->default(0);
             $table->boolean('lazy_loading')->default(0);
             $table->boolean('is_system')->default(0);
+            $table->boolean('non_grouped_to_bottom')->default(0);
             $table->timestamps();
             $table->index('anchor_text');
         });

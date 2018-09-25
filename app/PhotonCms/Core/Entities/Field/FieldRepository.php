@@ -144,6 +144,10 @@ class FieldRepository
                 $field->nullable = $data['nullable'];
             }
 
+            if (array_key_exists('field_group_id', $data)) {
+                $field->field_group_id = $data['field_group_id'];
+            }
+
             if (array_key_exists('indexed', $data)) {
                 $field->indexed = $data['indexed'];
             }

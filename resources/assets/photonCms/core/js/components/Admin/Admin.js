@@ -27,6 +27,7 @@ import {
     EntryForm,
     HelpBlock,
     InfoPanel,
+    FieldGroupsHelper,
     Instructions,
     LicenseExpiringNotification,
     MainMenu,

@@ -200,6 +200,14 @@ class FieldTypesSeeder extends Seeder
                 'title' => 'Permissions',
                 'laravel_type' => '',
                 'is_system' => 0,
+            ),
+
+            array (
+                'id' => 25,
+                'type' => 'big_integer',
+                'title' => 'Big Integer',
+                'laravel_type' => 'bigInteger',
+                'is_system' => 0,
             )
         ));
 

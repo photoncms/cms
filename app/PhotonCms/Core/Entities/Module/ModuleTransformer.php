@@ -36,6 +36,7 @@ class ModuleTransformer extends BaseTransformer implements TransformerFullTransf
             'created_at' => $object->created_at,
             'updated_at' => $object->updated_at,
             'lazy_loading' => (bool) $object->lazy_loading,
+            'non_grouped_to_bottom' => (bool) $object->non_grouped_to_bottom,
             'reporting' => (bool) $object->reporting,
             'max_depth' => ($object->max_depth !== null) ? (int) $object->max_depth : $object->max_depth,
         ];
@@ -88,6 +89,7 @@ class ModuleTransformer extends BaseTransformer implements TransformerFullTransf
             'created_at' => $object->created_at,
             'updated_at' => $object->updated_at,
             'lazy_loading' => (bool) $object->lazy_loading,
+            'non_grouped_to_bottom' => (bool) $object->non_grouped_to_bottom,
             'reporting' => (int) $object->reporting,
             'max_depth' => ($object->max_depth !== null) ? (int) $object->max_depth : $object->max_depth,
         ];
@@ -119,6 +121,7 @@ class ModuleTransformer extends BaseTransformer implements TransformerFullTransf
             'created_at' => $object->created_at,
             'updated_at' => $object->updated_at,
             'lazy_loading' => (bool) $object->lazy_loading,
+            'non_grouped_to_bottom' => (bool) $object->non_grouped_to_bottom,
             'reporting' => (bool) $object->reporting,
             'max_depth' => ($object->max_depth !== null) ? (int) $object->max_depth : $object->max_depth,
         ];

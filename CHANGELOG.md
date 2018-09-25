@@ -1,5 +1,29 @@
 # Release Notes
 
+## v1.2.0 (2018-09-24)
+
+### Added
+- Added field groups functionality
+- Added a Big Integer field type
+- Added a user account lock functionality
+- Added interrupt login and register events
+- Added post login and register events
+
+### Fixed
+- Fixed a generator validation error bug
+
+## v1.1.3 (2018-09-18)
+
+### Added
+- Implemented unique column for module fields in generator
+
+### Fixed
+- Fixed an issue of not being able to reorder gallery items in certain situations
+- Fixed an issue of gallery items not being loaded in a correct order 
+- Fixed issue with caching key name on module filter route, minor optimizations to filter route caching
+- Fixed issue with missing relationships when caching data after insert and update
+- CURLOPT_SSL_VERIFYPEER paramether added for method that validates license key
+
 ## v1.1.2 (2018-05-22)
 
 ### Fixed

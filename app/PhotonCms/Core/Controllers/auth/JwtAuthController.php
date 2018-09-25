@@ -57,6 +57,11 @@ class JwtAuthController extends Controller
     private $fieldGateway;
 
     /**
+     * @var \Photon\PhotonCms\Core\Entities\DynamicModule\DynamicModuleInterrupter
+     */
+    private $interrupter;
+
+    /**
      * Controller construcor.
      *
      * @param ResponseRepository $responseRepository
@@ -80,6 +85,7 @@ class JwtAuthController extends Controller
         $this->dynamicModuleLibrary   = $dynamicModuleLibrary;
         $this->fieldRepository        = $fieldRepository;
         $this->fieldGateway           = $fieldGateway;
+        $this->interrupter             = \App::make('\Photon\PhotonCms\Core\Entities\DynamicModule\DynamicModuleInterrupter');
     }
 
     /**

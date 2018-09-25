@@ -38,6 +38,7 @@
                 <div v-if="admin.editorMode === 'edit' || admin.editorMode === 'create'">
                     <entry-form
                         :fields="fields"
+                        :should-group-fields="true"
                         :form-fields-reset-prop="formFieldsReset"
                         vuexModule="admin">
                     </entry-form>
@@ -56,6 +57,8 @@
                     <admin-slot-above-info-panel></admin-slot-above-info-panel>
 
                     <info-panel vuexModule="admin"></info-panel>
+
+                    <field-groups-helper v-if="admin.selectedModule.table_name === 'field_groups'"></field-groups-helper>
 
                     <admin-slot-below-info-panel></admin-slot-below-info-panel>
 

@@ -33,6 +33,7 @@
         "exportAsCSV": "Export as CSV",
         "exportAsPDF": "Export as PDF",
         "exportAsXLSX": "Export as XLSX",
+        "fetchAModuleIdByModuleNameHelper": "Fetch a module ID by module name helper",
         "hidePermissionGenerator": "Hide Permision Generator",
         "id": "ID",
         "ifYouBelieveThisIsAnErrorPleaseContactTheAdministrator": "If you believe this is an error please contact the administrator.",
@@ -116,6 +117,8 @@
     "errorTypes": {
         "adminCannotDeleteEntryHasRelations": "This entry is used as a related entry in another module and can not be deleted.",
         "adminCannotDeleteEntryHasChildren": "This entry is used as a parent of another entry and can not be deleted.",
+        "adminFieldGroupDeleteFailedFieldGroupHasFields": "This Field Group has some assigned fields and can not be deleted.",
+        "adminCannotLockSelf": "Can not lock own user account.",
         "adminInsuficientPermissions": "You have insuficient permissions to perform this action.",
         "adminInvalidCsvFile": "Invalid CSV format. Please check the file for errors.",
         "adminPasswordAlreadyUsed": "Password was already used.",

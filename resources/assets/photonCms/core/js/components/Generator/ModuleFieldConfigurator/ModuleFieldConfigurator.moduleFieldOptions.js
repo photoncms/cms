@@ -27,7 +27,7 @@ const fieldTypesWithRelations = [
 /**
  * Formats the related modules for use with select2 plugin
  *
- * @param   {rray}  modules
+ * @param   {array}  modules
  * @return  {object}
  */
 const _mapRelatedModulesSelect2 = (modules) => {
@@ -43,6 +43,31 @@ const _mapRelatedModulesSelect2 = (modules) => {
                 text: module.name
             };
         }));
+};
+
+/**
+ * Formats the field groups for use with select2 plugin
+ *
+ * @param   {object}  ModuleFieldsConfigurator
+ * @return  {object}
+ */
+const _mapFieldGroupsSelect2 = (ModuleFieldsConfigurator) => {
+    // Set initial select2 value
+    return [{
+        id: 0,
+        text: 'Not grouped'
+    }]
+        .concat(ModuleFieldsConfigurator.photonFields.fieldGroups
+            .filter((group) => {
+                return group.module_id === ModuleFieldsConfigurator.generator.selectedModule.id;
+            })
+            .map((group) => {
+                return {
+                    id: group.id,
+                    text: group.name
+                };
+            })
+        );
 };
 
 /**
@@ -137,6 +162,23 @@ export const getModuleFieldOptions = (ModuleFieldsConfigurator) => {
             tooltip: 'Sets the default parameter in the DB.',
             value: ModuleFieldsConfigurator.moduleField.default,
             vueComponent: 'InputText',
+        },
+
+        /**
+         * Related module field
+         */
+        {
+            disabled: ModuleFieldsConfigurator.moduleField.newField,
+            id: ModuleFieldsConfigurator.moduleField.id + '|field_group_id',
+            label: 'Field Group',
+            mutation: 'generator/UPDATE_GENERATOR_GROUP_FIELD_PROPERTY',
+            name: `fields[${ModuleFieldsConfigurator.moduleField.order}][field_group_id]`,
+            optionGroup: 1,
+            optionsData: _mapFieldGroupsSelect2(ModuleFieldsConfigurator),
+            preselectFirst: true,
+            tooltip: 'ID of a field group.',
+            value: ModuleFieldsConfigurator.moduleField.field_group_id || 0,
+            vueComponent: 'ManyToMany',
         },
 
         /**
