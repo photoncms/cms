@@ -153,33 +153,61 @@ class ResponseRepository
             return;
         }
 
-        $includedFields = explode(",", $includedFields);
-
-        // $this->validateIncludedFields($includedFields);
+        $this->validateIncludedFields($includedFields);
 
         // trim single entry
         if(isset($array['body']['entry'])) {
-            foreach ($array['body']['entry'] as $key => $value) {
-                if(!in_array($key, $includedFields)) {
-                    unset($array['body']['entry'][$key]);
-                }
-            }
-
-            return;
+            $array['body']['entry'] = $this->trimData($array['body']['entry'], $includedFields);
+            return ;
         }
 
         foreach ($array['body']['entries'] as $entryKey => $entry) {
             foreach ($entry as $key => $value) {
-                if(!in_array($key, $includedFields)) {
+                if(!array_key_exists($key, $includedFields)) {
                     unset($array['body']['entries'][$entryKey][$key]);
+                    continue;
+                }
+
+                if(is_array($value)) {
+                    foreach ($value as $arrayKey => $arrayValue) {
+                        if(!in_array($arrayKey, $includedFields[$key])) {
+                            unset($array['body']['entries'][$entryKey][$key][$arrayKey]);
+                        }
+                    }
                 }
             }
         }
         return;
     }
 
-    private function validateIncludedFields($includedFields)
+    private function trimData($array, $includedFields)
     {
+        $trimmedData = [];
+        foreach ($includedFields as $key => $value) {
+            if(isset($array[$key])) {
+                $trimmedData[$key] = $array[$key];
+                if(is_array($trimmedData[$key])) {
+                    $trimmedData[$key] = $this->trimData($trimmedData[$key], array_flip($value));
+                }
+            }
+        }
+
+        return $trimmedData;
+    }
+
+    private function validateIncludedFields(&$includedFields)
+    {
+        $preparedFields = [];
+        $includedFields = explode(",", $includedFields);
+        foreach ($includedFields as $key => $field) {
+            $field = explode(".", $field);
+
+            $preparedFields[$field[0]][] = isset($field[1]) ? $field[1] : null;
+        }
+
+        $includedFields = $preparedFields;
+
+        return;
         $tableName = \Request::route('tableName');
         $module = $this->moduleRepository->findModuleByTableName($tableName, $this->moduleGateway);
         $fields = $this->fieldRepository->findByModuleId($module->id, $this->fieldGateway);
