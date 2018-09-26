@@ -9,6 +9,9 @@
 - Added interrupt login and register events
 - Added post login and register events
 
+### Changed
+- Handled a case where while inserting a file in Redactor editor a file is selected instead of an image - it now generates a clickable link.
+
 ### Fixed
 - Fixed a generator validation error bug
 
