@@ -13,5 +13,5 @@ export const imageTagTemplate = function imageTagTemplate (asset, tempId) {
 
     const resizedImage = _.find(asset.resized_images, { image_size: parseInt(imageSizeId) });
 
-    return `<div class="${imageAlignment}"><img src="${resizedImage.file_url}" id="${tempId}" alt="${title}" data-image-alignment="${imageAlignment}" data-image-mime-type="${asset.mime_type}" data-image-size-id="${imageSizeId}" data-asset-id="${asset.id}"><span class="source">${source}</span></div>`;
+    return `<div class="${imageAlignment}"><img src="${resizedImage.file_url}" id="${tempId}" alt="${title}" data-image-alignment="${imageAlignment}" data-image-size-id="${imageSizeId}" data-asset-id="${asset.id}"><span class="source">${source}</span></div>`;
 };
