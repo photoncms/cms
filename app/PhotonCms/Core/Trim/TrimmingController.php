@@ -49,42 +49,18 @@ class TrimmingController
 
         // parser included fields from string to associative array
         $includedFields = explode(",", $includedFields);
-        rsort($includedFields);
 
         foreach ($includedFields as $key => $field) {
-    		$field = explode(".", $field);
+    		$fields = array_reverse(explode(".", $field));
 
-    		$arrayName = 'preparedFields["test"]'; 
-    		${$arrayName} = ["adsasdsa"];
-    		dd( $preparedFields );
-    		dd( ${$arrayName . '["test"]'} );
-			foreach ($field as $value) {
-				$arrayName .= "['" . $value . "']";
-			}
-dd( ${$arrayName} );
-			if (isset(${$arrayName})) {
-				${$arrayName} = [];
+            $partialArray = [];
+			foreach ($fields as $fieldValue) {
+				$partialArray = [$fieldValue => $partialArray];
 			}
 
-            // if( isset($field[3]) ) {
-            //     $preparedFields[$field[0]][$field[1]][$field[2]][$field[3]] = [];
-            //     continue;
-            // }
-
-            // if( isset($field[2]) ) {
-            //     $preparedFields[$field[0]][$field[1]][$field[2]] = [];
-            //     continue;
-            // }
-
-            // if( isset($field[1]) ) {
-            //     $preparedFields[$field[0]][$field[1]] = [];
-            //     continue;
-            // }
-            // $preparedFields[$field[0]] = [];
-            var_dump($arrayName);
-            var_dump($preparedFields);
+            $preparedFields = array_merge_recursive($preparedFields, $partialArray);
         }
-dd($preparedFields);
+        
         return $preparedFields;
     }
 
