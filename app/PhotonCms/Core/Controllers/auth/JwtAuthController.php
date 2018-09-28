@@ -7,6 +7,8 @@ use Photon\PhotonCms\Core\Response\ResponseRepository;
 use Photon\PhotonCms\Dependencies\DynamicModels\User;
 use Validator;
 
+use Photon\PhotonCms\Core\IAPI\IAPI;
+
 use Photon\PhotonCms\Core\Traits\Jwt\AuthenticatesUsers;
 use Photon\PhotonCms\Core\Traits\Jwt\ImpersonatesUsers;
 use Photon\PhotonCms\Core\Traits\Jwt\RegistersUsers;
@@ -23,6 +25,11 @@ class JwtAuthController extends Controller
 {
 
     use AuthenticatesUsers, ImpersonatesUsers, RegistersUsers, ManagesPasswords;
+    
+    /**
+     * @var IAPI
+     */
+    private $IAPI;
 
     /**
      * @var ResponseRepository
@@ -64,6 +71,7 @@ class JwtAuthController extends Controller
     /**
      * Controller construcor.
      *
+     * @param IAPI $IAPI
      * @param ResponseRepository $responseRepository
      * @param UsedPasswordRepository $usedPasswordRepository
      * @param UsedPasswordGateway $usedPasswordGateway
@@ -71,6 +79,7 @@ class JwtAuthController extends Controller
      * @param FieldGatewayInterface $fieldGateway
      */
     public function __construct(
+        IAPI $IAPI,
         ResponseRepository $responseRepository,
         UsedPasswordRepository $usedPasswordRepository,
         UsedPasswordGateway $usedPasswordGateway,
@@ -79,6 +88,7 @@ class JwtAuthController extends Controller
         FieldGatewayInterface $fieldGateway
     )
     {
+        $this->IAPI                   = $IAPI;
         $this->responseRepository     = $responseRepository;
         $this->usedPasswordRepository = $usedPasswordRepository;
         $this->usedPasswordGateway    = $usedPasswordGateway;

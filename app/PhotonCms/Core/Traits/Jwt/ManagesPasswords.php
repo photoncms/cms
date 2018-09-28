@@ -37,7 +37,7 @@ trait ManagesPasswords
         $credentials['email'] = $user->email;
 
         if (JWTAuth::attempt($credentials)) {
-            $user->password = bcrypt($newPassword);
+            $changePasswordData['password'] = bcrypt($newPassword);
 
             // Add password to used passwords list if necessary
             if (config('jwt.use_password_expiration')) {
@@ -57,10 +57,10 @@ trait ManagesPasswords
                     $this->usedPasswordGateway
                 );
 
-                $user->password_created_at = Carbon::now();
+                $changePasswordData['password_created_at'] = Carbon::now();
             }
 
-            $user->save();
+            $this->IAPI->users($user->id)->put($changePasswordData);
 
             // clear cache
             if(config("photon.use_photon_cache")) {
@@ -127,7 +127,7 @@ trait ManagesPasswords
 
         if (\Password::getRepository()->exists($user, $token)) {
             $newPassword = $request->get('password');
-            $user->password = bcrypt($newPassword);
+            $changePasswordData['password'] = bcrypt($newPassword);
 
             // Add password to used passwords list if necessary
             if (config('jwt.use_password_expiration')) {
@@ -147,10 +147,11 @@ trait ManagesPasswords
                     $this->usedPasswordGateway
                 );
 
-                $user->password_created_at = Carbon::now();
+                $changePasswordData['password_created_at'] = Carbon::now();
             }
 
-            $user->save();
+            $this->IAPI->users($user->id)->put($changePasswordData);
+
             \Password::getRepository()->delete($user);
 
             return $this->responseRepository->make('PASSWORD_RESET_SUCCESS');
