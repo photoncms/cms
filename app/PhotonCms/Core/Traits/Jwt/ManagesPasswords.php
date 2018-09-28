@@ -37,7 +37,7 @@ trait ManagesPasswords
         $credentials['email'] = $user->email;
 
         if (JWTAuth::attempt($credentials)) {
-            $changePasswordData['password'] = bcrypt($newPassword);
+            $changePasswordData['password'] = $newPassword;
 
             // Add password to used passwords list if necessary
             if (config('jwt.use_password_expiration')) {
@@ -127,7 +127,7 @@ trait ManagesPasswords
 
         if (\Password::getRepository()->exists($user, $token)) {
             $newPassword = $request->get('password');
-            $changePasswordData['password'] = bcrypt($newPassword);
+            $changePasswordData['password'] = $newPassword;
 
             // Add password to used passwords list if necessary
             if (config('jwt.use_password_expiration')) {
