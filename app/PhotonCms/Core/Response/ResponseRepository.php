@@ -9,13 +9,10 @@ use App;
 use Config;
 use Photon\PhotonCms\Core\Exceptions\PhotonException;
 use Photon\PhotonCms\Core\Transform\TransformationController;
+use Photon\PhotonCms\Core\Trim\TrimmingController;
 use Illuminate\Http\Response;
 use Monolog\Logger;
 use Monolog\Handler\RotatingFileHandler;
-use Photon\PhotonCms\Core\Entities\Module\ModuleRepository;
-use Photon\PhotonCms\Core\Entities\Module\Contracts\ModuleGatewayInterface;
-use Photon\PhotonCms\Core\Entities\Field\FieldRepository;
-use Photon\PhotonCms\Core\Entities\Field\Contracts\FieldGatewayInterface;
 
 class ResponseRepository
 {
@@ -27,24 +24,11 @@ class ResponseRepository
     private $transformationController;
 
     /**
-     * @var ModuleRepository
+     * Performs response trimming.
+     *
+     * @var TrimmingController
      */
-    private $moduleRepository;
-
-    /**
-     * @var ModuleGatewayInterface
-     */
-    private $moduleGateway;
-
-    /**
-     * @var FieldTypeRepository
-     */
-    private $fieldTypeRepository;
-
-    /**
-     * @var FieldTypeGateway
-     */
-    private $fieldTypeGateway;
+    private $trimmingController;
 
     /**
      * Service for reporting changes
@@ -57,25 +41,16 @@ class ResponseRepository
      * Constructor.
      *
      * @param TransformationController $transformationController
-     * @param ModuleRepository $moduleRepository
-     * @param ModuleGatewayInterface $moduleGateway
-     * @param FieldRepository $fieldRepository
-     * @param FieldGatewayInterface $fieldGateway
+     * @param TrimmingController $trimmingController
      */
     public function __construct(
         TransformationController $transformationController,
-        ModuleRepository $moduleRepository,
-        ModuleGatewayInterface $moduleGateway,
-        FieldRepository $fieldRepository,
-        FieldGatewayInterface $fieldGateway
+        TrimmingController $trimmingController
     )
     {
         $this->transformationController = $transformationController;
-        $this->moduleRepository = $moduleRepository;
-        $this->moduleGateway    = $moduleGateway;
-        $this->fieldRepository         = $fieldRepository;
-        $this->fieldGateway            = $fieldGateway;
-        $this->reportingService = App::make('ReportingService');
+        $this->trimmingController       = $trimmingController;
+        $this->reportingService         = App::make('ReportingService');
     }
 
     /**
@@ -103,21 +78,26 @@ class ResponseRepository
             'body' => ($this->reportingService->isActive() && $responseCode < 300)
                 ? $this->reportingService->getReport()
                 : ((!empty($responseData))
-                    ? $this->transformationController->transform($responseData)
+                    ? $this->trimmingController->trim($this->transformationController->transform($responseData))
                     : [])
         ];
 
         $this->logResponse($content);
 
-        $this->trimResponse($content);
-
         return new Response($content, $responseCode);
     }
 
+    /**
+     * Stores request and response data into log 
+     *
+     * @param array $content
+     * @return void|boolean
+     */
     private function logResponse($content)
     {
-        if(!env("PHOTON_STORE_LOGS", true))
+        if(!env("PHOTON_STORE_LOGS", true)) {
             return true;
+        }
 
         $user = \Auth::user();
 
@@ -133,87 +113,5 @@ class ResponseRepository
         $rotatingHandler = new RotatingFileHandler(storage_path('logs/photon/api.log'), env("PHOTON_MAX_DAILY_LOGS", 30), Logger::INFO);
         $orderLog->pushHandler($rotatingHandler);
         $orderLog->addInfo('photon', $logData);
-    }
-
-    /**
-     * Trim transformed generic object based on include paramether.
-     *
-     * @param void
-     */
-    private function trimResponse(array &$array)
-    {
-        // if not retreiving dynamic module entry return
-        if(!isset($array['body']['entries']) && !isset($array['body']['entry'])) {
-            return;
-        }
-
-        // if there are no filtered fields return
-        $includedFields = \Request::get('include');
-        if(!$includedFields) {
-            return;
-        }
-
-        $this->validateIncludedFields($includedFields);
-
-        // trim single entry
-        if(isset($array['body']['entry'])) {
-            $array['body']['entry'] = $this->trimData($array['body']['entry'], $includedFields);
-            return ;
-        }
-
-        foreach ($array['body']['entries'] as $entryKey => $entry) {
-            foreach ($entry as $key => $value) {
-                if(!array_key_exists($key, $includedFields)) {
-                    unset($array['body']['entries'][$entryKey][$key]);
-                    continue;
-                }
-
-                if(is_array($value)) {
-                    foreach ($value as $arrayKey => $arrayValue) {
-                        if(!in_array($arrayKey, $includedFields[$key])) {
-                            unset($array['body']['entries'][$entryKey][$key][$arrayKey]);
-                        }
-                    }
-                }
-            }
-        }
-        return;
-    }
-
-    private function trimData($array, $includedFields)
-    {
-        $trimmedData = [];
-        foreach ($includedFields as $key => $value) {
-            if(isset($array[$key])) {
-                $trimmedData[$key] = $array[$key];
-                if(is_array($trimmedData[$key])) {
-                    $trimmedData[$key] = $this->trimData($trimmedData[$key], array_flip($value));
-                }
-            }
-        }
-
-        return $trimmedData;
-    }
-
-    private function validateIncludedFields(&$includedFields)
-    {
-        $preparedFields = [];
-        $includedFields = explode(",", $includedFields);
-        foreach ($includedFields as $key => $field) {
-            $field = explode(".", $field);
-
-            $preparedFields[$field[0]][] = isset($field[1]) ? $field[1] : null;
-        }
-
-        $includedFields = $preparedFields;
-
-        return;
-        $tableName = \Request::route('tableName');
-        $module = $this->moduleRepository->findModuleByTableName($tableName, $this->moduleGateway);
-        $fields = $this->fieldRepository->findByModuleId($module->id, $this->fieldGateway);
-        // $fields->map(function($item){ 
-        //     return array('column_name' => $item->column_name, 'relation_name' => $item->relation_name)
-        // });
-        dd($fields->only(['id']) );
     }
 }
