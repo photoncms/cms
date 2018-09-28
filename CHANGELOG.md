@@ -11,6 +11,7 @@
 
 ### Changed
 - Handled a case where while inserting a file in Redactor editor a file is selected instead of an image - it now generates a clickable link.
+- Changed password reset and change methods - instead of eloquent they now use Photon iAPI
 
 ### Fixed
 - Fixed a generator validation error bug
