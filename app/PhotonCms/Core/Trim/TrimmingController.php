@@ -12,7 +12,7 @@ class TrimmingController
      * @return array
      */
     public function trim($data)
-    { 
+    {
         // if not retreiving dynamic module entry return
         if(!isset($data['entries']) && !isset($data['entry'])) {
             return $data;
@@ -21,12 +21,16 @@ class TrimmingController
         // prepare included fields array
     	$includedFields = $this->prepareIncludedFields();
 
+        if (empty($includedFields)) {
+            return $data;
+        }
+
         // trim single entry
         if(isset($data['entry'])) {
             $data['entry'] = $this->trimData($data['entry'], $includedFields);
             return $data;
         }
-        
+
         $data['entries'] = $this->trimDataArray($data['entries'], $includedFields);
 
         return $data;
@@ -60,7 +64,7 @@ class TrimmingController
 
             $preparedFields = array_merge_recursive($preparedFields, $partialArray);
         }
-        
+
         return $preparedFields;
     }
 
