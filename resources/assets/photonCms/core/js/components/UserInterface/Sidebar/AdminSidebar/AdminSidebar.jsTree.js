@@ -29,10 +29,6 @@ let vueComponent = {};
 export const setupJsTree = (vueComponentReference) => {
     vueComponent = vueComponentReference;
 
-    if (vueComponent.selectedModule.type == 'single_entry') {
-        return;
-    }
-
     $('#tree').jstree({
         core: {
              // Determines what happens when a user tries to modify the structure of the tree.
@@ -64,7 +60,7 @@ export const setupJsTree = (vueComponentReference) => {
             // function that should be called with the result.
             data: function(node, jsTreeCallback) {
                 // Use filter endpoint for non_sortable module type
-                if(vueComponent.selectedModule.type === 'non_sortable') {
+                if(vueComponent.selectedModule.type === 'non_sortable' || vueComponent.selectedModule.type === 'single_entry') {
                     // Execute the callback with an empty array
                     jsTreeCallback.call(this, []);
 
