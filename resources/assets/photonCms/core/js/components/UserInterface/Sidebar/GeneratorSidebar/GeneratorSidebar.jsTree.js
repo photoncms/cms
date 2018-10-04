@@ -24,7 +24,8 @@ export const setupJsTree = () => {
                     name: 'proton',
                     responsive: true,
                 },
-            }
+            },
+            plugins: [ 'sort' ],
         })
         .on('ready.jstree', onJsTreeReady)
 

@@ -3,6 +3,7 @@
 ## v1.2.0 (2018-09-24)
 
 ### Added
+- Added include fields functionality
 - Added field groups functionality
 - Added a Big Integer field type
 - Added a user account lock functionality
@@ -12,6 +13,7 @@
 ### Changed
 - Handled a case where while inserting a file in Redactor editor a file is selected instead of an image - it now generates a clickable link.
 - Changed password reset and change methods - instead of eloquent they now use Photon iAPI
+- Sorted modules by name in the generator sidebar
 
 ### Fixed
 - Fixed a generator validation error bug
