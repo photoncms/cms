@@ -132,33 +132,6 @@ class ResetHelper
     }
 
     /**
-     * Rebuilds module seeders.
-     */
-    public static function rebuildSeeders()
-    {
-        // ToDo: needs a SeedTemplateFactory here (Sasa|01/2016)
-        $seedTemplate = new SeedTemplate();
-        $seedTemplate->addTable('modules');
-        $seedTemplate->addTable('field_types');
-        $seedTemplate->addTable('model_meta_types');
-        $seedTemplate->useForce();
-        app('Photon\PhotonCms\Core\Entities\Seed\SeedRepository')->create(
-            $seedTemplate, 
-            app('Photon\PhotonCms\Core\Entities\Seed\SeedGateway')
-        );
-
-        $seedTemplate = new SeedTemplate();
-        $seedTemplate->addTable('fields');
-        $seedTemplate->addTable('model_meta_data');
-        $seedTemplate->addExclusion('id');
-        $seedTemplate->useForce();
-        app('Photon\PhotonCms\Core\Entities\Seed\SeedRepository')->create(
-            $seedTemplate, 
-            app('Photon\PhotonCms\Core\Entities\Seed\SeedGateway')
-        );
-    }
-
-    /**
      * Sets all password_created_at values to current time
      */
     public static function updatePasswordCreationTime()

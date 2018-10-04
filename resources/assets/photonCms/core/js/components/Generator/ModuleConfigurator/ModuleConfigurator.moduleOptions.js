@@ -160,6 +160,20 @@ export const getModuleOptions = (ModuleConfigurator) => {
             value: _.has(selectedModule, 'category') ? selectedModule.category : null,
             vueComponent: 'ManyToMany',
         },
+
+        /**
+         * Push Non-grouped fields to bottom
+         */
+        {
+            defaultValue: true,
+            id: 'non_grouped_to_bottom',
+            label: 'Non-grouped fields to bottom',
+            mutation: 'generator/UPDATE_GENERATOR_NON_GROUPED_FIELDS_TO_BOTTOM',
+            name: 'module[non_grouped_to_bottom]',
+            tooltip: 'If checked, non-grouped fields will be rendered below the grouped fields instead of above.',
+            value: _.has(selectedModule, 'non_grouped_to_bottom') ? selectedModule.non_grouped_to_bottom : 0,
+            vueComponent: 'Boolean',
+        },
     ];
 
     return configuration;

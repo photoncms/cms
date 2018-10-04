@@ -31,9 +31,10 @@ class UpdateModuleRequest extends Request
             'module.anchor_text'=> 'nullable|string|max:2000',
             'module.anchor_html'=> 'nullable|string',
             'module.slug'       => 'nullable|string',
-            'module.category'   => 'integer',
+            'module.category'   => 'nullable|integer',
             'module.icon'       => 'string|max:255',
             'module.lazy_loading' => 'boolean',
+            'module.non_grouped_to_bottom' => 'boolean',
             'fields'            => 'required|array'
         ];
 
@@ -67,6 +68,7 @@ class UpdateModuleRequest extends Request
                 $rules['fields.' . $key . '.hidden'] = 'boolean';
                 $rules['fields.' . $key . '.is_system'] = 'boolean';
                 $rules['fields.' . $key . '.lazy_loading'] = 'boolean';
+                $rules['fields.' . $key . '.field_group_id'] = 'nullable|exists:field_groups,id';
             }
         }
 

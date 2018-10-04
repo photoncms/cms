@@ -41,6 +41,8 @@ trait RegistersUsers
 
         $registerData['confirmation_code'] = CodeHelper::generateConfirmationCode();
 
+        $this->interrupter->interruptRegister('User', $registerData);
+        
         $user = $this->create($registerData);
 
         // Update anchor text
@@ -72,8 +74,9 @@ trait RegistersUsers
         }
         
         // Send an email
-        if(\Config::get('photon.use_registration_service_email'))
+        if(\Config::get('photon.use_registration_service_email')) {
             $user->notify(new RegistrationConfirmation($user));
+        }
 
         // clear cache
         if(config("photon.use_photon_cache")) {
@@ -93,6 +96,8 @@ trait RegistersUsers
                 'ttl' => \Config::get('jwt.ttl'),
             ];
         }
+           
+        $user->firePostRegisterEvents();
 
         return $this->responseRepository->make('USER_REGISTER_SUCCESS', $payload);
     }
@@ -125,6 +130,8 @@ trait RegistersUsers
         $registerData['email'] = $invitation->email;
         $registerData['confirmed'] = true;
         $registerData['roles'] = $invitation->default_role;
+
+        $this->interrupter->interruptRegister('User', $registerData);
 
         if (InvitationWorkflow::changeInvitationStatusByName($invitation, 'used')) {
             $user = new User();
@@ -167,6 +174,8 @@ trait RegistersUsers
                 $relatedModules = $this->dynamicModuleLibrary->findRelatedModules($module);
                 Cache::tags($relatedModules)->flush(); 
             }
+
+            $user->firePostRegisterEvents();
 
             return $this->responseRepository->make('USER_REGISTER_SUCCESS', ['user' => $user, 'token' => ['token' => $token, 'ttl' => \Config::get('jwt.ttl')]]);
         }

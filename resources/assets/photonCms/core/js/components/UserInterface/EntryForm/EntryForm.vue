@@ -5,9 +5,10 @@
             <form
                 :id="`entry-editor-form-${vuexModule}`"
                 data-parsley-excluded="input[type=button], input[type=submit], input[type=reset]">
-                <div v-if="admin.editedEntry" class="panel panel-default" :class="{'no-border': inSidebar}">
+                <div v-for="fieldGroup in fieldGroups" v-if="admin.editedEntry && groupHasFields(fieldGroup)" class="panel panel-default" :class="{'no-border': inSidebar}">
                     <div class="panel-body" :class="{'no-border no-padding': inSidebar}">
                         <div class="form-horizontal">
+                            <h4 class="section-title" v-if="fieldGroup.name">{{ fieldGroup.name }}</h4>
                             <permission-name-generator-handler v-if="admin.selectedModule.table_name === 'permissions'">
                             </permission-name-generator-handler>
 
@@ -37,6 +38,7 @@
                                 :value="field.value"
                                 :vuexModule="vuexModule"
                                 v-for="field in fields"
+                                v-if="shouldShowField(field, fieldGroup)"
                                 >
                             </form-field>
                         </div>

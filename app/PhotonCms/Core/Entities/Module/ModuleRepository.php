@@ -154,6 +154,10 @@ class ModuleRepository
                 $module->icon = $data['icon'];
             }
 
+            if (isset($data['non_grouped_to_bottom'])) {
+                $module->non_grouped_to_bottom = $data['non_grouped_to_bottom'];
+            }
+
             if (isset($data['reporting'])) {
                 $module->reporting = $data['reporting'];
             }

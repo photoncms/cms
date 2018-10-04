@@ -220,6 +220,44 @@ trait ExtensionSparks
     }
 
     /**
+     * Fire post login events.
+     */
+    public function firePostLoginEvents()
+    {
+        $parsedClassName = explode('\\',get_class($this));
+        $className = end($parsedClassName);
+
+        $extensionsClass = \Config::get('photon.dynamic_module_extensions_namespace').'\\'.$className."ModuleExtensions";
+
+        if (
+            class_exists($extensionsClass) &&
+            in_array('Photon\PhotonCms\Core\Entities\DynamicModuleExtension\Contracts\ModuleExtensionHandlesPostLogin', class_implements($extensionsClass))
+        ) {
+            $extensionsInstance = \App::make($extensionsClass);
+            $extensionsInstance->postLogin($this);
+        }
+    }
+
+    /**
+     * Fire post register events.
+     */
+    public function firePostRegisterEvents()
+    {
+        $parsedClassName = explode('\\',get_class($this));
+        $className = end($parsedClassName);
+
+        $extensionsClass = \Config::get('photon.dynamic_module_extensions_namespace').'\\'.$className."ModuleExtensions";
+
+        if (
+            class_exists($extensionsClass) &&
+            in_array('Photon\PhotonCms\Core\Entities\DynamicModuleExtension\Contracts\ModuleExtensionHandlesPostRegister', class_implements($extensionsClass))
+        ) {
+            $extensionsInstance = \App::make($extensionsClass);
+            $extensionsInstance->postRegister($this);
+        }
+    }
+
+    /**
      * Fires an extension action.
      *
      * @param string $action

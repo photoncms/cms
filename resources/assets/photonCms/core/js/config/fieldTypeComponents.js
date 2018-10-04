@@ -125,4 +125,8 @@ export const PlainTextField = Vue.component(
         require('_/components/FieldTypes/Textarea/Textarea.vue')
     );
 
+export const BigIntegerField = Vue.component(
+        'BigIntegerField',
+        require('_/components/FieldTypes/InputTag/InputTag.vue')
+    );
 

@@ -23,6 +23,10 @@ use Photon\PhotonCms\Core\Entities\Notifications\EmailChangeSuccess;
 
 use Photon\PhotonCms\Core\Entities\DynamicModuleExtension\Contracts\ModuleExtensionHandlesPostCreate;
 use Photon\PhotonCms\Core\Entities\DynamicModuleExtension\Contracts\ModuleExtensionHandlesPreUpdate;
+use Photon\PhotonCms\Core\Entities\DynamicModuleExtension\Contracts\ModuleExtensionHandlesPostLogin;
+use Photon\PhotonCms\Core\Entities\DynamicModuleExtension\Contracts\ModuleExtensionHandlesPostRegister;
+use Photon\PhotonCms\Core\Entities\DynamicModuleExtension\Contracts\ModuleExtensionCanInterruptLogin;
+use Photon\PhotonCms\Core\Entities\DynamicModuleExtension\Contracts\ModuleExtensionCanInterruptRegister;
 use Photon\PhotonCms\Core\Traits\Jwt\RegistersUsers;
 
 /**
@@ -30,7 +34,11 @@ use Photon\PhotonCms\Core\Traits\Jwt\RegistersUsers;
  */
 class UserModuleExtensions extends BaseDynamicModuleExtension implements
     ModuleExtensionHandlesPostCreate,
-    ModuleExtensionHandlesPreUpdate
+    ModuleExtensionHandlesPreUpdate,
+    ModuleExtensionHandlesPostLogin,
+    ModuleExtensionHandlesPostRegister,
+    ModuleExtensionCanInterruptLogin,
+    ModuleExtensionCanInterruptRegister
 {
 
     public function __construct(
@@ -169,6 +177,16 @@ class UserModuleExtensions extends BaseDynamicModuleExtension implements
 
             $user->password_created_at = Carbon::now();
         }
+
+        // prevent user from locking himself
+        if (array_key_exists('locked', $this->requestData)) {
+            $currentUser = \Auth::user();
+            $locked = $this->requestData['locked'];
+
+            if ($currentUser->id == $user->id && $locked) { 
+                throw new PhotonException('CANNOT_LOCK_SELF');
+            }
+        }
     }
 
     public function interruptDelete($entry)
@@ -183,6 +201,22 @@ class UserModuleExtensions extends BaseDynamicModuleExtension implements
         if ($currentUser->id == $entry->id) { // Entry id can happen to be a string accidentally
             throw new PhotonException('CANNOT_DELETE_SELF');
         }
+    }
+
+    public function interruptLogin()
+    {
+        $email = $this->requestData['email'];
+
+        $user = User::where('email', $email)->first();
+
+        if(!$user || $user->locked) {
+            throw new PhotonException('USER_LOGIN_FAILURE_INVALID_CREDENTIALS');            
+        }
+    }
+
+    public function interruptRegister()
+    {
+        // do something to interupt register
     }
 
     /*****************************************************************
@@ -219,6 +253,15 @@ class UserModuleExtensions extends BaseDynamicModuleExtension implements
 
     public function preUpdate($item, $cloneBefore, $cloneAfter)
     {
+        // set lock_date if needed
+        if (isset($cloneAfter->locked) && $cloneBefore->locked !== $cloneAfter->locked) {
+            if($cloneAfter->locked) {
+                $item->lock_date = Carbon::now();
+            } else {
+                $item->lock_date = null;
+            }
+        }
+        
         if(\Auth::user()->id != $item->id || !\Config::get('photon.use_registration_service_email')) {
             return true;
         }
@@ -244,6 +287,16 @@ class UserModuleExtensions extends BaseDynamicModuleExtension implements
 
             $changeRequest->notify(new EmailChangeConfirmation($newEmail, $confirmatonCode));
         }
+    }
+
+    public function postLogin($item)
+    {
+        // do something post login
+    }
+
+    public function postRegister($item)
+    {
+        // do something post register
     }
 
     /*****************************************************************

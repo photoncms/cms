@@ -124,6 +124,7 @@ const makeField = (moduleField, Entry, customCallback) => {
         id: moduleField.id,
         isActiveEntryFilter: moduleField.is_active_entry_filter,
         isSystem: moduleField.is_system,
+        fieldGroupId: moduleField.field_group_id,
         label: moduleField.name,
         lazyLoading: moduleField.lazy_loading,
         multiple: (_.indexOf(multipleOptionsTypes, fieldType.type) > -1) ? true : false,

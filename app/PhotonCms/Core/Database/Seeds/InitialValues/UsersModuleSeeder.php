@@ -27,6 +27,7 @@ class UsersModuleSeeder extends Seeder
                 'updated_at' => '2016-10-21 18:34:50',
                 'created_by' => 1,
                 'updated_by' => 1,
+                'locked' => 0,
             ),
             array (
                 'id' => 2,
@@ -44,6 +45,7 @@ class UsersModuleSeeder extends Seeder
                 'updated_at' => '2016-10-21 18:34:50',
                 'created_by' => 1,
                 'updated_by' => 1,
+                'locked' => 0,
             ),
         ));
 

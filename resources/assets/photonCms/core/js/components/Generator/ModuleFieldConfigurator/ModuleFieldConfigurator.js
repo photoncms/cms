@@ -64,6 +64,7 @@ export default {
         ...mapGetters({
             generator: 'generator/generator',
             photonModules: 'photonModule/photonModules',
+            photonFields: 'photonField/photonField',
         }),
 
         moduleFieldName () {

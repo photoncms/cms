@@ -188,6 +188,14 @@ export const permissions = {
     isSystem: false
 };
 
+export const bigInteger = {
+    id: 25,
+    name: 'Big Integer',
+    vueComponent: 'InputText',
+    valueType: 'bigInteger',
+    isSystem: false
+};
+
 // Field id to field object map
 export const mapFromId = {
     ...fieldTypesDependencies.mapFromIdDependencies,
@@ -214,6 +222,7 @@ export const mapFromId = {
     22: oneToOneExtended,
     23: oneToManyExtended,
     24: permissions,
+    25: bigInteger,
 };
 
 /**

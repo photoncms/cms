@@ -34,12 +34,14 @@ use Photon\PhotonCms\Core\Entities\DynamicModuleMigration\DynamicModuleMigration
 use Photon\PhotonCms\Core\Entities\DynamicModuleMigration\DynamicModuleMigrationFactory;
 use Photon\PhotonCms\Core\Entities\Migration\MigrationCompiler;
 use Photon\PhotonCms\Core\Helpers\MigrationsHelper;
+use Photon\PhotonCms\Core\Helpers\DatabaseHelper;
 use Photon\PhotonCms\Core\Entities\Seed\Contracts\SeedGatewayInterface;
 use Photon\PhotonCms\Core\Entities\FieldType\FieldTypeRepository;
 use Photon\PhotonCms\Core\Entities\FieldType\FieldTypeGateway;
 use Photon\PhotonCms\Core\Entities\ModelAttribute\ModelAttributeFactory;
 use Photon\PhotonCms\Core\Entities\Field\Migrations\FieldUpdateTemplateFactory;
 use Photon\PhotonCms\Core\Helpers\CodeHelper;
+use Photon\PhotonCms\Core\Helpers\FieldGroupHelper;
 
 use Photon\PhotonCms\Core\Entities\Seed\SeedTemplate;
 use Photon\PhotonCms\Core\Entities\ModelRelation\ModelRelationFactory;
@@ -273,9 +275,12 @@ class ModuleController extends Controller
             throw new PhotonException('MODULE_NOT_FOUND', ['table_name' => $tableName]);
         }
         
-        $module->load(['fields' => function($query) {
-            $query->orderBy("order", "asc");
-        }]);
+        $module->load([
+            'fields' => function($query) {
+                $query->orderBy("order", "asc");
+            },
+            'fieldGroups',
+        ]);
 
         return $this->responseRepository->make('GET_MODULE_INFORMATION_SUCCESS', ['module' => $module]);
     }
@@ -311,26 +316,32 @@ class ModuleController extends Controller
             if(isset($fieldData['active_entry_filter']) && isset($fieldData['related_module'])) {
                 $relatedModuleFields = $this->fieldRepository->findByModuleId($fieldData['related_module'], $this->fieldGateway);
                 $isInRelatedModule = false;
-                foreach ($relatedModuleFields as $key => $relatedField) 
-                    if($relatedField->column_name == $fieldData['active_entry_filter'])
+                foreach ($relatedModuleFields as $key => $relatedField) {
+                    if($relatedField->column_name == $fieldData['active_entry_filter']) {
                         $isInRelatedModule = true;
+                    }
+                }
 
-                if(!$isInRelatedModule)
+                if(!$isInRelatedModule) {
                     throw new PhotonException('MODULE_CREATION_ERROR_ACTIVE_ENTRY_FILTER_NOT_FOUND');
+                }
             }
 
             if(isset($fieldData['can_create_search_choice']) && $fieldData['can_create_search_choice'] && isset($fieldData['related_module'])) {
                 $relatedModuleFields = $this->fieldRepository->findByModuleId($fieldData['related_module'], $this->fieldGateway);
                 $hasDefaultSearchChoice = false;
-                foreach ($relatedModuleFields as $key => $relatedField) 
-                    if($relatedField->is_default_search_choice)
+                foreach ($relatedModuleFields as $key => $relatedField) {
+                    if($relatedField->is_default_search_choice) {
                         $hasDefaultSearchChoice = true;
+                    }
+                }
 
-                if(!$hasDefaultSearchChoice)
+                if(!$hasDefaultSearchChoice) {
                     throw new PhotonException('MODULE_CREATION_ERROR_RELATED_MODULE_DEFAULT_SEARCH_CHOICE_MISSING');
+                }
             }
 
-            if($fieldData['type'] == 17 && (!isset($fieldData['disabled']) || $fieldData['disabled'] != 1))
+            if($fieldData['type'] == 17 && (!isset($fieldData['disabled']) || $fieldData['disabled'] != 1)) {
                 throw new PhotonException('VALIDATION_ERROR', [
                     'error_fields' => [ 
                         "fields[{$key}][disabled]" => [
@@ -339,6 +350,7 @@ class ModuleController extends Controller
                         ]
                     ]
                 ]);
+            }
         }
 
         $this->deleteMigrations();
@@ -521,10 +533,10 @@ class ModuleController extends Controller
         $transactionController->commit();
 
         // Rebuild field and module seeders
-        $this->rebuildSeeders();
+        DatabaseHelper::rebuildSeeders();
 
         // Reload module fields from the DB
-        $module->load('fields');
+        $module->load(['fields', 'fieldGroups']);
         $responseData = [
             'module' => $module
         ];
@@ -582,15 +594,18 @@ class ModuleController extends Controller
             if(isset($fieldData['can_create_search_choice']) && $fieldData['can_create_search_choice'] && isset($fieldData['related_module'])) {
                 $relatedModuleFields = $this->fieldRepository->findByModuleId($fieldData['related_module'], $this->fieldGateway);
                 $hasDefaultSearchChoice = false;
-                foreach ($relatedModuleFields as $key => $relatedField) 
-                    if($relatedField->is_default_search_choice)
+                foreach ($relatedModuleFields as $key => $relatedField) {
+                    if($relatedField->is_default_search_choice) {
                         $hasDefaultSearchChoice = true;
+                    }
+                }
 
-                if(!$hasDefaultSearchChoice)
+                if(!$hasDefaultSearchChoice) {
                     throw new PhotonException('MODULE_CREATION_ERROR_RELATED_MODULE_DEFAULT_SEARCH_CHOICE_MISSING');
+                }
             }
 
-            if($fieldData['type'] == 17 && (!isset($fieldData['disabled']) || $fieldData['disabled'] != 1))
+            if(isset($fieldData['type']) && $fieldData['type'] == 17 && (!isset($fieldData['disabled']) || $fieldData['disabled'] != 1)) {
                 throw new PhotonException('VALIDATION_ERROR', [
                     'error_fields' => [ 
                         "fields[{$key}][disabled]" => [
@@ -599,6 +614,16 @@ class ModuleController extends Controller
                         ]
                     ]
                 ]);
+            }
+
+            // validate that field groups belong to current module
+            if(isset($fieldData['field_group_id']) && $fieldData['field_group_id']) {
+                if(!FieldGroupHelper::validateFieldGroup($module, $fieldData['field_group_id'])) {
+                    throw new PhotonException('MODULE_CREATION_ERROR_INVALID_FIELD_GROUP', [
+                        'field_group_id' => $fieldData['field_group_id'],
+                    ]);
+                }
+            }
         }
 
         $this->deleteMigrations();
@@ -834,7 +859,7 @@ class ModuleController extends Controller
         $transactionController->commit();
 
         // Rebuild module and field seeders
-        $this->rebuildSeeders();
+        DatabaseHelper::rebuildSeeders();
 
         // Reload module fields from the DB
         $module = $module->fresh('fields');
@@ -964,7 +989,7 @@ class ModuleController extends Controller
         $transactionController->commit();
 
         // Rebuild module and field seeders
-        $this->rebuildSeeders();
+        DatabaseHelper::rebuildSeeders();
 
         $responseData = [
             'module' => $module
@@ -978,27 +1003,6 @@ class ModuleController extends Controller
             ),
             $responseData
         );
-    }
-
-    /**
-     * Rebuilds module and field seeders.
-     */
-    private function rebuildSeeders()
-    {
-        // ToDo: needs a SeedTemplateFactory here (Sasa|01/2016)
-        $seedTemplate = new SeedTemplate();
-        $seedTemplate->addTable('modules');
-        $seedTemplate->addTable('field_types');
-        $seedTemplate->addTable('model_meta_types');
-        $seedTemplate->useForce();
-        $this->seedRepository->create($seedTemplate, $this->seedGateway);
-
-        $seedTemplate = new SeedTemplate();
-        $seedTemplate->addTable('fields');
-        $seedTemplate->addTable('model_meta_data');
-        $seedTemplate->addExclusion('id');
-        $seedTemplate->useForce();
-        $this->seedRepository->create($seedTemplate, $this->seedGateway);
     }
 
     /**

@@ -8,6 +8,8 @@ import { redactorConfig } from '~/components/FieldTypes/Redactor/Redactor.config
 
 import { imageTagTemplate } from '~/components/FieldTypes/Redactor/Redactor.imageTagTemplate';
 
+import { fileTagTemplate } from '~/components/FieldTypes/Redactor/Redactor.fileTagTemplate';
+
 import '~/components/FieldTypes/Redactor/Redactor.alignment.plugin';
 
 import '~/components/FieldTypes/Redactor/Redactor.clips.plugin';
@@ -271,6 +273,8 @@ export default {
 
                 let asset = Object.assign({}, this.assetsManager.selectedAssets[0]);
 
+                const assetType = asset.mime_type.split('/')[0];
+
                 this.initializeAssetManager();
 
                 /**
@@ -292,7 +296,9 @@ export default {
 
                 const tempId = `image-tag-${moment().valueOf()}`;
 
-                const template = imageTagTemplate(asset, tempId);
+                const template = assetType === 'image'
+                    ? imageTagTemplate(asset, tempId)
+                    : fileTagTemplate(asset, tempId);
 
                 this.$redactorContainer.redactor('insert.raw', template);
 
