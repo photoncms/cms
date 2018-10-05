@@ -35,8 +35,6 @@ export const setupJsTree = () => {
             // This plugin overrides the activate_node function (the one that gets called
             // when a user tries to select a node) and enables preventing the function invokation by using a callback.
             conditionalselect: function(node, event) {
-                console.error(event.type);
-
                 const stringifiedModuleId = String(store.state.generator.selectedModule.id);
 
                 // If module node being selected has already been selected
@@ -92,6 +90,10 @@ export const destroyJsTree = () => {
 export const jsTreeReselectNode = () => {
     if (jsTreeInstance) {
         jsTreeInstance.deselect_all(true);
+
+        if(!_.has(store.state.generator, 'selectedModule.id')) {
+            return;
+        }
 
         jsTreeInstance.select_node(store.state.generator.selectedModule.id, true);
     }

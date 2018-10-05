@@ -19,6 +19,7 @@
 ### Fixed
 - Fixed a generator validation error bug
 - Fixed an error with jstree destroy method while switching from single to non-sortable module types
+- Fixed a number of console errors in generator
 
 ## v1.1.3 (2018-09-18)
 

@@ -138,8 +138,10 @@ export default {
          * @return  {boolean}
          */
         moduleHasFields() {
-            if(_.has(this.generator.selectedModule, 'fields') && !_.isEmpty(this.generator.selectedModule.fields)) {
-                return true;
+            if(_.has(this.generator.selectedModule, 'fields')) {
+                if (!_.isEmpty(this.generator.selectedModule.fields)) {
+                    return true;
+                }
             }
 
             return false;
