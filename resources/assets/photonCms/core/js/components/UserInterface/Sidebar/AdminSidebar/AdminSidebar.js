@@ -138,10 +138,23 @@ export default {
             });
         },
 
+        /**
+         * Generates a module icon
+         *
+         * @param   {string}  iconName
+         * @return  {string}
+         */
         generateIconHTML(iconName) {
             return `<i class="${iconName} photonTreeIcon"></i>`;
         },
 
+        /**
+         * Processes module entries to create jstree nodes
+         *
+         * @param   {array}  results
+         * @param   {string}  tableName
+         * @return  {void}
+         */
         processEntries (results, tableName) {
             const self = this;
 

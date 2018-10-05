@@ -14,9 +14,11 @@
 - Handled a case where while inserting a file in Redactor editor a file is selected instead of an image - it now generates a clickable link.
 - Changed password reset and change methods - instead of eloquent they now use Photon iAPI
 - Sorted modules by name in the generator sidebar
+- Changed generator sidebar module selection to double click instead of a single click
 
 ### Fixed
 - Fixed a generator validation error bug
+- Fixed an error with jstree destroy method while switching from single to non-sortable module types
 
 ## v1.1.3 (2018-09-18)
 
