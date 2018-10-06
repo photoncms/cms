@@ -15,11 +15,13 @@
 - Changed password reset and change methods - instead of eloquent they now use Photon iAPI
 - Sorted modules by name in the generator sidebar
 - Changed generator sidebar module selection to double click instead of a single click
+- Improved the generator change reporter layout
 
 ### Fixed
 - Fixed a generator validation error bug
 - Fixed an error with jstree destroy method while switching from single to non-sortable module types
 - Fixed a number of console errors in generator
+- Fixed an issue of parent module not being accurately displayed for selected module in the generator section
 
 ## v1.1.3 (2018-09-18)
 

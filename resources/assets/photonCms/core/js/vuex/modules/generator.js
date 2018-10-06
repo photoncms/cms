@@ -320,9 +320,9 @@ const mutations = {
         // const selectedNode = state.nodes.find(node => node.id === selectedModule.id)
         if (!selectedModule) {
             const templateModule = {
-                anchor_text: null,
                 anchor_html: null,
-                category: 0,
+                anchor_text: null,
+                category: null,
                 fields: [],
                 group_id: null,
                 icon: 'fa fa-bars',
@@ -340,7 +340,7 @@ const mutations = {
         }
 
         if (!selectedModule.category) {
-            selectedModule.category = 0;
+            selectedModule.category = null;
         }
 
         state.selectedModule = selectedModule;

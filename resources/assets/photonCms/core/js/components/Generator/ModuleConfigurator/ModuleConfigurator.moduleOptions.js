@@ -156,8 +156,10 @@ export const getModuleOptions = (ModuleConfigurator) => {
             name: 'module[category]',
             optionsData: _mapCategoryModulesSelect2(ModuleConfigurator.categoryModules),
             preselectFirst: true,
+            required: false,
+            relatedTableName: false,
             tooltip: 'Module ID of a parent module. If this value is set then each entry of the current module can belong to an entry of the parent module (scope).',
-            value: _.has(selectedModule, 'category') ? selectedModule.category : null,
+            value: _.has(selectedModule, 'category') && selectedModule.category ? selectedModule.category : 0,
             vueComponent: 'ManyToMany',
         },
 
