@@ -10,6 +10,9 @@
                     <ul
                         v-for="(changeSection, changeSectionName) in report"
                         class="list-group">
+                        <li>
+                          <h4>{{ changeSectionName | titleCase}} {{ $t('generator.changes') }}</h4>
+                        </li>
                         <li v-for="changeSubject in changeSection"
                            class="list-group-item report">
                             <h5
@@ -27,27 +30,26 @@
                                 v-if="changeSubject.change_type == 'delete'">
                                 <span>{{ $t('generator.delete') }} {{ changeSectionName }}</span>
                             </h5>
-                            <div
-                                class="change"
-                                v-for="(change, key) in changeSubject.data">
-                                <span
-                                   v-if="change.old === null"
-                                   class="change-name">{{ $t('generator.set') }} {{ key | separateWords | titleCase}}:
-                                </span>
-                                <span
-                                   v-if="change.old !== null"
-                                   class="change-name">{{ $t('generator.update') }} {{ key | separateWords | titleCase}}:
-                                </span>
-                                <span
-                                   v-if="change.old !== null"
-                                   class="label label-danger">{{change.old | toString}}
-                                </span>
-                                <i
-                                   v-if="change.old !== null"
-                                   class="fa fa-arrow-right">
-                                </i>
-                                <span class="label label-info">{{ change.new }}</span>
-                            </div>
+
+                            <table class="table table-striped">
+                              <tbody>
+                                <tr v-for="(change, key) in changeSubject.data">
+                                  <td>
+                                    <span v-if="change.old === null"
+                                       class="change-name">{{ $t('generator.set') }} {{ key | separateWords | titleCase}}:
+                                    </span>
+                                    <span v-if="change.old !== null"
+                                       class="change-name">{{ $t('generator.update') }} {{ key | separateWords | titleCase}}:
+                                    </span>
+                                  </td>
+                                  <td>
+                                    <span v-if="change.old !== null" class="text-muted">{{change.old | toString}}</span>
+                                    <i v-if="change.old !== null" class="fa fa-arrow-right text-muted"></i>
+                                    <span :class="{ 'text-danger': change.new === false, 'text-success': change.new === true }">{{ change.new }}</span>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
                         </li>
                     </ul>
                 </div>
@@ -91,3 +93,13 @@
 import ModuleReporter from './ModuleReporter.js';
 export default ModuleReporter;
 </script>
+
+<style scoped>
+  table {
+    margin: 0;
+  }
+
+  td {
+    width: 50%;
+  }
+</style>
