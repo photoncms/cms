@@ -69,7 +69,7 @@ export const getModuleOptions = (ModuleConfigurator) => {
             name: 'module[name]',
             placeholder: 'My Module Name',
             tooltip: 'Name of the module.',
-            value: _.has(selectedModule, 'name') ? selectedModule.name : null,
+            value: _.has(selectedModule, 'name') && selectedModule.name ? selectedModule.name : null,
             vueComponent: 'InputText',
         },
 
@@ -84,7 +84,7 @@ export const getModuleOptions = (ModuleConfigurator) => {
             name: 'module[table_name]',
             placeholder: 'my_table_name',
             tooltip: 'Table name for the module in snake_case notation.',
-            value: _.has(selectedModule, 'table_name') ? selectedModule.table_name : null,
+            value: _.has(selectedModule, 'table_name') && selectedModule.table_name ? selectedModule.table_name : null,
             vueComponent: 'InputText',
         },
 

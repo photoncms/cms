@@ -32,7 +32,7 @@
                             <form-field
                                 :disabled="field.disabled"
                                 :field-type="field.vueComponent"
-                                :form-fields-reset-prop="field.formFieldsReset"
+                                :form-fields-reset-prop="formFieldsReset"
                                 :id="field.id"
                                 :inline="true"
                                 :key="field.id"

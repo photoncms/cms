@@ -39,7 +39,7 @@ export default {
              *
              * @type  {boolean}
              */
-            autoFormattingTableName: false,
+            allowAutoFormattingTableName: false,
 
             /**
              * An object sent to child components; used to signal that the fields need to be reset, with the ability
@@ -213,44 +213,45 @@ export default {
          * @return  {void}
          */
         createTableName () {
-            if (this.autoFormattingTableName
-                || !this.generator.selectedModule.table_name
-                || this.generator.selectedModule.table_name === '') {
-
-                this.autoFormattingTableName = true;
-
-                const newTableName = this.generator.selectedModule['name']
-                    .toLowerCase()
-                    .replace(/-/g, ' ')
-                    .split(' ')
-                    .map(function(word) {
-                        return word.replace(/\W/g, '');
-                    })
-                    .join('_');
-
-                updateValue(
-                    store,
-                    'generator/UPDATE_GENERATOR_SELECTED_MODULE_TABLE_NAME',
-                    null,
-                    null,
-                    newTableName
-                );
-
-                const updatedTableName = this.generator.selectedModule.table_name;
-
-                this.moduleOptions[2].value = updatedTableName;
+            if (!this.generator.selectedModule.table_name || this.generator.selectedModule.table_name === '') {
+                this.allowAutoFormattingTableName = true;
             }
+
+            if(!this.allowAutoFormattingTableName) {
+                return;
+            }
+
+            const newTableName = this.generator.selectedModule['name']
+                .toLowerCase()
+                .replace(/-/g, ' ')
+                .split(' ')
+                .map(function(word) {
+                    return word.replace(/\W/g, '');
+                })
+                .join('_');
+
+            updateValue(
+                store,
+                'generator/UPDATE_GENERATOR_SELECTED_MODULE_TABLE_NAME',
+                null,
+                null,
+                newTableName
+            );
+
+            const updatedTableName = this.generator.selectedModule.table_name;
+
+            this.moduleOptions[2].value = updatedTableName;
         },
 
         /**
          * Used as callback for blur event in ModuleConfigurator.moduleOptions.
-         * Finishes autoFormattingTableName session. Any further editing of name does not update the table_name
+         * Finishes allowAutoFormattingTableName session. Any further editing of name does not update the table_name
          *
          * @return  {void}
          */
         endModuleNameEdit () {
-            if (this.autoFormattingTableName) {
-                this.autoFormattingTableName = false;
+            if (this.allowAutoFormattingTableName) {
+                this.allowAutoFormattingTableName = false;
             }
         },
 
@@ -315,16 +316,20 @@ export default {
 
 
         /**
-         * Bind evenBus listeners
+         * Bind eventBus listeners
          *
          * @return  {[type]}  [description]
          */
         initEventBusListener () {
+            eventBus.$off('fieldTypeBlur');
+
             eventBus.$on('fieldTypeBlur', payload => {
                 if (payload.name === 'module[name]') {
                     this.endModuleNameEdit();
                 }
             });
+
+            eventBus.$off('fieldTypeChange');
 
             eventBus.$on('fieldTypeChange', payload => {
                 if (payload.name === 'module[name]') {

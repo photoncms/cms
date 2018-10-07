@@ -71,7 +71,7 @@ const state = {
      *
      * @type  {object}
      */
-    report: null,
+    report: {},
 
     /**
      * Report type (create, update, delete)
@@ -87,13 +87,23 @@ const state = {
      */
     refreshForm: null,
 
-
     /**
      * Module selected for editing
      *
      * @type  {object}
      */
-    selectedModule: null,
+    selectedModule: {
+        anchor_html: null,
+        anchor_text: null,
+        category: null,
+        fields: [],
+        group_id: null,
+        icon: 'fa fa-bars',
+        name: null,
+        slug: null,
+        table_name: null,
+        type: 'non_sortable',
+    },
 };
 
 /**
@@ -138,7 +148,7 @@ const updateFieldProperty = (state, { id, newValue }) => {
         return;
     }
 
-    field[fieldProperty] = newValue;
+    field[fieldProperty] = newValue ? newValue : null;
 };
 
 /**
@@ -319,7 +329,9 @@ const mutations = {
     [types.UPDATE_GENERATOR_SELECTED_MODULE](state, selectedModule) {
         // const selectedNode = state.nodes.find(node => node.id === selectedModule.id)
         if (!selectedModule) {
-            const templateModule = {
+            state.newModule = true;
+
+            state.selectedModule = {
                 anchor_html: null,
                 anchor_text: null,
                 category: null,
@@ -331,10 +343,6 @@ const mutations = {
                 table_name: null,
                 type: 'non_sortable',
             };
-
-            state.newModule = true;
-
-            state.selectedModule = templateModule;
 
             return;
         }
@@ -459,7 +467,7 @@ const mutations = {
     },
 
     [types.UPDATE_GENERATOR_SELECTED_MODULE_TABLE_NAME](state, {newValue}) {
-        state.selectedModule.table_name = newValue;
+        state.selectedModule.table_name = newValue ? newValue : null;
     },
 
     [types.UPDATE_GENERATOR_SELECTED_MODULE_TYPE](state, {newValue}) {

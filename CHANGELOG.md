@@ -22,6 +22,7 @@
 - Fixed an error with jstree destroy method while switching from single to non-sortable module types
 - Fixed a number of console errors in generator
 - Fixed an issue of parent module not being accurately displayed for selected module in the generator section
+- Fixed an issue of automatic table name generator not working under certain conditions
 
 ## v1.1.3 (2018-09-18)
 

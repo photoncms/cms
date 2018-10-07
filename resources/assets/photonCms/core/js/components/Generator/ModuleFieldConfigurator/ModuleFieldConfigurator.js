@@ -148,14 +148,18 @@ export default {
 
                 this.autoFormattingFieldDbName = true;
 
-                const newFieldDbNameValue = this.moduleField['name']
-                    .toLowerCase()
-                    .replace(/-/g, ' ')
-                    .split(' ')
-                    .map(function(word) {
-                        return word.replace(/\W/g, '');
-                    })
-                    .join('_');
+                let newFieldDbNameValue = this.moduleField['name'] ? this.moduleField['name'] : null;
+
+                if(newFieldDbNameValue) {
+                    newFieldDbNameValue = newFieldDbNameValue
+                        .toLowerCase()
+                        .replace(/-/g, ' ')
+                        .split(' ')
+                        .map(function(word) {
+                            return word.replace(/\W/g, '');
+                        })
+                        .join('_');
+                }
 
                 updateValue(
                     store,
