@@ -447,6 +447,8 @@ export default {
             this.$nextTick(() => {
                 this.moduleOptions = getModuleOptions(this);
 
+                this.formFieldsReset.resetData = moment().valueOf();
+
                 this.sortFields();
             });
         },
