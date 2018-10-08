@@ -16,6 +16,7 @@
 - Sorted modules by name in the generator sidebar
 - Changed generator sidebar module selection to double click instead of a single click
 - Improved the generator change reporter layout
+- Changed the Laravel Mix configuration so that the localhost:3000 isn't automatically opened everytime the browserSync wacther is ran (prefer using the proxy URL)
 
 ### Fixed
 - Fixed a generator validation error bug

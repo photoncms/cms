@@ -80,6 +80,7 @@ mix.disableSuccessNotifications()
         files: [
             'resources/**'
         ],
+        open: false,
     });
 
 mix.webpackConfig({
