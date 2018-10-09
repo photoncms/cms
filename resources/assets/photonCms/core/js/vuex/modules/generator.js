@@ -148,7 +148,7 @@ const updateFieldProperty = (state, { id, newValue }) => {
         return;
     }
 
-    field[fieldProperty] = newValue ? newValue : null;
+    field[fieldProperty] = newValue;
 };
 
 /**

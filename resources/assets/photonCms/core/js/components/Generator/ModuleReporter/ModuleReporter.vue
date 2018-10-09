@@ -35,12 +35,7 @@
                               <tbody>
                                 <tr v-for="(change, key) in changeSubject.data">
                                   <td>
-                                    <span v-if="change.old === null"
-                                       class="change-name">{{ $t('generator.set') }} {{ key | separateWords | titleCase}}:
-                                    </span>
-                                    <span v-if="change.old !== null"
-                                       class="change-name">{{ $t('generator.update') }} {{ key | separateWords | titleCase}}:
-                                    </span>
+                                    <span>{{ key | separateWords | titleCase}}:</span>
                                   </td>
                                   <td>
                                     <span v-if="change.old !== null" class="text-muted">{{change.old | toString}}</span>
