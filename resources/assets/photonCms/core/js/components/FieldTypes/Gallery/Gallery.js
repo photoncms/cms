@@ -338,7 +338,7 @@ export default {
                 });
         },
 
-        getAssetUrl ({ id, file_url }) {
+        getAssetUrl ({ id = null, file_url = null } = {}) {
             const imageNameSuffix = '_120x90';
 
             const fileExtensionWithDot = /(?:\.([^.]+))?$/.exec(file_url)[0];

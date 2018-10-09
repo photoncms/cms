@@ -10,6 +10,7 @@
 - Added a user account lock functionality
 - Added interrupt login and register events
 - Added post login and register events
+- Added the force delete entry functionality
 
 ### Changed
 - Handled a case where while inserting a file in Redactor editor a file is selected instead of an image - it now generates a clickable link.
@@ -25,6 +26,7 @@
 - Fixed a number of console errors in generator
 - Fixed an issue of parent module not being accurately displayed for selected module in the generator section
 - Fixed an issue of automatic table name generator not working under certain conditions
+- Fixed a parent entry selection error for sortable modules
 
 ## v1.1.3 (2018-09-18)
 

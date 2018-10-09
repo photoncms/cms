@@ -103,6 +103,21 @@ export default {
      * @type  {Object}
      */
     methods: {
+        /**
+         * Creates a new js tree node
+         *
+         * @return  {void}
+         */
+        createNode (newNode, self, node, tableName) {
+            jsTreeInstance.create_node('#',  newNode, 'last');
+
+            // Select a node if it's the one being edited
+            if(_.has(self.admin.editedEntry, 'id')
+                && parseInt(node.id) === parseInt(self.admin.editedEntry.id)) {
+                jsTreeInstance.select_node(`${tableName}.${node.id}`, true);
+            }
+        },
+
         getSelectedModule () {
             const moduleTableName = this.$route.params.moduleTableName;
 
@@ -185,20 +200,10 @@ export default {
                         // Added a pause of 250 as Firefox has an issue of
                         // occasionally overwriting nodes only on a first processEntries run.
                         setTimeout(()=>{
-                            jsTreeInstance.create_node('#',  newNode, 'last');
-
-                            if(_.has(self.admin.editedEntry, 'id')
-                                && parseInt(node.id) === parseInt(self.admin.editedEntry.id)) {
-                                jsTreeInstance.select_node(`${tableName}.${node.id}`, true);
-                            }
+                            this.createNode(newNode, self, node, tableName);
                         }, 250);
                     } else {
-                        jsTreeInstance.create_node('#',  newNode, 'last');
-
-                        if(_.has(self.admin.editedEntry, 'id')
-                            && parseInt(node.id) === parseInt(self.admin.editedEntry.id)) {
-                            jsTreeInstance.select_node(`${tableName}.${node.id}`, true);
-                        }
+                        this.createNode(newNode, self, node, tableName);
                     }
                 });
             }

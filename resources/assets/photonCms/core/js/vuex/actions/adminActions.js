@@ -295,6 +295,16 @@ export default {
     },
 
     /**
+     * Commits a CONFIRM_ENTRY_FORCE_DELETE which switches the ui to force delete confirmation mode
+     *
+     * @param   {function}  options.commit
+     * @return  {void}
+     */
+    confirmForceDeleteEntry ({ commit }) {
+        commit(types.CONFIRM_ENTRY_FORCE_DELETE);
+    },
+
+    /**
      * Deletes an entry
      *
      * @param   {function}  options.commit
@@ -303,14 +313,16 @@ export default {
      * @param   {object}  options.state
      * @return  {promise}
      */
-    deleteEntry ({ commit, dispatch, state }, { entryId, selectedModuleName }) {
+    deleteEntry ({ commit, dispatch, state }, { entryId, selectedModuleName, force = false }) {
         if (!state.confirmDeleteEntry) {
             return Promise.reject('Aborting deletion, state.confirmDeleteEntry is set to false.');
         }
 
         dispatch('setSubmitEntryInProgress', { value: true });
 
-        return api.delete(`${selectedModuleName}/${entryId}`)
+        const forceInteger = force ? 1 : 0;
+
+        return api.delete(`${selectedModuleName}/${entryId}?force=${forceInteger}`)
             .then((response) => {
                 dispatch('changeEditorMode', { newEditorMode: 'create' });
 
@@ -321,6 +333,12 @@ export default {
                 return Promise.resolve(response);
             })
             .catch((response) => {
+                if(response.body.message === 'CANNOT_DELETE_ENTRY_HAS_RELATIONS') {
+                    dispatch('confirmForceDeleteEntry');
+
+                    dispatch('setRelatedEntry', { relatedEntry: response.body.body.related_entry });
+                }
+
                 errorCommit({ commit }, response, 'ADMIN');
 
                 dispatch('setSubmitEntryInProgress', { value: false });
@@ -338,6 +356,17 @@ export default {
      */
     disableAutomaticSlugGeneration ({ commit }, { value }) {
         commit(types.DISABLE_AUTOMATIC_SLUG_GENERATION, { value });
+    },
+
+    /**
+     * Commits a SET_RELATED_ENTRY which populates the relatedEntry property
+     *
+     * @param   {function}  options.commit
+     * @param   {object}  options.relatedEntry
+     * @return  {void}
+     */
+    setRelatedEntry ({ commit }, { relatedEntry }) {
+        commit(types.SET_RELATED_ENTRY, { relatedEntry });
     },
 
     /**
@@ -781,7 +810,7 @@ export default {
      * @param   {string}  options.url
      * @return  {void}
      */
-    updateSelectedNode({ commit }, { anchorText, parentId, scopeId, url }) {
-        commit(types.UPDATE_SELECTED_NODE, { anchorText, parentId, scopeId, url });
+    updateSelectedNode({ commit }, { anchorText, id, parentId, scopeId, url }) {
+        commit(types.UPDATE_SELECTED_NODE, { anchorText, id, parentId, scopeId, url });
     },
 };

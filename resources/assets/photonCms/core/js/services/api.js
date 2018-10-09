@@ -109,6 +109,14 @@ const _bootstrap = () => {
  * @return {object} API return
  */
 const _request = (method, url, parameters, includeFields = [], headers = null) => {
+    const config = {
+        headers,
+    }
+
+    if (method === 'delete') {
+        return Vue.http[method](url, config);
+    }
+
     let query = '';
 
     if(url.indexOf('?') > -1) {
@@ -123,10 +131,7 @@ const _request = (method, url, parameters, includeFields = [], headers = null) =
         parsedQueryString.include = includeFields;
     }
 
-    const config = {
-        params: parsedQueryString,
-        headers,
-    }
+    config.params = parsedQueryString;
 
     if (method === 'get') {
         return Vue.http[method](url, config);
