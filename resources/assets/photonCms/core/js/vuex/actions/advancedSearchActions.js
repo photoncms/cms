@@ -71,7 +71,7 @@ export default {
      * @return  {promise}
      */
     filterModuleEntries ({ commit, dispatch, state }, { moduleTableName, payload } = {}) {
-        return api.post('filter/' + moduleTableName, payload)
+        return api.post('filter/' + moduleTableName, payload, [ 'id', 'anchor_text', 'created_at', 'updated_at'])
             .then((response) => {
                 if (response.data.body.pagination !== 'undefined') {
                     const entries = response.data.body.entries;
