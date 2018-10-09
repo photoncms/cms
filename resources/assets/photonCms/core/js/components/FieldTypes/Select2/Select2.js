@@ -508,7 +508,7 @@ export default {
                 include_relations: false,
             };
 
-            api.post(config.ENV.apiBasePath + '/filter/' + this.relatedTableName, initialSelectionPayload)
+            api.post(config.ENV.apiBasePath + '/filter/' + this.relatedTableName, initialSelectionPayload, [ this.preloadDataConfig.valuesOfInterest.id, this.preloadDataConfig.valuesOfInterest.text ])
                 .then((response) => {
                     const entries =  _.get(response, this.preloadDataConfig.resultsObjectPath, []);
 
@@ -580,6 +580,7 @@ export default {
             pLog('Select2 preloadData (name, value)', this.name, this.value);
 
             if(!this.lazyLoading && _.isEmpty(this.options.data)) {
+                console.error(this.optionsData);
                 // if optionsData prop has data, use it instead of fetching from remote source
                 if (!_.isEmpty(this.optionsData)) {
                     this.options.data = this.optionsData;
@@ -737,7 +738,7 @@ export default {
                     };
                 },
                 type: 'POST',
-                url: config.ENV.apiBasePath + '/filter/' + this.relatedTableName,
+                url: `${config.ENV.apiBasePath}/filter/${this.relatedTableName}?include=${this.preloadDataConfig.valuesOfInterest.id}&include=${this.preloadDataConfig.valuesOfInterest.text}`,
             };
 
             this.options.minimumInputLength = 2;
@@ -782,7 +783,7 @@ export default {
              * default value for the preloadDataConfig prop (undefined).
              */
             if (! this.preloadDataConfig.url) {
-                this.preloadDataConfig.url = `${config.ENV.apiBasePath}/filter/${this.relatedTableName}`;
+                this.preloadDataConfig.url = `${config.ENV.apiBasePath}/filter/${this.relatedTableName}?include=${this.preloadDataConfig.valuesOfInterest.id}&include=${this.preloadDataConfig.valuesOfInterest.text}`;
             }
 
             this.initializeSelect2();

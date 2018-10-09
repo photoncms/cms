@@ -78,7 +78,7 @@ class ResponseRepository
             'body' => ($this->reportingService->isActive() && $responseCode < 300)
                 ? $this->reportingService->getReport()
                 : ((!empty($responseData))
-                    ? $this->trimmingController->trim($this->transformationController->transform($responseData))
+                    ? $this->trimmingController->trim($this->transformationController->transform($responseData), $responseName)
                     : [])
         ];
 
@@ -88,7 +88,7 @@ class ResponseRepository
     }
 
     /**
-     * Stores request and response data into log 
+     * Stores request and response data into log
      *
      * @param array $content
      * @return void|boolean

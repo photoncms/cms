@@ -11,27 +11,50 @@ class TrimmingController
      * @param array $data
      * @return array
      */
-    public function trim($data)
+    public function trim($data, $responseName)
     {
-        // if not retreiving dynamic module entry return
-        if(!isset($data['entries']) && !isset($data['entry'])) {
-            return $data;
+        // Trim auth/me user data
+        if($responseName === 'GET_LOGGED_IN_USER_SUCCESS') {
+            return $this->filterData($data, 'user');
         }
 
-        // prepare included fields array
-    	$includedFields = $this->prepareIncludedFields();
+        // Trim menus/{id} data
+        if($responseName === 'LOAD_MENU_ITEMS_SUCCESS') {
+            return $this->filterData($data, 'menu_items', true);
+        }
+
+        // Trim single entry
+        if(isset($data['entry'])) {
+            return $this->filterData($data, 'entry');
+        }
+
+        // Trim multiple entries
+        if(isset($data['entries'])) {
+            return $this->filterData($data, 'entries', true);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Performs the data filtering
+     *
+     * @param   array  $data
+     * @param   string  $keyName
+     * @param   boolean  $isDataArray
+     * @return  array
+     */
+    private function filterData($data, $keyName, $isDataArray = false)
+    {
+        $includedFields = $this->prepareIncludedFields();
 
         if (empty($includedFields)) {
             return $data;
         }
 
-        // trim single entry
-        if(isset($data['entry'])) {
-            $data['entry'] = $this->trimData($data['entry'], $includedFields);
-            return $data;
-        }
-
-        $data['entries'] = $this->trimDataArray($data['entries'], $includedFields);
+        $data[$keyName] = $isDataArray
+            ? $this->trimDataArray($data[$keyName], $includedFields)
+            : $this->trimData($data[$keyName], $includedFields);
 
         return $data;
     }
@@ -45,14 +68,11 @@ class TrimmingController
     {
         $preparedFields = [];
 
-        // if there are no filtered fields return
         $includedFields = \Request::get('include');
-        if(!$includedFields) {
+
+        if(!is_array($includedFields)) {
             return $preparedFields;
         }
-
-        // parser included fields from string to associative array
-        $includedFields = explode(",", $includedFields);
 
         foreach ($includedFields as $key => $field) {
     		$fields = array_reverse(explode(".", $field));

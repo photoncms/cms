@@ -12,6 +12,8 @@ import { faviconLoading } from '_/helpers/favicon';
 
 import { pLog } from '_/helpers/logger';
 
+const queryString = require('query-string');
+
 // Set variables used for NProgress plugin control
 let _progressBarTimeout;
 
@@ -99,14 +101,38 @@ const _bootstrap = () => {
 };
 
 /**
- * Returns Vue.http method based off given arguments
+ * Returns Vue.http method based off given parameters
  * @param  {string} method e.g. 'get' or 'post'
  * @param  {string} url
- * @param  {object} args
+ * @param  {object} parameters
+ * @param  {array} includeFields
  * @return {object} API return
  */
-const _request = (method, url, args, headers = null) => {
-    return Vue.http[method](url, args, headers);
+const _request = (method, url, parameters, includeFields = [], headers = null) => {
+    let query = '';
+
+    if(url.indexOf('?') > -1) {
+        query = url.substring(url.indexOf('?') + 1);
+
+        url = url.substring(url.indexOf('?'), 0);
+    }
+
+    const parsedQueryString = queryString.parse(query);
+
+    if(includeFields.length > 0) {
+        parsedQueryString.include = includeFields;
+    }
+
+    const config = {
+        params: parsedQueryString,
+        headers,
+    }
+
+    if (method === 'get') {
+        return Vue.http[method](url, config);
+    }
+
+    return Vue.http[method](url, parameters, config);
 };
 
 /**
@@ -115,18 +141,18 @@ const _request = (method, url, args, headers = null) => {
  */
 export const api = {
     bootstrap: _bootstrap,
-    get: (url, args, headers = null) => {
-        return _request('get', url, args, headers);
+    get: (url, parameters, includeFields = [], headers = null) => {
+        return _request('get', url, parameters, includeFields, headers);
     },
-    post: (url, args, headers = null) => {
-        return _request('post', url, args, headers);
+    post: (url, parameters, includeFields = [], headers = null) => {
+        return _request('post', url, parameters, includeFields, headers);
     },
-    put: (url, args, headers = null) => {
-        return _request('put', url, args, headers);
+    put: (url, parameters, includeFields = [], headers = null) => {
+        return _request('put', url, parameters, includeFields, headers);
     },
-    delete: (url, args, headers = null) => {
-        return _request('delete', url, args, headers);
+    delete: (url, parameters, includeFields = [], headers = null) => {
+        return _request('delete', url, parameters, includeFields, headers);
     },
-    progressBarDone: progressBarDone,
-    progressBarStart: progressBarStart,
+    progressBarDone,
+    progressBarStart,
 };

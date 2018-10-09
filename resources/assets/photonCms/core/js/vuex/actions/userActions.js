@@ -104,7 +104,7 @@ export default {
      * Checks the environment property in the response header
      *
      * @param   {[type]}  options.response  [description]
-     * @return  {void}  
+     * @return  {void}
      */
     checkEnvironment ({}, { response }) {
         debugger;
@@ -265,7 +265,12 @@ export default {
 
         Vue.http.headers.common['Authorization'] = 'Bearer ' + apiToken;
 
-        return api.get('auth/me')
+        return api.get('auth/me', '', [
+                'id',
+                'first_name',
+                'last_name',
+                'roles',
+            ])
             .then((response) => {
                 commit(types.USER_LOGIN_SUCCESS, response.data.body);
 

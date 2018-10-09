@@ -76,7 +76,7 @@ mix.disableSuccessNotifications()
         .version()
 
     .browserSync({
-        proxy: 'photoncms.test:3000',
+        proxy: 'photoncms.test',
         files: [
             'resources/**'
         ],
