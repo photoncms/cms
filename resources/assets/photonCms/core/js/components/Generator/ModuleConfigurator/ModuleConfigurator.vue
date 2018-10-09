@@ -55,8 +55,8 @@
                 </div>
             </div>
             <input name="fields" type="hidden">
-            <div class="sortable-fields" id="intro-generator-fields">
-                <div class="panel panel-default panel-block panel-title-block" v-if="moduleHasFields">
+            <div class="sortable-fields" id="intro-generator-fields" v-if="moduleHasFields">
+                <div class="panel panel-default panel-block panel-title-block">
                     <div class="panel-heading">
                         <div>
                             <h1>Module Fields
@@ -69,7 +69,6 @@
                     :form-fields-reset="formFieldsReset"
                     :key="moduleField.id"
                     :module-field="moduleField"
-                    v-if="moduleHasFields"
                     v-for="moduleField in generator.selectedModule.fields">
                 </module-field-configurator>
             </div>

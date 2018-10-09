@@ -56,6 +56,7 @@ class DynamicModuleTransformer extends BaseTransformer
         }
 
         $attributes = array_merge($attributes, $relations);
+
         return $attributes;
     }
 }

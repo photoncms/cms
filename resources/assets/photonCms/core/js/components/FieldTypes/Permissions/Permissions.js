@@ -167,7 +167,7 @@ export default {
                 title: this.permissionTitle,
             };
 
-            return api.post('permissions', payload)
+            return api.post('permissions', payload, [ 'id', 'name', 'title' ])
                 .then(() => {
                     this.getAllPermissions()
                         .then(() => {
@@ -214,7 +214,7 @@ export default {
                 }
             };
 
-            return api.post('filter/permissions', payload)
+            return api.post('filter/permissions', payload, [ 'id', 'name', 'title' ])
                 .then((response) => {
                     const entries = response.body.body.entries;
 

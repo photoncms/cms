@@ -16,7 +16,7 @@ import { router } from '_/router/router';
 
 import {
     apiResponseCommit,
-    errorCommit
+    errorCommit,
 } from '_/vuex/actions/commonActions';
 
 import { pError } from '_/helpers/logger';
@@ -482,7 +482,7 @@ export default {
             }
         };
 
-        return api.post(`filter/${tableName}`, payload)
+        return api.post(`filter/${tableName}`, payload, ['id', 'scope_id', 'anchor_text', 'anchor_html'])
             .then((response) => {
                 const values = response.data.body.entries;
 

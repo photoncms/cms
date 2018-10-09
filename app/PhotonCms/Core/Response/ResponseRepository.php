@@ -9,6 +9,7 @@ use App;
 use Config;
 use Photon\PhotonCms\Core\Exceptions\PhotonException;
 use Photon\PhotonCms\Core\Transform\TransformationController;
+use Photon\PhotonCms\Core\Trim\TrimmingController;
 use Illuminate\Http\Response;
 use Monolog\Logger;
 use Monolog\Handler\RotatingFileHandler;
@@ -23,6 +24,13 @@ class ResponseRepository
     private $transformationController;
 
     /**
+     * Performs response trimming.
+     *
+     * @var TrimmingController
+     */
+    private $trimmingController;
+
+    /**
      * Service for reporting changes
      *
      * @var ReportingService
@@ -33,11 +41,16 @@ class ResponseRepository
      * Constructor.
      *
      * @param TransformationController $transformationController
+     * @param TrimmingController $trimmingController
      */
-    public function __construct(TransformationController $transformationController)
+    public function __construct(
+        TransformationController $transformationController,
+        TrimmingController $trimmingController
+    )
     {
         $this->transformationController = $transformationController;
-        $this->reportingService = App::make('ReportingService');
+        $this->trimmingController       = $trimmingController;
+        $this->reportingService         = App::make('ReportingService');
     }
 
     /**
@@ -65,7 +78,7 @@ class ResponseRepository
             'body' => ($this->reportingService->isActive() && $responseCode < 300)
                 ? $this->reportingService->getReport()
                 : ((!empty($responseData))
-                    ? $this->transformationController->transform($responseData)
+                    ? $this->trimmingController->trim($this->transformationController->transform($responseData), $responseName)
                     : [])
         ];
 
@@ -74,10 +87,17 @@ class ResponseRepository
         return new Response($content, $responseCode);
     }
 
+    /**
+     * Stores request and response data into log
+     *
+     * @param array $content
+     * @return void|boolean
+     */
     private function logResponse($content)
     {
-        if(!env("PHOTON_STORE_LOGS", true))
+        if(!env("PHOTON_STORE_LOGS", true)) {
             return true;
+        }
 
         $user = \Auth::user();
 

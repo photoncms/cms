@@ -64,7 +64,7 @@ class TransformationController
      * @return array|object
      */
     public function transform($data)
-    {
+    { 
         if (is_array($data) || $data instanceof BaumCollection || $data instanceof IlluminateCollection) {
             $this->transformRecursively($data);
         } else if (is_object($data)) {

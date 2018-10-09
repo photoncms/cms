@@ -121,7 +121,7 @@ export default {
                     resultsObjectPath: 'body.body.entries',
                     valuesOfInterest: {
                         id: 'id',
-                        text: 'anchor_html',
+                        text: 'anchor_text',
                     },
                     url: false,
                 },
@@ -282,7 +282,7 @@ export default {
                 include_relations: false,
             };
 
-            api.post(uri, payload)
+            api.post(uri, payload, [ 'id', 'anchor_text' ])
                 .then((response) => {
                     this.imageSizes = response.body.body.entries;
 
@@ -355,7 +355,6 @@ export default {
                                         this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset');
                                     });
                             });
-
                     });
             }
             , 500),
@@ -545,7 +544,5 @@ export default {
                 this.imageSizesOptions.disabled = !this.isAssetSelected;
             },
         },
-
     },
-
 };

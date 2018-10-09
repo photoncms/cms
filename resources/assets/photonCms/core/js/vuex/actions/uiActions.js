@@ -49,7 +49,17 @@ export default {
      * @return  {promise}
      */
     getMenu({ commit }, { menuId, mutationName }) {
-        return api.get(`menus/${menuId}/items`)
+        return api.get(`menus/${menuId}/items`, '', [
+                'children',
+                'clickable',
+                'has_children',
+                'has_children',
+                'icon',
+                'menu_link_type_name',
+                'menu_link_type_name',
+                'resource_data',
+                'title',
+            ])
             .then((response) => {
                 commit(types[mutationName], response.body.body.menu_items);
             })

@@ -56,7 +56,7 @@ export default {
             }
         };
 
-        return api.post('filter/field_groups', payload)
+        return api.post('filter/field_groups', payload, [ 'id', 'name' ])
             .then((response) => {
                 commit(types.GET_ALL_FIELD_GROUPS_SUCCESS, { response });
             }, () => {
