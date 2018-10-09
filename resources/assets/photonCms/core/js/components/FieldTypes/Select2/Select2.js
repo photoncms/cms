@@ -580,7 +580,6 @@ export default {
             pLog('Select2 preloadData (name, value)', this.name, this.value);
 
             if(!this.lazyLoading && _.isEmpty(this.options.data)) {
-                console.error(this.optionsData);
                 // if optionsData prop has data, use it instead of fetching from remote source
                 if (!_.isEmpty(this.optionsData)) {
                     this.options.data = this.optionsData;

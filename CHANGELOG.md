@@ -3,7 +3,8 @@
 ## v1.2.0 (2018-09-24)
 
 ### Added
-- Added include fields functionality
+- Added include fields functionality in the API
+- Used include fields functionality in admin panel Vue app to minimize the response payloads
 - Added field groups functionality
 - Added a Big Integer field type
 - Added a user account lock functionality
