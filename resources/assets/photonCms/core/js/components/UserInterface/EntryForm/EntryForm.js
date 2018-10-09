@@ -183,8 +183,8 @@ export default {
          * @param   {string}  options.selectedModuleName
          * @return  {promise}
          */
-        deleteEntry ({ entryId, selectedModuleName }) {
-            store.dispatch(`${this.vuexModule}/deleteEntry`, { entryId, selectedModuleName })
+        deleteEntry ({ entryId, selectedModuleName, force }) {
+            store.dispatch(`${this.vuexModule}/deleteEntry`, { entryId, selectedModuleName, force })
                 .then(() => {
                     if (this.shouldRouterPush) {
                         router.push(`/admin/${selectedModuleName}`);
@@ -199,10 +199,11 @@ export default {
          *
          * @return  {promise}
          */
-        deleteEntryConfirmed () {
+        deleteEntryConfirmed ({ force = false } = {}) {
             return this.deleteEntry({
                 entryId: this.admin.editedEntry.id,
                 selectedModuleName: this.admin.selectedModule.table_name,
+                force,
             });
         },
 

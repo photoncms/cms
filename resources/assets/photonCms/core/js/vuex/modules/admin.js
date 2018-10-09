@@ -43,6 +43,13 @@ export default function adminFactory (moduleName) {
         createAnother: false,
 
         /**
+         * Stores related entry data to provide more info during the deletion guard procedure
+         *
+         * @type  {Object}
+         */
+        deletionPreventedRelatedEntry: {},
+
+        /**
          * List of edited fields
          *
          * @type  {Array}
@@ -129,6 +136,13 @@ export default function adminFactory (moduleName) {
         selectedNode: {},
 
         /**
+         * Toggles the state of force delete confirmation button
+         *
+         * @type  {boolean}
+         */
+        shouldForceDelete: false,
+
+        /**
          * Toggles the state of the submit procedure
          *
          * @type  {boolean}
@@ -166,6 +180,8 @@ export default function adminFactory (moduleName) {
          */
         [types.CHANGE_ADMIN_MODE] (state, { newEditorMode }) {
             state.confirmDeleteEntry = false;
+
+            state.shouldForceDelete = false;
 
             state.dirtyFields = [];
 
@@ -210,6 +226,16 @@ export default function adminFactory (moduleName) {
         },
 
         /**
+         * Sets a shouldForceDelete state property
+         *
+         * @param  {object}  state
+         * @return  {void}
+         */
+        [types.CONFIRM_ENTRY_FORCE_DELETE] (state) {
+            state.shouldForceDelete = !state.shouldForceDelete;
+        },
+
+        /**
          * Reverses the createAnother state boolean parameter
          *
          * @param  {object}  state
@@ -249,6 +275,8 @@ export default function adminFactory (moduleName) {
         [types.SET_CREATE_ENTRY_UI] (state) {
             state.confirmDeleteEntry = false;
 
+            state.shouldForceDelete = false;
+
             state.dirtyFields = [];
 
             const templateEntry = {
@@ -265,6 +293,14 @@ export default function adminFactory (moduleName) {
             }
 
             state.editorMode = 'create';
+
+            if(state.editorMode === 'create'
+                && _.has(state, 'selectedNode.id')
+                && state.selectedNode.id
+                && (state.selectedModule.type === 'multilevel_sortable' || state.selectedModule.type === 'sortable')
+                ) {
+                state.editedEntry.parent_id = state.selectedNode.id;
+            }
         },
 
         /**
@@ -297,6 +333,8 @@ export default function adminFactory (moduleName) {
 
             state.confirmDeleteEntry = false;
 
+            state.shouldForceDelete = false;
+
             state.editedEntry = entry;
 
             state.editorMode = 'edit';
@@ -317,6 +355,8 @@ export default function adminFactory (moduleName) {
          */
         [types.SAVE_DYNAMIC_MODULE_ENTRY_SUCCESS] (state, { entry }) {
             state.confirmDeleteEntry = false;
+
+            state.shouldForceDelete = false;
 
             state.dirtyFields = [];
 
@@ -347,6 +387,8 @@ export default function adminFactory (moduleName) {
 
             state.confirmDeleteEntry = false;
 
+            state.shouldForceDelete = false;
+
             state.dirtyFields = [];
 
             state.entry = lastEntry;
@@ -371,6 +413,17 @@ export default function adminFactory (moduleName) {
          */
         [types.SET_ASSET_MANAGER_SEARCH_FILTER] (state, { value }) {
             Vue.set(state, 'assetManagerSearchFilter', value);
+        },
+
+        /**
+         * Sets the deletionPreventedRelatedEntry property
+         *
+         * @param  {object}  state
+         * @param  {object}  option.relatedEntry
+         * @return  {void}
+         */
+        [types.SET_RELATED_ENTRY] (state, { relatedEntry }) {
+            state.deletionPreventedRelatedEntry = relatedEntry;
         },
 
         /**
@@ -424,6 +477,8 @@ export default function adminFactory (moduleName) {
         [types.UPDATE_ENTRY] (state) {
             state.confirmDeleteEntry = false;
 
+            state.shouldForceDelete = false;
+
             state.dirtyFields = [];
 
             state.editedEntry = state.entry;
@@ -458,8 +513,10 @@ export default function adminFactory (moduleName) {
          * @param   {string}  options.url
          * @return  {void}
          */
-        [types.UPDATE_SELECTED_NODE](state, { anchorText, parentId, scopeId, url }) {
+        [types.UPDATE_SELECTED_NODE](state, { anchorText, id, parentId, scopeId, url }) {
             Vue.set(state.selectedNode, 'anchorText', anchorText);
+
+            Vue.set(state.selectedNode, 'id', id);
 
             Vue.set(state.selectedNode, 'url', url);
 

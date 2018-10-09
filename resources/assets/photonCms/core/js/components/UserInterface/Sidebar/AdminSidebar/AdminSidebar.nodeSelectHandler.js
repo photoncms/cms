@@ -27,6 +27,7 @@ export default function (event, action) {
 
     store.dispatch('admin/updateSelectedNode', {
         anchorText: action.node.original.text,
+        id: action.node.original.originalId,
         url: `${action.node.original.tableName}/${action.node.original.originalId}`,
         parentId,
         scopeId,

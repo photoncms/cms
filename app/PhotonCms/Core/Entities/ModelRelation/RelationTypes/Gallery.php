@@ -116,7 +116,7 @@ class Gallery extends BaseRelation implements ModelRelationInterface, MigrationR
         }
         $content .= ";";
         FileContentHelper::addLinesAndIndent($content, 1, $amountOfIndent);
-        $content .= "\$table->foreign('{$this->sourceField}')->references('{$this->targetField}')->on('{$this->targetTable}')->onDelete('cascade');";
+        $content .= "\$table->foreign('{$this->sourceField}')->references('{$this->targetField}')->on('{$this->targetTable}')->onDelete('set null');";
         return $content;
     }
 

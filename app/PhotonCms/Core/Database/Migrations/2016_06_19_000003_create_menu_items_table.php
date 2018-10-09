@@ -30,8 +30,8 @@ class CreateMenuItemsTable extends Migration
             $table->integer('updated_by');
             $table->timestamps();
 
-            $table->foreign('menu_link_type_id')->references('id')->on('menu_link_types')->onDelete('cascade');
-            $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
+            $table->foreign('menu_link_type_id')->references('id')->on('menu_link_types')->onDelete('set null');
+            $table->foreign('menu_id')->references('id')->on('menus')->onDelete('set null');
         });
     }
 

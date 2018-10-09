@@ -433,8 +433,11 @@ const onAllNodesLoaded = () => {
 
     jsTreeInstance.select_node(`${tableName}.${entryId}`, true);
 
-    // lazyLoadNodes();
-
+    if(store.state.admin.editorMode === 'create'
+        && _.has(store.state.admin, 'selectedNode.id')
+        && store.state.admin.selectedNode.id) {
+        jsTreeInstance.select_node(`${tableName}.${store.state.admin.selectedNode.id}`, true);
+    }
 };
 
 /**

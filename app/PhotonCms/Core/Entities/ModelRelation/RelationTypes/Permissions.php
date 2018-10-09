@@ -131,9 +131,9 @@ class Permissions extends BaseRelation implements ModelRelationInterface, Migrat
         FileContentHelper::addLinesAndIndent($content, 1, $amountOfIndent+2);
         $content .= "\$table->integer('{$this->targetPivotField}')->unsigned()->index();";
         FileContentHelper::addLinesAndIndent($content, 2, $amountOfIndent+2);
-        $content .= "\$table->foreign('{$this->targetPivotField}')->references('id')->on('{$this->targetTable}')->onDelete('cascade');";
+        $content .= "\$table->foreign('{$this->targetPivotField}')->references('id')->on('{$this->targetTable}')->onDelete('set null');";
         FileContentHelper::addLinesAndIndent($content, 1, $amountOfIndent+2);
-        $content .= "\$table->foreign('{$this->sourcePivotField}')->references('id')->on('{$this->sourceTable}')->onDelete('cascade');";
+        $content .= "\$table->foreign('{$this->sourcePivotField}')->references('id')->on('{$this->sourceTable}')->onDelete('set null');";
         FileContentHelper::addLinesAndIndent($content, 1, $amountOfIndent+1);
         $content .= "});";
         FileContentHelper::addLinesAndIndent($content, 1, $amountOfIndent);

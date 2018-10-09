@@ -116,7 +116,7 @@ class ManyToOneExtended extends BaseRelation implements ModelRelationInterface, 
         }
         $content .= ";";
         FileContentHelper::addLinesAndIndent($content, 1, $amountOfIndent);
-        $content .= "\$table->foreign('{$this->sourceField}')->references('{$this->targetField}')->on('{$this->targetTable}')->onDelete('cascade');";
+        $content .= "\$table->foreign('{$this->sourceField}')->references('{$this->targetField}')->on('{$this->targetTable}')->onDelete('set null');";
         return $content;
     }
 
