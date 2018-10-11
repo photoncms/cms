@@ -14,12 +14,14 @@ class CelebritiesTaggedHelper implements NotificationHelperInterface
      * and notifies using native Laravel notification.
      *
      * @param array $data
+     * @return void
      */
-    public function notify($asset)
+    public function notify($data)
     {
-        $asset = Assets::where('id', $asset->id)->with('tags_relation')->first();
+        $asset = Assets::where('id', $data['asset']->id)->first();
 
         $subscribedUser = User::find($asset->created_by);
-        $subscribedUser->notify(new CelebritiesTagged($asset));
+
+        $subscribedUser->notify(new CelebritiesTagged($asset, $data['recognizedFaces']));
     }
 }

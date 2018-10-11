@@ -64,21 +64,26 @@ class CelebritiesTagged extends Notification implements ShouldQueue
     /**
      * Create a new notification instance.
      *
-     * @return void
+     * @param  Eloquent  $entry
+     * @param  Array  $recognizedFaces
+     * @param  string  $sound
+     * @param  string  $icon
+     * @param  string  $clickAction
      */
     public function __construct(
         $entry,
+        $recognizedFaces,
         $sound = 'default',
         $icon = 'icon_system_notification',
         $clickAction = 'OPEN_NOTIFICATIONS')
     {
         $this->entry = $entry;
 
-        $this->title = trans('emails.asset_successfully_tagged');
+        $this->title = trans('emails.face_recognition_completed');
 
-        $tagsString = $this->tagsToString($this->entry);
+        $tagsString = $this->tagsToString($recognizedFaces);
 
-        $this->body = trans('emails.asset_successfully_tagged_message', [ 'file_name' => $this->entry->file_name ]) . $tagsString;
+        $this->body = trans('emails.file_has_been_processed', [ 'file_name' => $this->entry->file_name ]) . $tagsString;
 
         $this->sound = $sound;
 
@@ -90,18 +95,18 @@ class CelebritiesTagged extends Notification implements ShouldQueue
     /**
      * Creates a tags string by concatinating all the tag titles to one sentence.
      *
-     * @param   Eloquent  $entry
-     * @return  string
+     * @param   Array  $recognizedFaces
+     * @return  String
      */
-    private function tagsToString($entry)
+    private function tagsToString($recognizedFaces)
     {
-        if($entry->tags_relation->isEmpty()) {
-            return '';
+        if(empty($recognizedFaces)) {
+            return trans('emails.no_celebrities_were_recognized');
         }
 
         $text = trans('emails.tagged_celebrities');
 
-        $text .= $entry->tags_relation->implode('title', ', ');
+        $text .= implode(', ', $recognizedFaces);
 
         return $text;
     }

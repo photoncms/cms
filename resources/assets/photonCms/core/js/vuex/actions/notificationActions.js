@@ -47,39 +47,17 @@ export default {
      * @param  {array}  notifications  Accepts single or many notification objects
      * @return  {void}
      */
-    addNotifications ({ commit, dispatch }, { notifications }) {
-        if (notifications.length > 0) {
-            notifications.forEach(function(notification) {
+    addNotification ({ commit, dispatch }, { notification }) {
+        const pNotification = {
+            title: notification.subject,
+            text: notification.compiled_message,
+            history: false,
+            type: 'info',
+            nonblock: true,
+            nonblock_opacity: .25
+        };
 
-                const pNotification = {
-                    title: notification.subject,
-                    text: notification.compiled_message,
-                    history: false,
-                    type: 'info',
-                    nonblock: true,
-                    nonblock_opacity: .25
-                };
-
-                dispatch('refreshAsset', { notification });
-
-                commit(types.NOTIFICATIONS_ADD, pNotification);
-            });
-        }
-    },
-
-    /**
-     * Dispatches the refresh asset by id action to refresh assets, if needed
-     *
-     * @param   {object}  options.store
-     * @param   {object}  options.notification
-     * @return  {void}
-     */
-    refreshAsset({}, { notification }) {
-        if (notification.type !== 'CelebritiesTagged') {
-            return;
-        }
-
-        store.dispatch('assets/refreshAssetById', { assetId: notification.entry_id });
+        commit(types.NOTIFICATIONS_ADD, pNotification);
     },
 
     /**
@@ -100,10 +78,7 @@ export default {
                     $.pnotify(val);
                 });
 
-                debugger;
-
                 _emptyNotifications({ commit });
-                debugger;
 
                 return resolve(firedNotifications);
             }
@@ -130,19 +105,12 @@ export default {
      * @param  {boolean}  options.notify  Fires a notification if true
      * @return {promise}
      */
-    getUnreadNotifications ({dispatch, commit}, { notify = false } = {}) {
+    getUnreadNotifications ({dispatch, commit}) {
         return api.post('notifications/unread')
             .then((response) => {
                 commit(types.NOTIFICATIONS_UPDATE_UNREAD, response.data.body.notifications);
 
                 commit(types.NOTIFICATIONS_UPDATE_BADGE, response.data.body.notifications.length);
-
-                // Fire only the last notification using pNotify
-                if (response.data.body.notifications.length > 0 && notify) {
-                    return dispatch('addNotifications', {
-                        notifications: [response.data.body.notifications[0]]
-                    });
-                }
             })
             .catch((response) => {
                 errorCommit({ commit }, response, 'NOTIFICATIONS');

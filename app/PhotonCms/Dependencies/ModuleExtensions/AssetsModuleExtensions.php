@@ -167,7 +167,9 @@ class AssetsModuleExtensions extends BaseDynamicModuleExtension implements
             $this->generateResizedImage($inWidth, $inHeight, $outWidth, $outHeight, $image, $originalImageFileName, 1, $imageGateway, $imageSize, $item);
         }
 
-        TagCelebrities::dispatch($item);
+        if(config('photon.use_celebrity_recognition')) {
+            TagCelebrities::dispatch($item);
+        }
     }
 
     private function generateResizedImage($inWidth, $inHeight, $outWidth, $outHeight, $image, $originalImageFileName, $databaseFlag, $imageGateway, $imageSize = null, $item = null)

@@ -55,7 +55,8 @@ return [
     'new_unsubscriber_message' => 'User {name} has finished editing entry name {entry_name} from table {table_name}',
 
     // Celebrities tagged
-    'asset_successfully_tagged' => 'Asset Sucessfully Tagged',
-    'asset_successfully_tagged_message' => 'File :file_name has been tagged.',
+    'face_recognition_completed' => 'Face Recognition Completed',
+    'file_has_been_processed' => 'File :file_name has been processed.',
     'tagged_celebrities' => ' Tagged celebrities: ',
+    'no_celebrities_were_recognized' => ' No celebrities were recognized.',
 ];
