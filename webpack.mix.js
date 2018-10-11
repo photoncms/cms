@@ -41,11 +41,13 @@ mix.disableSuccessNotifications()
 
         .copyDirectory('resources/assets/photonCms/core/css/vendor', 'public/css/vendor')
 
-    .js('resources/assets/photonCms/core/js/main.js', 'public/js/app.js')
+    .js('resources/assets/photonCms/core/js/main.js', 'public/js/app.js');
 
-    .version()
+    if (process.env.npm_lifecycle_event !== 'hot') {
+        mix.version();
+    }
 
-    .sourceMaps()
+    mix.sourceMaps()
 
         .scripts([
             'resources/assets/photonCms/core/js/vendor/jquery-3.2.1.min.js',
@@ -71,11 +73,13 @@ mix.disableSuccessNotifications()
             'resources/assets/photonCms/core/js/vendor/favico.js',
             'resources/assets/photonCms/core/js/vendor/iconset/iconset-fontawesome-4.7.0.js',
             'resources/assets/photonCms/core/js/vendor/bootstrap-iconpicker.js',
-        ], 'public/js/vendor.js')
+        ], 'public/js/vendor.js');
 
-        .version()
+    if (process.env.npm_lifecycle_event !== 'hot') {
+        mix.version();
+    }
 
-    .browserSync({
+    mix.browserSync({
         proxy: 'photoncms.test',
         files: [
             'resources/**'

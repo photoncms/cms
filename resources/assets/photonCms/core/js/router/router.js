@@ -239,6 +239,15 @@ const routes = [
         }
     },
     {
+        path: '/asset-manager/:assetId',
+        component: Dashboard,
+        name: 'asset-manager',
+        meta: {
+            onlyIfAuthenticated: true,
+            sidebarWidthGroup: 'default',
+        }
+    },
+    {
         path: '*',
         component: ErrorPage
     }

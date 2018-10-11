@@ -163,11 +163,12 @@ export default {
      * Initializes the essential asset manager state object parameters
      *
      * @param   {function}  options.commit
+     * @param   {integer}  options.editedAssetEntryId
      * @param   {boolean}  options.multiple
      * @param   {mixed}  options.value  Value can be an integer (single file upload) or an array (multiple file upload)
      * @return  {void}
      */
-    initializeState({ commit }, { multiple, value }) {
+    initializeState({ commit }, { multiple, value } = {}) {
         commit(types.SET_INITIAL_STATE);
 
         commit(types.SET_MULTIPLE, { value: multiple });
@@ -439,6 +440,37 @@ export default {
 
                 dispatch('setSubmitEntryInProgress', { value: false });
             });
+    },
+
+    /**
+     * Toggles entryUpdated state property to force form refresh
+     *
+     * @param   {function}  options.commit
+     * @return  {void}
+     */
+    toggleAssetEntryUpdated({ commit }) {
+        commit(types.TOGGLE_ASSET_ENTRY_UPDATED);
+    },
+
+    /**
+     * Refreshes assets by id
+     *
+     * @param   {function}  options.commit
+     * @param   {object}  options.state
+     * @param   {integer}  options.assetId
+     * @return  {void}
+     */
+    refreshAssetById({ commit, state }, { assetId }) {
+        const index = _.findIndex(state.assets, [ 'id', assetId ]);
+
+        if(index < 0) {
+            return;
+        }
+
+        api.get(`assets/${assetId}`)
+            .then(asset => {
+                commit(types.REFRESH_ASSET_BY_ID, { asset, index });
+            })
     },
 
     /**

@@ -14,7 +14,8 @@
                 </a>
             </div>
             <div v-if="isAssetSelected && assetsManager.editorMode === 'edit'">
-                <span class="text-muted">{{ $t('assetsManager.fileSize') }}:</span> {{ formatBytes(admin.editedEntry.file_size)}}<br>
+                <span class="text-muted">{{ $t('assetsManager.fileName') }}:</span> {{ admin.editedEntry.file_name }}<br>
+                <span class="text-muted">{{ $t('assetsManager.fileSize') }}:</span> {{ formatBytes(admin.editedEntry.file_size) }}<br>
                 <span class="text-muted">{{ $t('assetsManager.mimeType') }}:</span> {{admin.editedEntry.mime_type}}<br><br>
                 <span class="text-muted">{{ $t('admin.createdAt') }}:</span> {{createdAt}}<br>
                 <span class="text-muted">{{ $t('admin.createdBy') }}:</span> {{admin.editedEntry.created_by.anchor_text}}<br><br>

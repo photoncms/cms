@@ -4,6 +4,8 @@ import { api } from '_/services/api';
 
 import { errorCommit } from '_/vuex/actions/commonActions';
 
+import { store } from '_/vuex/store';
+
 import { router } from '_/router/router';
 
 import { pError } from '_/helpers/logger';
@@ -27,6 +29,9 @@ const _navigateToActionableItem = (notification) => {
     case 'NewUserRegistered':
         router.push('/admin/users/' + notification.user_id);
         break;
+    case 'CelebritiesTagged':
+        router.push('/asset-manager/' + notification.entry_id);
+        break;
     default:
         pError('No actionable item defined (notifiable_id = ' + notification.notifiable_id + ') for notification ' + notification.id);
     }
@@ -38,10 +43,11 @@ export default {
      * Adds new notifications to the state
      *
      * @param  {function}  options.commit
+     * @param  {function}  options.dispatch
      * @param  {array}  notifications  Accepts single or many notification objects
      * @return  {void}
      */
-    addNotifications ({commit}, { notifications }) {
+    addNotifications ({ commit, dispatch }, { notifications }) {
         if (notifications.length > 0) {
             notifications.forEach(function(notification) {
 
@@ -54,10 +60,26 @@ export default {
                     nonblock_opacity: .25
                 };
 
-                commit(types.NOTIFICATIONS_ADD, pNotification);
+                dispatch('refreshAsset', { notification });
 
+                commit(types.NOTIFICATIONS_ADD, pNotification);
             });
         }
+    },
+
+    /**
+     * Dispatches the refresh asset by id action to refresh assets, if needed
+     *
+     * @param   {object}  options.store
+     * @param   {object}  options.notification
+     * @return  {void}
+     */
+    refreshAsset({}, { notification }) {
+        if (notification.type !== 'CelebritiesTagged') {
+            return;
+        }
+
+        store.dispatch('assets/refreshAssetById', { assetId: notification.entry_id });
     },
 
     /**
@@ -78,9 +100,12 @@ export default {
                     $.pnotify(val);
                 });
 
-                _emptyNotifications({ commit });
+                debugger;
 
-                resolve(firedNotifications);
+                _emptyNotifications({ commit });
+                debugger;
+
+                return resolve(firedNotifications);
             }
 
             reject('Notifications array was empty.');

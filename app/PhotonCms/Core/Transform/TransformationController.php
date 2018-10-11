@@ -28,7 +28,7 @@ class TransformationController
         'Photon\\PhotonCms\\Core\\Entities\\Node\\Node'                 => 'Photon\\PhotonCms\\Core\\Entities\\Node\\NodeTransformer',
         'Photon\\PhotonCms\\Core\\Entities\\User\\User'                 => 'Photon\\PhotonCms\\Core\\Entities\\User\\UserTransformer',
         'Illuminate\\Validation\\Validator'                             => 'Photon\\PhotonCms\\Core\\Entities\\Validation\\ValidationTransformer',
-        'Illuminate\\Notifications\\DatabaseNotification'               => 'Photon\\PhotonCms\\Core\\Entities\\Notification\\NotificationTransformer',
+        'Illuminate\\Notifications\\DatabaseNotification'               => 'Photon\\PhotonCms\\Core\\Entities\\Notifications\\NotificationTransformer',
         'Illuminate\\Pagination\\LengthAwarePaginator'                  => 'Photon\\PhotonCms\\Core\\Entities\\Pagination\\PaginationTransformer',
     ];
 
@@ -64,14 +64,14 @@ class TransformationController
      * @return array|object
      */
     public function transform($data)
-    { 
+    {
         if (is_array($data) || $data instanceof BaumCollection || $data instanceof IlluminateCollection) {
             $this->transformRecursively($data);
         } else if (is_object($data)) {
             $data = $this->transformObject($data);
             $this->transformRecursively($data);
         }
-        
+
         return $data;
     }
 

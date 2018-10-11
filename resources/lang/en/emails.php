@@ -50,7 +50,12 @@ return [
     'new_subscriber_subject' => 'Warning, potential edit collision',
     'new_subscriber_message' => 'User {name} has started editing same entry as you, entry name {entry_name} from table {table_name}',
 
-    // use unsubscribed to dynamic module entry
+    // User unsubscribed to dynamic module entry
     'new_unsubscriber_subject' => 'User is no longer editing entry',
     'new_unsubscriber_message' => 'User {name} has finished editing entry name {entry_name} from table {table_name}',
+
+    // Celebrities tagged
+    'asset_successfully_tagged' => 'Asset Sucessfully Tagged',
+    'asset_successfully_tagged_message' => 'File :file_name has been tagged.',
+    'tagged_celebrities' => ' Tagged celebrities: ',
 ];

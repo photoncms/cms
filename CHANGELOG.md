@@ -6,6 +6,7 @@
 - Added include fields functionality in the API
 - Used include fields functionality in admin panel Vue app to minimize the response payloads
 - Added field groups functionality
+- Added AI-assisted celebrity face-recognition Asset Manager feature
 - Added a Big Integer field type
 - Added a user account lock functionality
 - Added interrupt login and register events
@@ -27,6 +28,7 @@
 - Fixed an issue of parent module not being accurately displayed for selected module in the generator section
 - Fixed an issue of automatic table name generator not working under certain conditions
 - Fixed a parent entry selection error for sortable modules
+- Fixed an error with NotificationTransformer which caused notifications to fail
 
 ## v1.1.3 (2018-09-18)
 
