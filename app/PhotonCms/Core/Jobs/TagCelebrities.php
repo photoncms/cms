@@ -78,28 +78,30 @@ class TagCelebrities implements ShouldQueue
 
         $celebrities = $this->rekognition->recognizeCelebrities($path);
 
-        if(isset($celebrities['CelebrityFaces'])) {
-            $tags = $this->item->tags_relation->map(function($tag) {
-                return $tag->id;
-            })->toArray();
-
-            $recognizedFaces = [];
-
-            foreach($celebrities['CelebrityFaces'] as $celebrityFace) {
-                $tag = $this->getOrCreateTagId($celebrityFace['Name'], $iapi);
-
-                if (!in_array($tag, $tags)) {
-                    array_push($tags, $tag);
-
-                    $recognizedFaces[] = $celebrityFace['Name'] . ' (' . round($celebrityFace['Face']['Confidence'], 2) . '%)';
-                }
-            }
-
-            $asset = $this->iapi->assets($this->item->id)->put(compact('tags'));
-
-            NotificationHelperFactory::makeByHelperName("CelebritiesTagged")
-                ->notify(compact('asset', 'recognizedFaces'));
+        if(!isset($celebrities['CelebrityFaces'])) {
+            throw new PhotonException('REKOGNITION_SERVICE_RETURNED_UNEXPECTED_DATA');
         }
+
+        $tags = $this->item->tags_relation->map(function($tag) {
+            return $tag->id;
+        })->toArray();
+
+        $recognizedFaces = [];
+
+        foreach($celebrities['CelebrityFaces'] as $celebrityFace) {
+            $tag = $this->getOrCreateTagId($celebrityFace['Name'], $iapi);
+
+            if (!in_array($tag, $tags)) {
+                array_push($tags, $tag);
+
+                $recognizedFaces[] = $celebrityFace['Name'] . ' (' . round($celebrityFace['Face']['Confidence'], 2) . '%)';
+            }
+        }
+
+        $asset = $this->iapi->assets($this->item->id)->put(compact('tags'));
+
+        NotificationHelperFactory::makeByHelperName("CelebritiesTagged")
+            ->notify(compact('asset', 'recognizedFaces'));
     }
 
     /**

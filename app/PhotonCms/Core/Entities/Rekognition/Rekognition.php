@@ -4,6 +4,7 @@ namespace Photon\PhotonCms\Core\Entities\Rekognition;
 
 use Aws\Rekognition\RekognitionClient;
 use Illuminate\Support\Facades\File;
+use Photon\PhotonCms\Core\Exceptions\PhotonException;
 
 class Rekognition
 {
@@ -52,6 +53,8 @@ class Rekognition
             ]);
         } catch (Exception $e) {
             Log::error("Couldn't fetch the rekognition data from AWS.", $e);
+
+            throw new PhotonException('FAILED_TO_CONNECT_WITH_REKOGNITION_SERVICE');
         }
     }
 }
