@@ -1530,7 +1530,7 @@ class FieldsTableSeeder extends Seeder
                 'default' => NULL,
                 'local_key' => 'id',
                 'foreign_key' => 'image',
-                'nullable' => 0,
+                'nullable' => 1,
                 'indexed' => 0,
                 'created_at' => '2017-06-13 06:49:50',
                 'updated_at' => '2017-06-13 06:49:50',
