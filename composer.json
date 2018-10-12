@@ -34,7 +34,8 @@
         "barryvdh/laravel-dompdf": "^0.8.0",
         "doctrine/dbal": "^2.5",
         "laravel/horizon": "^1.1",
-        "talevskiigor/composer-bump": "^1.0"
+        "talevskiigor/composer-bump": "^1.0",
+        "aws/aws-sdk-php": "^3.69"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

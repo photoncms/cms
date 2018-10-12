@@ -425,6 +425,7 @@ export default {
     computed: {
         ...mapGetters({
             admin: 'admin/admin',
+            notification: 'notification/notification',
             ui: 'ui/ui',
         }),
 

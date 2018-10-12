@@ -273,7 +273,9 @@ export default {
      */
     mounted () {
         this.$nextTick(() => {
-            this.initializeAssetManager();
+            if(this.$route.name !== 'asset-manager') {
+                this.initializeAssetManager();
+            }
 
             this.initEventBusListener();
         });

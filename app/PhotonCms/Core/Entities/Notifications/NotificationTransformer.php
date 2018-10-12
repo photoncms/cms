@@ -1,6 +1,6 @@
 <?php
 
-namespace Photon\PhotonCms\Core\Entities\Notification;
+namespace Photon\PhotonCms\Core\Entities\Notifications;
 
 use Photon\PhotonCms\Core\Transform\BaseTransformer;
 use Illuminate\Notifications\DatabaseNotification;
@@ -31,7 +31,7 @@ class NotificationTransformer extends BaseTransformer
         $objectArray = $objectArray + $object->data;
 
         $this->transformGenericObjects($objectArray);
-        
+
         return $objectArray;
     }
 }

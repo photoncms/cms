@@ -263,6 +263,17 @@ export default function assetsManagerFactory (moduleName) {
         },
 
         /**
+         * Performs a series of state changes after a successful asset insertion
+         *
+         * @param  {object}  state
+         * @param  {object}  options.entry
+         * @return  {void}
+         */
+        [types.REFRESH_ASSET_BY_ID] (state, { asset, index }) {
+            Vue.set(state.assets, index, asset.body.body.entry);
+        },
+
+        /**
          * Updates the entry state property.
          * Fired automatically by the apiResponseCommit method,
          * after the API returns SAVE_DYNAMIC_MODULE_ENTRY_SUCCESS message.
@@ -510,6 +521,15 @@ export default function assetsManagerFactory (moduleName) {
          */
         [types.SUBMIT_IN_PROGRESS] (state, { value }) {
             state.submitInProgress = value;
+        },
+
+        /**
+         * Toggles the entryUpdated property in order to force form refresh
+         *
+         * @return  {void}
+         */
+        [types.TOGGLE_ASSET_ENTRY_UPDATED] (state) {
+            state.entryUpdated = !state.entryUpdated;
         },
 
         /**

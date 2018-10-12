@@ -239,6 +239,15 @@ const routes = [
         }
     },
     {
+        path: '/asset-manager/:assetId',
+        component: Dashboard,
+        name: 'asset-manager',
+        meta: {
+            onlyIfAuthenticated: true,
+            sidebarWidthGroup: 'default',
+        }
+    },
+    {
         path: '*',
         component: ErrorPage
     }
@@ -302,7 +311,16 @@ const runLaravelEcho = function(apiToken, userId) {
         .notification((notification) => {
             pWarn('New Echo notification received.', notification);
 
-            store.dispatch('notification/getUnreadNotifications', { notify: true });
+            const test = store.dispatch('notification/addNotification', { notification })
+                .then(() => {
+                    console.error(notification.type);
+                    if (notification.type === 'Photon\\PhotonCms\\Core\\Entities\\Notifications\\CelebritiesTagged') {
+                        store.dispatch('assets/refreshAssetById', { assetId: notification.entry_id });
+                    }
+
+                    store.dispatch('notification/getUnreadNotifications');
+                })
+
         });
 };
 

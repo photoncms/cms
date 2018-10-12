@@ -19,6 +19,7 @@ use Photon\PhotonCms\Core\Entities\DynamicModuleExtension\Contracts\ModuleExtens
 use Photon\PhotonCms\Core\Entities\DynamicModuleExtension\Contracts\ModuleExtensionHandlesPostDelete;
 use Photon\PhotonCms\Core\Entities\DynamicModuleExtension\Contracts\ModuleExtensionHasSetterExtension;
 use Photon\PhotonCms\Core\IAPI\IAPI;
+use Photon\PhotonCms\Core\Jobs\TagCelebrities;
 
 
 /**
@@ -43,12 +44,14 @@ class AssetsModuleExtensions extends BaseDynamicModuleExtension implements
     public function __construct(
         ResponseRepository $responseRepository,
         FileSystemRepository $fileSystemRepository,
-        ImageRepository $imageRepository
+        ImageRepository $imageRepository,
+        IAPI $iapi
     )
     {
         parent::__construct($responseRepository);
         $this->fileSystemRepository = $fileSystemRepository;
         $this->imageRepository = $imageRepository;
+        $this->IAPI = $iapi;
     }
 
     /*****************************************************************
@@ -104,10 +107,9 @@ class AssetsModuleExtensions extends BaseDynamicModuleExtension implements
         if ($interrupt instanceof Response) {
             return $interrupt;
         }
-        
-        $iapi = new \Photon\PhotonCms\Core\IAPI\IAPI();
+
         foreach ($entry->resized_images_relation as $resizedImage) {
-            $iapi->resized_images($resizedImage->id)->delete();
+            $this->IAPI->resized_images($resizedImage->id)->delete();
         }
     }
 
@@ -154,7 +156,7 @@ class AssetsModuleExtensions extends BaseDynamicModuleExtension implements
 
         // Make a resized image for each defined size
         foreach ($allImageSizes as $imageSize) {
-            
+
             $outWidth = ($imageSize->width == 0) // 0 means auto
                 ? (int) ($inWidth * ($imageSize->height / $inHeight))
                 : $imageSize->width;
@@ -163,6 +165,10 @@ class AssetsModuleExtensions extends BaseDynamicModuleExtension implements
                 : $imageSize->height;
 
             $this->generateResizedImage($inWidth, $inHeight, $outWidth, $outHeight, $image, $originalImageFileName, 1, $imageGateway, $imageSize, $item);
+        }
+
+        if(config('photon.use_celebrity_recognition')) {
+            TagCelebrities::dispatch($item);
         }
     }
 
