@@ -50,14 +50,20 @@ export default {
      */
     getMenu({ commit }, { menuId, mutationName }) {
         return api.get(`menus/${menuId}/items`, '', [
-                'children',
                 'clickable',
-                'has_children',
+                'depth',
+                'entry_data',
                 'has_children',
                 'icon',
+                'id',
+                'link',
+                'menu',
+                'menu_link_type',
                 'menu_link_type_name',
-                'menu_link_type_name',
+                'menu_name',
+                'parent_id',
                 'resource_data',
+                'slug',
                 'title',
             ])
             .then((response) => {
