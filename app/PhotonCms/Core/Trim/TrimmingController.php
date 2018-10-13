@@ -116,7 +116,7 @@ class TrimmingController
     {
         $trimmedData = [];
         foreach ($includedFields as $key => $value) {
-            if(isset($array[$key])) {
+            if(array_key_exists($key, $array)) {
                 $trimmedData[$key] = $array[$key];
                 if(is_array($trimmedData[$key]) && count($value) > 0) {
                 	$trimmedData[$key] = $this->trimData($trimmedData[$key], $value);
