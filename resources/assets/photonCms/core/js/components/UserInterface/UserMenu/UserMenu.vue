@@ -25,7 +25,7 @@
                     <span>Notifications {{notifications.notificationsPanelVisible}}</span>
                 </div>
                 <ul v-if="notifications.notificationsBadge > 0" class="list-group">
-                    <li v-for="notification in notifications.unreadNotifications" class="list-group-item" @click="readNotification(notification)">
+                    <li v-for="notification in notifications.unreadNotifications" class="list-group-item" @click="clickedNotification(notification)">
                         <div class="text-holder">
                             <span class="title-text">{{ notification.subject }}</span>
                             <span class="description-text">{{ notification.compiled_message }}</span>

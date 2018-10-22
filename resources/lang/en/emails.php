@@ -50,7 +50,13 @@ return [
     'new_subscriber_subject' => 'Warning, potential edit collision',
     'new_subscriber_message' => 'User {name} has started editing same entry as you, entry name {entry_name} from table {table_name}',
 
-    // use unsubscribed to dynamic module entry
+    // User unsubscribed to dynamic module entry
     'new_unsubscriber_subject' => 'User is no longer editing entry',
     'new_unsubscriber_message' => 'User {name} has finished editing entry name {entry_name} from table {table_name}',
+
+    // Celebrities tagged
+    'face_recognition_completed' => 'Face Recognition Completed',
+    'file_has_been_processed' => 'File :file_name has been processed.',
+    'tagged_celebrities' => ' Tagged celebrities: ',
+    'no_celebrities_were_recognized' => ' No celebrities were recognized.',
 ];

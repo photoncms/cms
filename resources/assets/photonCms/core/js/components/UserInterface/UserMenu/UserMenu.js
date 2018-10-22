@@ -115,6 +115,18 @@ export default {
         },
 
         /**
+         * Mark notification as read and close the notifications dropdown
+         *
+         * @return  {void}
+         */
+        clickedNotification(notification) {
+            this.readNotification(notification)
+                .then(() => {
+                    this.toggleNotificationsPanel();
+                });
+        },
+
+        /**
          * Map actions from ui module namespace
          */
         ...mapActions('notification', [

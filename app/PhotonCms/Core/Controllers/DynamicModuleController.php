@@ -181,11 +181,11 @@ class DynamicModuleController extends Controller
                 "sorting"       => $sorting,
                 "pagination"    => $pagination,
                 "permissions"   => $permissions
-            ]);  
+            ]);
 
             if(Cache::tags([env("APPLICATION_URL"), $tableName])->has($cacheKeyName)) {
-                return Cache::tags([env("APPLICATION_URL"), $tableName])->get($cacheKeyName);   
-            }   
+                return Cache::tags([env("APPLICATION_URL"), $tableName])->get($cacheKeyName);
+            }
         }
 
         $entries = $this->dynamicModuleLibrary->getAllEntries($tableName, $filter, $pagination, $sorting);
@@ -318,7 +318,7 @@ class DynamicModuleController extends Controller
                 $validationRules[$field->getUniqueName()] = $field->validation_rules;
             }
         }
-        
+
         $validator = \Validator::make($data, $validationRules);
 
         if ($validator->fails()) {
@@ -342,7 +342,7 @@ class DynamicModuleController extends Controller
             throw new PhotonException('VALIDATION_ERROR', ['error_fields' => $baseValidator]);
         }
 
-        // if field is not set in request and it's default value is not null populate request 
+        // if field is not set in request and it's default value is not null populate request
         foreach ($fields as $key => $field) {
             // if field is virtual no need to set up default value
             if($field->virtual)
@@ -442,7 +442,7 @@ class DynamicModuleController extends Controller
             },
             null,
             'ANCHOR_HTML_COMPILING'
-        );   
+        );
 
         // Set scope if requested
         $transactionController->queue(
@@ -581,7 +581,7 @@ class DynamicModuleController extends Controller
         // store in cache
         if(config("photon.use_photon_cache")) {
             $relatedModules = $this->dynamicModuleLibrary->findRelatedModules($module);
-            Cache::tags($relatedModules)->flush(); 
+            Cache::tags($relatedModules)->flush();
         }
 
         return $entry;
@@ -687,7 +687,7 @@ class DynamicModuleController extends Controller
 
         if(config("photon.use_photon_cache")) {
             $relatedModules = $this->dynamicModuleLibrary->findRelatedModules($module);
-            Cache::tags($relatedModules)->flush(); 
+            Cache::tags($relatedModules)->flush();
         }
 
         return [$updatedEntries, $failedEntries];
@@ -716,14 +716,14 @@ class DynamicModuleController extends Controller
 
         $updatedEntry->anchor_html = $this->dynamicModuleHelpers->generateAnchorTextFromItem($updatedEntry, $module->anchor_html);
         $this->dynamicModuleRepository->save($updatedEntry, $dynamicModuleGateway);
-            
+
         if (config('photon.use_slugs') && $module->slug) {
             if(isset($data['slug'])) {
                 $updatedEntry->slug = $data['slug'];
                 $this->dynamicModuleRepository->save($updatedEntry, $dynamicModuleGateway);
             }
         }
-        
+
         return $updatedEntry->fresh();
     }
 
@@ -811,7 +811,7 @@ class DynamicModuleController extends Controller
     public function deleteEntry($tableName, $entryId)
     {
         $data = \Request::all();
-        $force = isset($data['force']);
+        $force = isset($data['force']) && $data['force'];
         $this->deleteDynamicModuleEntry($tableName, $entryId, $force);
 
         return $this->responseRepository->make('DELETE_DYNAMIC_MODULE_ENTRY_SUCCESS');
@@ -841,8 +841,17 @@ class DynamicModuleController extends Controller
             throw new PhotonException('DYNAMIC_MODULE_ENTRY_NOT_FOUND', ['id' => $entryId]);
         }
 
-        if ($this->dynamicModuleLibrary->checkIfEntryHasRelations($module, $entryId) && !$force) {
-            throw new PhotonException('CANNOT_DELETE_ENTRY_HAS_RELATIONS', ['id' => $entryId]);
+        $entryRelations = $this->dynamicModuleLibrary->checkIfEntryHasRelations($module, $entryId);
+
+        if ($entryRelations && !$force) {
+            throw new PhotonException('CANNOT_DELETE_ENTRY_HAS_RELATIONS', [
+                'id' => $entryId,
+                'related_entry' => [
+                    'anchor_text' => $entryRelations->first()->anchor_text,
+                    'id' => $entryRelations->first()->id,
+                    'table' => $entryRelations->first()->getTable(),
+                ]
+            ]);
         }
 
         if (ModuleHelpers::checkIfNodeModule($module) && $this->nodeLibrary->nodeHasChildren($entry) && !$force) {
@@ -855,7 +864,7 @@ class DynamicModuleController extends Controller
 
         if(config("photon.use_photon_cache")) {
             $relatedModules = $this->dynamicModuleLibrary->findRelatedModules($module);
-            Cache::tags($relatedModules)->flush(); 
+            Cache::tags($relatedModules)->flush();
         }
     }
 

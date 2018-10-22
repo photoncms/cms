@@ -3,6 +3,7 @@
 namespace Photon\PhotonCms\Core\Helpers;
 
 use Photon\PhotonCms\Core\Helpers\StringConversionsHelper;
+use Photon\PhotonCms\Core\Entities\Seed\SeedTemplate;
 
 class DatabaseHelper
 {
@@ -63,6 +64,34 @@ class DatabaseHelper
         \Artisan::call('db:seed', ['--class' => $seedName.'TableSeeder', '--force' => true]);
         if ($force) { \Schema::enableForeignKeyConstraints(); }
     }
+
+    /**
+     * Rebuilds module seeders.
+     */
+    public static function rebuildSeeders()
+    {
+        // ToDo: needs a SeedTemplateFactory here (Sasa|01/2016)
+        $seedTemplate = new SeedTemplate();
+        $seedTemplate->addTable('modules');
+        $seedTemplate->addTable('field_types');
+        $seedTemplate->addTable('model_meta_types');
+        $seedTemplate->addTable('field_groups');
+        $seedTemplate->useForce();
+        app('Photon\PhotonCms\Core\Entities\Seed\SeedRepository')->create(
+            $seedTemplate, 
+            app('Photon\PhotonCms\Core\Entities\Seed\SeedGateway')
+        );
+
+        $seedTemplate = new SeedTemplate();
+        $seedTemplate->addTable('fields');
+        $seedTemplate->addTable('model_meta_data');
+        $seedTemplate->addExclusion('id');
+        $seedTemplate->useForce();
+        app('Photon\PhotonCms\Core\Entities\Seed\SeedRepository')->create(
+            $seedTemplate, 
+            app('Photon\PhotonCms\Core\Entities\Seed\SeedGateway')
+        );
+    }    
 
     /**
      * Runs migrations.

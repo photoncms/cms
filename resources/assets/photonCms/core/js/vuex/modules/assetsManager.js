@@ -40,6 +40,13 @@ export default function assetsManagerFactory (moduleName) {
         confirmDeleteEntry: false,
 
         /**
+         * Stores related entry data to provide more info during the deletion guard procedure
+         *
+         * @type  {Object}
+         */
+        deletionPreventedRelatedEntry: {},
+
+        /**
          * List of edited fields
          *
          * @type  {Array}
@@ -142,6 +149,13 @@ export default function assetsManagerFactory (moduleName) {
         selectedModule: {},
 
         /**
+         * Toggles the state of force delete confirmation button
+         *
+         * @type  {boolean}
+         */
+        shouldForceDelete: false,
+
+        /**
          * Currentyl selected sorting parameters
          *
          * @type  {Object}
@@ -215,6 +229,16 @@ export default function assetsManagerFactory (moduleName) {
         },
 
         /**
+         * Sets a shouldForceDelete state property
+         *
+         * @param  {object}  state
+         * @return  {void}
+         */
+        [types.CONFIRM_ENTRY_FORCE_DELETE] (state) {
+            state.shouldForceDelete = !state.shouldForceDelete;
+        },
+
+        /**
          * Sets a series of state parameters during the entry deletion process
          *
          * @param  {object}  state
@@ -239,6 +263,17 @@ export default function assetsManagerFactory (moduleName) {
         },
 
         /**
+         * Performs a series of state changes after a successful asset insertion
+         *
+         * @param  {object}  state
+         * @param  {object}  options.entry
+         * @return  {void}
+         */
+        [types.REFRESH_ASSET_BY_ID] (state, { asset, index }) {
+            Vue.set(state.assets, index, asset.body.body.entry);
+        },
+
+        /**
          * Updates the entry state property.
          * Fired automatically by the apiResponseCommit method,
          * after the API returns SAVE_DYNAMIC_MODULE_ENTRY_SUCCESS message.
@@ -249,6 +284,8 @@ export default function assetsManagerFactory (moduleName) {
          */
         [types.SAVE_DYNAMIC_MODULE_ENTRY_SUCCESS] (state, { entry }) {
             state.confirmDeleteEntry = false;
+
+            state.shouldForceDelete = false;
 
             state.dirtyFields = [];
 
@@ -305,6 +342,8 @@ export default function assetsManagerFactory (moduleName) {
             state.entry = asset;
 
             state.confirmDeleteEntry = false;
+
+            state.shouldForceDelete = false;
 
             state.dirtyFields = [];
 
@@ -368,6 +407,8 @@ export default function assetsManagerFactory (moduleName) {
 
             state.confirmDeleteEntry = false;
 
+            state.shouldForceDelete = false;
+
             state.dirtyFields = [];
 
             state.editedEntry = state.entry;
@@ -388,6 +429,17 @@ export default function assetsManagerFactory (moduleName) {
          */
         [types.SET_MULTIPLE](state, { value }) {
             state.multiple = value;
+        },
+
+        /**
+         * Sets the deletionPreventedRelatedEntry property
+         *
+         * @param  {object}  state
+         * @param  {object}  option.relatedEntry
+         * @return  {void}
+         */
+        [types.SET_RELATED_ENTRY] (state, { relatedEntry }) {
+            state.deletionPreventedRelatedEntry = relatedEntry;
         },
 
         /**
@@ -469,6 +521,15 @@ export default function assetsManagerFactory (moduleName) {
          */
         [types.SUBMIT_IN_PROGRESS] (state, { value }) {
             state.submitInProgress = value;
+        },
+
+        /**
+         * Toggles the entryUpdated property in order to force form refresh
+         *
+         * @return  {void}
+         */
+        [types.TOGGLE_ASSET_ENTRY_UPDATED] (state) {
+            state.entryUpdated = !state.entryUpdated;
         },
 
         /**

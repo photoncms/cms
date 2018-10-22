@@ -51,7 +51,7 @@ export const getModuleOptions = (ModuleConfigurator) => {
                 id: 'multilevel_sortable',
                 text: 'Multilevel Sortable Module'
             }],
-            preselectFirst: true,
+            preselectFirst: false,
             required: true,
             relatedTableName: false,
             tooltip: 'Module type.',
@@ -69,7 +69,7 @@ export const getModuleOptions = (ModuleConfigurator) => {
             name: 'module[name]',
             placeholder: 'My Module Name',
             tooltip: 'Name of the module.',
-            value: _.has(selectedModule, 'name') ? selectedModule.name : null,
+            value: _.has(selectedModule, 'name') && selectedModule.name ? selectedModule.name : null,
             vueComponent: 'InputText',
         },
 
@@ -84,7 +84,7 @@ export const getModuleOptions = (ModuleConfigurator) => {
             name: 'module[table_name]',
             placeholder: 'my_table_name',
             tooltip: 'Table name for the module in snake_case notation.',
-            value: _.has(selectedModule, 'table_name') ? selectedModule.table_name : null,
+            value: _.has(selectedModule, 'table_name') && selectedModule.table_name ? selectedModule.table_name : null,
             vueComponent: 'InputText',
         },
 
@@ -155,10 +155,26 @@ export const getModuleOptions = (ModuleConfigurator) => {
             mutation: 'generator/UPDATE_GENERATOR_SELECTED_MODULE_CATEGORY',
             name: 'module[category]',
             optionsData: _mapCategoryModulesSelect2(ModuleConfigurator.categoryModules),
-            preselectFirst: true,
+            preselectFirst: false,
+            required: false,
+            relatedTableName: false,
             tooltip: 'Module ID of a parent module. If this value is set then each entry of the current module can belong to an entry of the parent module (scope).',
-            value: _.has(selectedModule, 'category') ? selectedModule.category : null,
+            value: _.has(selectedModule, 'category') && selectedModule.category ? selectedModule.category : '0',
             vueComponent: 'ManyToMany',
+        },
+
+        /**
+         * Push Non-grouped fields to bottom
+         */
+        {
+            defaultValue: true,
+            id: 'non_grouped_to_bottom',
+            label: 'Non-grouped fields to bottom',
+            mutation: 'generator/UPDATE_GENERATOR_NON_GROUPED_FIELDS_TO_BOTTOM',
+            name: 'module[non_grouped_to_bottom]',
+            tooltip: 'If checked, non-grouped fields will be rendered below the grouped fields instead of above.',
+            value: _.has(selectedModule, 'non_grouped_to_bottom') ? selectedModule.non_grouped_to_bottom : false,
+            vueComponent: 'Boolean',
         },
     ];
 

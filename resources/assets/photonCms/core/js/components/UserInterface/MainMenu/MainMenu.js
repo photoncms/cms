@@ -39,6 +39,7 @@ export default {
      */
     computed: {
         ...mapGetters({
+            assetsManager: 'assets/assets',
             photonModules: 'photonModule/photonModules',
             ui: 'ui/ui',
             user: 'user/user'
@@ -213,7 +214,7 @@ export default {
          *
          * @return  {void}
          */
-        openAssetsManager() {
+        openAssetsManager({ assetId = null } = {}) {
             store.dispatch(
                 'assets/initializeState', {
                     multiple: false,
@@ -221,6 +222,50 @@ export default {
                 });
 
             store.dispatch('assets/assetsManagerVisible', { value: true });
+
+            store.dispatch(
+                'assets/initializeState', {
+                    multiple: false,
+                    value: assetId ? assetId : [],
+                })
+                .then(() => {
+                    store.dispatch('assets/assetsManagerVisible', { value: true })
+                        .then(() => {
+                            if (!assetId) {
+                                return;
+                            }
+
+                            const filter = {
+                                id: {
+                                    equal: assetId
+                                }
+                            };
+
+                            store.dispatch('assets/setFilterObject', { value: filter })
+                                .then(() => {
+                                    store.dispatch(
+                                        'assets/getSelectedAssets', {
+                                            selectedAssetsIds: this.assetsManager.selectedAssetsIds,
+                                        })
+                                        .then(() => {
+                                            if(Array.isArray(this.assetsManager.selectedAssets)
+                                                && this.assetsManager.selectedAssets.length > 0) {
+                                                store.dispatch(
+                                                    'assets/selectAsset', {
+                                                        asset: this.assetsManager.selectedAssets[0],
+                                                    })
+                                                    .then(() => {
+                                                        store.dispatch('assets/toggleAssetEntryUpdated');
+
+                                                        $('#accordion-asset-details-label').click();
+                                                    })
+                                            }
+                                        })
+
+                                    this.$emit('submitSearch');
+                                });
+                    });
+                });
         },
 
         /**
@@ -233,9 +278,9 @@ export default {
 
         /**
          * Starts the given guided tour
-         * 
+         *
          * @param   {string}  uri
-         * @return  {void}  
+         * @return  {void}
          */
         startGuidedTour (uriSegment, storageKey) {
             const uri = '/' + uriSegment;
@@ -257,6 +302,10 @@ export default {
      */
     mounted: function() {
         this.$nextTick(function() {
+            if(this.$route.name === 'asset-manager' && this.$route.params.assetId > 0) {
+                this.openAssetsManager({ assetId: this.$route.params.assetId });
+            }
+
             this.getPhotonModules();
 
             this.getMainMenu();
@@ -290,6 +339,10 @@ export default {
         $route (newEntry, oldEntry) {
             if(newEntry.params.moduleTableName !== oldEntry.params.moduleTableName) {
                 this.closeMenu();
+            }
+
+            if(this.$route.name === 'asset-manager' && newEntry.params.assetId !== oldEntry.params.assetId) {
+                this.openAssetsManager({ assetId: this.$route.params.assetId });
             }
         },
 

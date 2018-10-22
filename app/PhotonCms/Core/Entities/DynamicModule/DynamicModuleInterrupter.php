@@ -121,5 +121,58 @@ class DynamicModuleInterrupter
             return $extensionsInstance->interruptDelete($entry);
         }
     }
+
+    /**
+     * Uses a Module Model class name to find the Module extension class if it exist.
+     * If the found extension class supports the specific interface, it will be instanced
+     * and interrupter method called.
+     *
+     * @param string $className
+     * @param object $entry
+     * @return mixed
+     */
+    public function interruptLogin($className, &$data)
+    {
+        $originalClass   = \Config::get('photon.dynamic_models_namespace').'\\'.$className;
+        $extensionsClass = \Config::get('photon.dynamic_module_extensions_namespace').'\\'.$className."ModuleExtensions";
+
+        if (
+            class_exists($extensionsClass) &&
+            in_array('Photon\PhotonCms\Core\Entities\DynamicModuleExtension\Contracts\ModuleExtensionCanInterruptCreate', class_implements($extensionsClass))
+        ) {
+            $originalInstance = new $originalClass();
+            $extensionsInstance = \App::make($extensionsClass);
+            $extensionsInstance->setTableName($originalInstance->getTable());
+            $extensionsInstance->setRequestData($data);
+            return $extensionsInstance->interruptLogin();
+        }
+    }
+
+    /**
+     * Uses a Module Model class name to find the Module extension class if it exist.
+     * If the found extension class supports the specific interface, it will be instanced
+     * and interrupter method called.
+     *
+     * @param string $className
+     * @param object $entry
+     * @return mixed
+     */
+    public function interruptRegister($className, &$data)
+    {
+        $originalClass   = \Config::get('photon.dynamic_models_namespace').'\\'.$className;
+        $extensionsClass = \Config::get('photon.dynamic_module_extensions_namespace').'\\'.$className."ModuleExtensions";
+
+        if (
+            class_exists($extensionsClass) &&
+            in_array('Photon\PhotonCms\Core\Entities\DynamicModuleExtension\Contracts\ModuleExtensionCanInterruptRegister', class_implements($extensionsClass))
+        ) {
+            $originalInstance = new $originalClass();
+            $extensionsInstance = \App::make($extensionsClass);
+            $extensionsInstance->setTableName($originalInstance->getTable());
+            $extensionsInstance->setRequestData($data);
+            return $extensionsInstance->interruptRegister();
+        }
+        dd('test');
+    }
 }
 

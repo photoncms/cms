@@ -139,5 +139,11 @@ return [
         'title' => 'Permissions',
         'laravel_type' => '',
         'is_system' => 0
-    ]
+    ],
+    25 => [
+        'type' => 'big_integer',
+        'title' => 'Big integer',
+        'laravel_type' => 'bigInteger',
+        'is_system' => 0
+    ],
 ];

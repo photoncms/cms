@@ -1,10 +1,12 @@
 import { mapGetters } from 'vuex';
 
-import {
-    setupJsTree,
-    destroyJsTree
-} from '_/components/UserInterface/Sidebar/GeneratorSidebar/GeneratorSidebar.jsTree';
+import _ from 'lodash';
 
+import {
+    destroyJsTree,
+    jsTreeReselectNode,
+    setupJsTree,
+} from '_/components/UserInterface/Sidebar/GeneratorSidebar/GeneratorSidebar.jsTree';
 
 export default {
     /**
@@ -37,5 +39,22 @@ export default {
      */
     beforeDestroy: function() {
         destroyJsTree();
-    }
+    },
+
+    /**
+     * Set the watched properties
+     *
+     * @type  {Object}
+     */
+    watch: {
+        'generator.selectedModule' (newEntry, oldEntry) {
+            const newId = _.has(newEntry, 'id') ? newEntry.id : null;
+
+            const oldId = _.has(oldEntry, 'id') ? oldEntry.id : null;
+
+            if (newId !== oldId) {
+                jsTreeReselectNode();
+            }
+        }
+    },
 };

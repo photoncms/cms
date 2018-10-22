@@ -71,7 +71,7 @@ const state = {
      *
      * @type  {object}
      */
-    report: null,
+    report: {},
 
     /**
      * Report type (create, update, delete)
@@ -87,13 +87,23 @@ const state = {
      */
     refreshForm: null,
 
-
     /**
      * Module selected for editing
      *
      * @type  {object}
      */
-    selectedModule: null,
+    selectedModule: {
+        anchor_html: null,
+        anchor_text: null,
+        category: null,
+        fields: [],
+        group_id: null,
+        icon: 'fa fa-bars',
+        name: null,
+        slug: null,
+        table_name: null,
+        type: 'non_sortable',
+    },
 };
 
 /**
@@ -249,9 +259,10 @@ const mutations = {
                 column_name: null,
                 editable: true,
                 id: state.newFieldId,
+                lazy_loading:true,
                 name: null,
-                nullable: true,
                 newField: true,
+                nullable: true,
                 order: state.selectedModule.fields.length,
                 pivot_table: null,
                 related_module: null,
@@ -318,10 +329,12 @@ const mutations = {
     [types.UPDATE_GENERATOR_SELECTED_MODULE](state, selectedModule) {
         // const selectedNode = state.nodes.find(node => node.id === selectedModule.id)
         if (!selectedModule) {
-            const templateModule = {
-                anchor_text: null,
+            state.newModule = true;
+
+            state.selectedModule = {
                 anchor_html: null,
-                category: 0,
+                anchor_text: null,
+                category: null,
                 fields: [],
                 group_id: null,
                 icon: 'fa fa-bars',
@@ -331,15 +344,11 @@ const mutations = {
                 type: 'non_sortable',
             };
 
-            state.newModule = true;
-
-            state.selectedModule = templateModule;
-
             return;
         }
 
         if (!selectedModule.category) {
-            selectedModule.category = 0;
+            selectedModule.category = null;
         }
 
         state.selectedModule = selectedModule;
@@ -367,10 +376,18 @@ const mutations = {
     },
 
     [types.UPDATE_GENERATOR_SELECTED_MODULE_CATEGORY](state, {newValue}) {
-        state.selectedModule.category = newValue;
+        state.selectedModule.category = newValue == 0 ? null : newValue;
+    },
+
+    [types.UPDATE_GENERATOR_NON_GROUPED_FIELDS_TO_BOTTOM](state, {newValue}) {
+        state.selectedModule.non_grouped_to_bottom = newValue;
     },
 
     [types.UPDATE_GENERATOR_FIELD_PROPERTY]: updateFieldProperty,
+
+    [types.UPDATE_GENERATOR_GROUP_FIELD_PROPERTY](state, { id, newValue }) {
+        updateFieldProperty(state, { id, newValue: newValue == 0 ? null : newValue });
+    },
 
     [types.UPDATE_GENERATOR_SELECTED_MODULE_FIELD_CAN_CREATE_SEARCH_CHOICE]: updateFieldProperty,
 
@@ -450,7 +467,7 @@ const mutations = {
     },
 
     [types.UPDATE_GENERATOR_SELECTED_MODULE_TABLE_NAME](state, {newValue}) {
-        state.selectedModule.table_name = newValue;
+        state.selectedModule.table_name = newValue ? newValue : null;
     },
 
     [types.UPDATE_GENERATOR_SELECTED_MODULE_TYPE](state, {newValue}) {

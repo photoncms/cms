@@ -79,6 +79,10 @@ export default {
             default: false,
             type: Boolean,
         },
+        shouldGroupFields: {
+            default: false,
+            type: Boolean,
+        },
         shouldRouterPush: {
             default: true,
             type: Boolean,
@@ -179,8 +183,8 @@ export default {
          * @param   {string}  options.selectedModuleName
          * @return  {promise}
          */
-        deleteEntry ({ entryId, selectedModuleName }) {
-            store.dispatch(`${this.vuexModule}/deleteEntry`, { entryId, selectedModuleName })
+        deleteEntry ({ entryId, selectedModuleName, force }) {
+            store.dispatch(`${this.vuexModule}/deleteEntry`, { entryId, selectedModuleName, force })
                 .then(() => {
                     if (this.shouldRouterPush) {
                         router.push(`/admin/${selectedModuleName}`);
@@ -195,11 +199,42 @@ export default {
          *
          * @return  {promise}
          */
-        deleteEntryConfirmed () {
+        deleteEntryConfirmed ({ force = false } = {}) {
             return this.deleteEntry({
                 entryId: this.admin.editedEntry.id,
                 selectedModuleName: this.admin.selectedModule.table_name,
+                force,
             });
+        },
+
+        /**
+         * Checks if a group has assigned fields
+         *
+         * @param   {object}  fieldGroup
+         * @return  {boolean}
+         */
+        groupHasFields (fieldGroup) {
+            if(!this.shouldGroupFields) {
+                return true;
+            }
+
+            return _.some(this.fields, { fieldGroupId: fieldGroup.id });
+        },
+
+        /**
+         * Checks if a field should be shown
+         *
+         * @return  {boolean}
+         */
+        shouldShowField (field, fieldGroup) {
+            // If a field has a fieldGroupId property it's a dynamic module field,
+            // so it should be checked for grouping
+            if (_.has(field, 'fieldGroupId')) {
+                return fieldGroup.id === field.fieldGroupId;
+            }
+
+            // otherwise, the field is a custom system one (e.g. menu-item)
+            return true;
         },
 
         /**
@@ -337,6 +372,7 @@ export default {
      */
     computed: {
         ...mapGetters({
+            photonFields: 'photonField/photonField',
             user: 'user/user',
         }),
 
@@ -358,6 +394,35 @@ export default {
             set (value) {
                 this.createAnotherEntry(value);
             }
+        },
+
+        /**
+         * Returns a field groups array
+         *
+         * @return  {array}
+         */
+        fieldGroups () {
+            const ungroupedFields = [{
+                    id: null,
+                    name: null,
+                }];
+
+            let fieldGroups = this.photonFields.fieldGroups
+                    .filter((group) => {
+                        return group.module_id === this.admin.selectedModule.id;
+                    })
+                    .map((group) => {
+                        return {
+                            id: group.id,
+                            name: group.name
+                        };
+                    });
+
+            if(this.admin.selectedModule.non_grouped_to_bottom) {
+                return fieldGroups.concat(ungroupedFields);
+            }
+
+            return ungroupedFields.concat(fieldGroups);
         },
 
         /**

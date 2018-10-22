@@ -1,6 +1,6 @@
 <?php
 
-namespace Photon\PhotonCms\Core\Jobs;
+namespace Photon\PhotonCms\Core\ScheduledJobs;
 
 use Illuminate\Console\Scheduling\Schedule;
 

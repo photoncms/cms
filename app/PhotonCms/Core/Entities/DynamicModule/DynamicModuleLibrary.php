@@ -55,7 +55,7 @@ class DynamicModuleLibrary
      * @var FieldTypeGateway
      */
     private $fieldTypeGateway;
-    
+
     /**
      * @param ResponseRepository $responseRepository
      * @param ModuleRepository $moduleRepository
@@ -193,7 +193,7 @@ class DynamicModuleLibrary
         if ($allEntries instanceof \Illuminate\Pagination\LengthAwarePaginator) {
             $allEntries = $allEntries->getCollection();
         }
-        
+
         foreach ($allEntries as $entry) {
             $entry->{$name} = $this->dynamicModuleHelpers->generateAnchorTextFromItem($entry, $module->{$name});
             $this->dynamicModuleRepository->save($entry, $dynamicModuleGateway);
@@ -295,7 +295,7 @@ class DynamicModuleLibrary
             $entries = $this->dynamicModuleRepository->retrieveByRelationValue($matchedModule['fieldName'], $entryId, $dynamicModuleGateway);
 
             if (!$entries->isEmpty() && !($matchedModule['module']->table_name == "resized_images" && $module->table_name == "assets")) {
-                return true;
+                return $entries;
             }
         }
         return false;

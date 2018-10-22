@@ -1,5 +1,35 @@
 # Release Notes
 
+## v1.2.0 (2018-09-24)
+
+### Added
+- Added include fields functionality in the API
+- Used include fields functionality in admin panel Vue app to minimize the response payloads
+- Added field groups functionality
+- Added AI-assisted celebrity face-recognition Asset Manager feature
+- Added a Big Integer field type
+- Added a user account lock functionality
+- Added interrupt login and register events
+- Added post login and register events
+- Added the force delete entry functionality
+
+### Changed
+- Handled a case where while inserting a file in Redactor editor a file is selected instead of an image - it now generates a clickable link.
+- Changed password reset and change methods - instead of eloquent they now use Photon iAPI
+- Sorted modules by name in the generator sidebar
+- Changed generator sidebar module selection to double click instead of a single click
+- Improved the generator change reporter layout
+- Changed the Laravel Mix configuration so that the localhost:3000 isn't automatically opened everytime the browserSync wacther is ran (prefer using the proxy URL)
+
+### Fixed
+- Fixed a generator validation error bug
+- Fixed an error with jstree destroy method while switching from single to non-sortable module types
+- Fixed a number of console errors in generator
+- Fixed an issue of parent module not being accurately displayed for selected module in the generator section
+- Fixed an issue of automatic table name generator not working under certain conditions
+- Fixed a parent entry selection error for sortable modules
+- Fixed an error with NotificationTransformer which caused notifications to fail
+
 ## v1.1.3 (2018-09-18)
 
 ### Added

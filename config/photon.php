@@ -33,6 +33,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Use slugs
+    |--------------------------------------------------------------------------
+    |
+    | Flag which determines if celebrity image assets tagging is enabled.
+    |
+    */
+    'use_celebrity_recognition' => env('CELEBRITY_RECOGNITION', 0),
+
+    /*
+    |--------------------------------------------------------------------------
     | Dynamic Models location
     |--------------------------------------------------------------------------
     |
@@ -169,7 +179,7 @@ return [
     | Location of photon core jobs
     |
     */
-    'core_jobs_dir' => app_path('/PhotonCms/Core/Jobs'),
+    'core_jobs_dir' => app_path('/PhotonCms/Core/ScheduledJobs'),
 
     /*
     |--------------------------------------------------------------------------
@@ -179,7 +189,7 @@ return [
     | Namespace prefix of photon core jobs
     |
     */
-    'core_jobs_namespace' => 'Photon\PhotonCms\Core\Jobs\\',
+    'core_jobs_namespace' => 'Photon\PhotonCms\Core\ScheduledJobs\\',
 
     /*
     |--------------------------------------------------------------------------
@@ -189,7 +199,7 @@ return [
     | Location of photon jobs
     |
     */
-    'jobs_dir' => app_path('/PhotonCms/Dependencies/Jobs'),
+    'jobs_dir' => app_path('/PhotonCms/Dependencies/ScheduledJobs'),
 
     /*
     |--------------------------------------------------------------------------
@@ -199,7 +209,7 @@ return [
     | Namespace prefix of photon jobs
     |
     */
-    'jobs_namespace' => 'Photon\PhotonCms\Dependencies\Jobs\\',
+    'jobs_namespace' => 'Photon\PhotonCms\Dependencies\ScheduledJobs\\',
 
     /*
     |--------------------------------------------------------------------------
@@ -286,8 +296,8 @@ return [
         'modules',
         'module_types',
         'model_meta_data',
-        'model_meta_types',  
-        'menu_link_types'      
+        'model_meta_types',
+        'menu_link_types'
     ],
 
     /*
@@ -301,7 +311,7 @@ return [
         'failed_jobs',
         'fcm_tokens',
         'menus',
-        'menu_items',        
+        'menu_items',
         'menu_link_types_menus',
         'notifications',
         'password_resets',

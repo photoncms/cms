@@ -33,10 +33,11 @@ class CreateModuleRequest extends Request
             'module.name'       => 'required|string|max:255',
             'module.anchor_text'=> 'nullable|string|max:2000',
             'module.anchor_html'=> 'nullable|string',
-            'module.category'   => 'integer',
+            'module.category'   => 'nullable|integer',
             'module.icon'       => 'string|max:255',
             'module.lazy_loading' => 'boolean',
-            'fields'            => 'required|array'
+            'module.non_grouped_to_bottom' => 'boolean',
+            'fields'            => 'required|array',
         ];
 
         if($this->request->has('fields')) {

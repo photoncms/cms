@@ -33,6 +33,8 @@ trait AuthenticatesUsers
             $credentials['confirmed'] = 1;
         }
 
+        $this->interrupter->interruptLogin('User', $credentials);
+
         try {
             // attempt to verify the credentials and create a token for the user
             if (!$token = JWTAuth::attempt($credentials)) {
@@ -69,6 +71,8 @@ trait AuthenticatesUsers
                 return $this->responseRepository->make('PASSWORD_EXPIRED');
             }
         }
+
+        $user->firePostLoginEvents();
         
         // all good so return the token
         return $this->responseRepository->make('USER_LOGIN_SUCCESS', ['user' => $user, 'token' => ['token' => $token, 'ttl' => \Config::get('jwt.ttl')]]);

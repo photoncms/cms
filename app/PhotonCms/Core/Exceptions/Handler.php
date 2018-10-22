@@ -64,7 +64,7 @@ class Handler extends ExceptionHandler
      */
     public function exceptionToJson(Exception $e)
     {
-        $responseSource = ($e instanceof PhotonException) ? $e->getResponseSource() : 'responses';
+        $responseSource = ($e instanceof PhotonException) ? $e->getResponseSource() : null;
 
         $responseName = ($e instanceof PhotonException)
             ? $e->getMessage()

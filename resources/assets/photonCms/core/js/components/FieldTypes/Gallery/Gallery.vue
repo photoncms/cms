@@ -8,7 +8,7 @@
                 class="gallery-item"
                 :data-gallery-item-id="galleryItem.id"
                 v-for="galleryItem in galleryItems">
-                <img :src="getAssetUrl(galleryItem.asset)"/>
+                <img v-if="galleryItem.asset" :src="getAssetUrl(galleryItem.asset)"/>
                 <div class="button-container">
                     <button
                         @click="deleteGalleryItem(galleryItem.id)"
@@ -17,12 +17,14 @@
                         <i class="fa fa-trash"></i>
                     </button>
                     <button
+                        v-if="galleryItem.asset"
                         @click="openEntryEditor(galleryItem.id)"
                         class="btn btn-xs btn-default"
                         type="button">
                         <i class="fa fa-pencil"></i>
                     </button>
                     <a
+                        v-if="galleryItem.asset"
                         :href="galleryItem.asset.file_url"
                         class="btn btn-xs btn-default"
                         target="_blank">

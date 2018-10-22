@@ -5,9 +5,10 @@
             <form
                 :id="`entry-editor-form-${vuexModule}`"
                 data-parsley-excluded="input[type=button], input[type=submit], input[type=reset]">
-                <div v-if="admin.editedEntry" class="panel panel-default" :class="{'no-border': inSidebar}">
+                <div v-for="fieldGroup in fieldGroups" v-if="admin.editedEntry && groupHasFields(fieldGroup)" class="panel panel-default" :class="{'no-border': inSidebar}">
                     <div class="panel-body" :class="{'no-border no-padding': inSidebar}">
                         <div class="form-horizontal">
+                            <h4 class="section-title" v-if="fieldGroup.name">{{ fieldGroup.name }}</h4>
                             <permission-name-generator-handler v-if="admin.selectedModule.table_name === 'permissions'">
                             </permission-name-generator-handler>
 
@@ -37,6 +38,7 @@
                                 :value="field.value"
                                 :vuexModule="vuexModule"
                                 v-for="field in fields"
+                                v-if="shouldShowField(field, fieldGroup)"
                                 >
                             </form-field>
                         </div>
@@ -47,7 +49,12 @@
                     <div class="list-group">
                         <div class="list-group-item form-footer" :class="{'form-footer-no-padding': inSidebar}">
                             <div v-if="serverError" class="form-group clearfix">
-                                <div class="server-error pull-right">{{serverError}}</div>
+                                <div class="server-error pull-right">
+                                    {{serverError}}
+                                    <div class="text-right text-info" v-if="admin.shouldForceDelete">
+                                        <i class="fa fa-info-circle opacity50"></i> {{ $t('admin.relatedEntry') }} : <strong><router-link class="" :to="`/admin/${admin.deletionPreventedRelatedEntry.table}/${admin.deletionPreventedRelatedEntry.id}`">{{ admin.deletionPreventedRelatedEntry.anchor_text }}</router-link></strong>
+                                    </div class="text-">
+                                </div>
                             </div>
 
                             <div
@@ -55,10 +62,19 @@
                                 class="form-group pull-right no-bottom-margin"
                                 style="margin-bottom: 0;">
                                 <button
+                                    v-if="!admin.shouldForceDelete"
                                     :disabled="admin.submitInProgress"
                                     type="button"
                                     @click="deleteEntryConfirmed" class="btn btn-danger">
                                     {{ $t('admin.confirmDelete') }}
+                                </button>
+
+                                <button
+                                    v-if="admin.shouldForceDelete"
+                                    :disabled="admin.submitInProgress"
+                                    type="button"
+                                    @click="deleteEntryConfirmed({ force: true })" class="btn btn-danger">
+                                    {{ $t('admin.deleteAnyway') }}
                                 </button>
 
                                 <button
@@ -144,3 +160,9 @@
     import EntryForm from './EntryForm.js';
     export default EntryForm;
 </script>
+
+<style scoped>
+    .opacity50 {
+        opacity: .5;
+    }
+</style>

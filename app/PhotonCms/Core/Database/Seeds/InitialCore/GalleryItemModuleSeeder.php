@@ -117,7 +117,7 @@ class GalleryItemModuleSeeder extends Seeder
                 'default' => NULL,
                 'local_key' => NULL,
                 'foreign_key' => NULL,
-                'nullable' => 0,
+                'nullable' => 1,
                 'indexed' => 0,
                 'created_at' => '2017-08-20 16:38:43',
                 'updated_at' => '2017-08-20 16:42:13',

@@ -19,8 +19,8 @@ class CreateMenuItemsTable extends Migration
             $table->integer('rgt');
             $table->integer('parent_id')->nullable()->default(null);
             $table->integer('depth')->default(0);
-            $table->integer('menu_id')->unsigned()->index();
-            $table->integer('menu_link_type_id')->unsigned()->index();
+            $table->integer('menu_id')->unsigned()->nullable()->index();
+            $table->integer('menu_link_type_id')->unsigned()->nullable()->index();
             $table->string('title', 255)->nullable()->default(null);
             $table->text('resource_data')->nullable()->default(null);
             $table->text('entry_data')->nullable()->default(null);
@@ -30,8 +30,8 @@ class CreateMenuItemsTable extends Migration
             $table->integer('updated_by');
             $table->timestamps();
 
-            $table->foreign('menu_link_type_id')->references('id')->on('menu_link_types')->onDelete('cascade');
-            $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
+            $table->foreign('menu_link_type_id')->references('id')->on('menu_link_types')->onDelete('set null');
+            $table->foreign('menu_id')->references('id')->on('menus')->onDelete('set null');
         });
     }
 

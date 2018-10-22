@@ -75,3 +75,8 @@ export const InfoPanel = Vue.component(
         'InfoPanel',
         require('_/components/UserInterface/InfoPanel/InfoPanel.vue')
     );
+
+export const FieldGroupsHelper = Vue.component(
+        'FieldGroupsHelper',
+        require('_/components/UserInterface/FieldGroupsHelper/FieldGroupsHelper.vue')
+    );
