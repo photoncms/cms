@@ -1,6 +1,11 @@
 # Release Notes
 
-## v1.2.0 (2018-09-24)
+## v1.2.1 (2018-10-24)
+
+### Changed
+- Changed Photon Update command in order to prevent update between different major or minor versions 
+
+## v1.2.0 (2018-10-22)
 
 ### Added
 - Added include fields functionality in the API

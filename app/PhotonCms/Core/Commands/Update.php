@@ -18,7 +18,7 @@ class Update extends Command
      *
      * @var string
      */
-    protected $signature = 'photon:update';
+    protected $signature = 'photon:update {--force}';
 
     /**
      * The console command description.
@@ -79,6 +79,15 @@ class Update extends Command
         if($validKey['body']['newest_version'] == $currentVersion) {
             $this->info("Photon instalation already up to date");
             return false;
+        }
+
+        // forbid update between major and minor version        
+        $force = (bool) $this->option('force');
+        $currentVersion = explode(".", $currentVersion); 
+        $latestVersion = explode(".", $validKey['body']['newest_version']);
+        if(($currentVersion[0] != $latestVersion[0] || $currentVersion[1] != $latestVersion[1]) && !$force) {
+            $this->info("Major version difference, unable to update");
+            return false;            
         }
 
         $directory = getcwd().'/tmp';
