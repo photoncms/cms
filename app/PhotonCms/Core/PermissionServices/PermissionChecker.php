@@ -455,6 +455,26 @@ class PermissionChecker
         return true;
     }
 
+    public static function canAccess($moduleTableName)
+    {
+        if (PermissionHelper::isAdminUser()) {
+            return true;
+        }
+        
+        $permissions = Cache::remember('all_permissions', 60, function() {
+            return Permissions::all();
+        });  
+
+        $accessPermission = "access:{$moduleTableName}";
+
+        if ($permissions->contains('name', $accessPermission)) {
+            $user = \Auth::user();
+            return $user->can($accessPermission);
+        }
+
+        return true;        
+    }
+
     /**
      * Check if there is a create permission to create entries for a specific module.
      *

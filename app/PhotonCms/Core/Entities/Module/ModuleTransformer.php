@@ -47,6 +47,9 @@ class ModuleTransformer extends BaseTransformer implements TransformerFullTransf
                 $restrictedFields[] = $fieldName;
             }
         }
+        
+        $objectArray['permission_control']['access'] = PermissionChecker::canAccess($object->table_name);
+
         $objectArray['permission_control']['edit_restrictions'] = $restrictedFields;
 
         $objectArray['permission_control']['crud'] = [
