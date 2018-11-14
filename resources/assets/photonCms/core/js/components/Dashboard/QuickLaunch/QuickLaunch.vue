@@ -3,11 +3,11 @@
         <div class="quick-wrapper quick-wrapper-selected">
             <ul class="quick-selected">
                 <li v-for="menuListItem in ui.menus.quickLaunchMenu">
-                    <router-link v-if="menuListItem.menu_link_type_name === 'admin_panel_module_link'" :to="`/admin/${menuListItem.resource_data.table_name}`">
+                    <router-link v-if="menuListItem.menu_link_type_name === 'admin_panel_module_link' && canAccess(menuListItem.resource_data)" :to="`/admin/${menuListItem.resource_data.table_name}`">
                         <i class="nav-icon" :class="menuListItem.icon ? menuListItem.icon : menuListItem.resource_data.icon"></i>
                         <span class="nav-text">{{menuListItem.title}}</span>
                     </router-link>
-                    <router-link v-if="menuListItem.menu_link_type_name === 'admin_panel_single_entry'" :to="`/admin/${menuListItem.resource_data.table_name}/${menuListItem.entry_data.id}`">
+                    <router-link v-if="menuListItem.menu_link_type_name === 'admin_panel_single_entry' && canAccess(menuListItem.resource_data)" :to="`/admin/${menuListItem.resource_data.table_name}/${menuListItem.entry_data.id}`">
                         <i class="nav-icon" :class="menuListItem.icon ? menuListItem.icon : menuListItem.resource_data.icon"></i>
                         <span class="nav-text">{{menuListItem.title}}</span>
                     </router-link>

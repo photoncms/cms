@@ -69,6 +69,22 @@ export default {
             $('.main-menu-access').removeClass('active');
         },
 
+        /**
+         * Fetches the access permission for a given moduel
+         *
+         * @param   {object}  resourceData
+         * @return  {boolean}
+         */
+        canAccess (resourceData) {
+            if(!_.has(resourceData, 'table_name')) {
+                return true;
+            }
+
+            const moduleData = _.find(this.photonModules, [ 'table_name', resourceData.table_name ]);
+
+            return _.has(moduleData, 'permission_control.access') ? moduleData.permission_control.access : true;
+        },
+
         closeMenu () {
             if (!Modernizr.mq('(max-width: 480px)')) {
                 return;

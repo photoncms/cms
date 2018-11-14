@@ -8,7 +8,7 @@
                 </router-link>
             </li>
             <li v-for="menuListItem in ui.menus.mainMenu" :class="{'has-subnav': menuListItem.has_children}">
-                <router-link v-if="menuListItem.clickable && menuListItem.menu_link_type_name !== 'static_link'" :to="'/admin/' + menuListItem.resource_data.table_name">
+                <router-link v-if="menuListItem.clickable && menuListItem.menu_link_type_name !== 'static_link' && canAccess(menuListItem.resource_data)" :to="'/admin/' + menuListItem.resource_data.table_name">
                     <i class="nav-icon" :class="menuListItem.icon ? menuListItem.icon : menuListItem.resource_data.icon"></i>
                     <span class="nav-text">{{menuListItem.title}}</span>
                 </router-link>
@@ -23,7 +23,7 @@
                 </span>
                 <ul v-if="menuListItem.has_children">
                     <li v-for="children in menuListItem.children">
-                        <router-link v-if="children.clickable && children.menu_link_type_name !== 'static_link'" :to="'/admin/' + children.resource_data.table_name">
+                        <router-link v-if="children.clickable && children.menu_link_type_name !== 'static_link' && canAccess(children.resource_data)" :to="'/admin/' + children.resource_data.table_name">
                             <i class="nav-icon" :class="children.icon ? children.icon : children.resource_data.icon"></i>
                             <span class="nav-text">{{children.title}}</span>
                         </router-link>

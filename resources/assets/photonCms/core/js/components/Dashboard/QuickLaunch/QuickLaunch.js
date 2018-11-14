@@ -15,6 +15,7 @@ export default {
     computed: {
         ...mapGetters({
             ui: 'ui/ui',
+            photonModules: 'photonModule/photonModules',
         })
     },
 
@@ -27,6 +28,22 @@ export default {
         ...mapActions('ui', [ // Map actions from photonModuleActions module namespace
             'getQuickLaunchMenu'
         ]),
+
+        /**
+         * Fetches the access permission for a given moduel
+         *
+         * @param   {object}  resourceData
+         * @return  {boolean}
+         */
+        canAccess (resourceData) {
+            if(!_.has(resourceData, 'table_name')) {
+                return true;
+            }
+
+            const moduleData = _.find(this.photonModules, [ 'table_name', resourceData.table_name ]);
+
+            return _.has(moduleData, 'permission_control.access') ? moduleData.permission_control.access : true;
+        },
 
         /**
          * Checks if a user has given role
