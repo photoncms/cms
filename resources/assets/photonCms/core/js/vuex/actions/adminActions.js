@@ -62,6 +62,10 @@ export default {
                     return reject(`Module ${moduleTableName} doesn't exist.`);
                 }
 
+                if (!state.selectedModule.permission_control.access) {
+                    router.push('/error/resource-not-found');
+                }
+
                 // If module entry ID wasn't provided
                 if (!moduleEntryId) {
                     return dispatch('shouldRerouteToFirstEntry', { moduleTableName })
