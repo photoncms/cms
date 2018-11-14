@@ -164,6 +164,14 @@ export default {
                         'permissionRoles',
                     ],
                 },
+                'access:[table name]':
+                {
+                    name: 'access:{{module}}',
+                    title: 'Can Access \'{{module}}\' Module',
+                    visibleControls: [
+                        'permissionModules',
+                    ],
+                },
                 'modify_module:[table name]':
                 {
                     name: 'modify_module:{{module}}',
@@ -249,6 +257,10 @@ export default {
                 {
                     text: 'Module Permissions',
                     children: [
+                        {
+                            id: 'access:[table name]',
+                            text: 'Access Module [table name]',
+                        },
                         {
                             id: 'modify_module:[table name]',
                             text: 'Modify Module [table name]',
