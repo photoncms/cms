@@ -146,7 +146,7 @@ class NodeLibrary
             $modelTemplate = ModelTemplateFactory::makeDynamicModuleModelTemplate();
             $modelTemplate->setModelName($scopedModule->model_name);
 
-            $dynamicModuleGateway = DynamicModuleGatewayFactory::make($modelTemplate->getFullClassName(), $module->table_name);
+            $dynamicModuleGateway = DynamicModuleGatewayFactory::make($modelTemplate->getFullClassName(), $scopedModule->table_name);
 
             $rootNodes = $this->nodeRepository->findRootNodesByScopeId($nodeId, $dynamicModuleGateway);
 
