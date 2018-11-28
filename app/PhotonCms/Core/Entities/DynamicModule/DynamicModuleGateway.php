@@ -460,6 +460,7 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
 
         $nodeDummy = new $className();
 
+
         // If the class object will be real Node instances
         if ($nodeDummy instanceof Node) {
             $nodes = $className::whereNull($nodeDummy->getParentColumnName())
@@ -467,6 +468,10 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
             foreach ($filterData as $key => $value) {
                 $nodes = $nodes->where($key, $value);
             }
+            PermissionORMHelper::applyRestrictions(
+                $nodes,
+                $this->moduleTableName
+            );
             $nodes = $nodes->get();
         }
         // Otherwise check if these entries can be faked to Nodes
@@ -474,13 +479,22 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
             // Fake entries to nodes
             if ($nodeDummy instanceof CanFakeNodeInterface) {
                 if (empty($filterData)) {
-                    $nodes = $className::all();
+                    $nodes = new $className();
+                    PermissionORMHelper::applyRestrictions(
+                        $nodes,
+                        $this->moduleTableName
+                    );
+                    $nodes = $className::get();
                 }
                 else {
                     $nodes = $className::query();
                     foreach ($filterData as $key => $value) {
                         $nodes = $nodes->where($key, $value);
                     }
+                    PermissionORMHelper::applyRestrictions(
+                        $nodes,
+                        $this->moduleTableName
+                    );
                     $nodes = $nodes->get();
                 }
             }
@@ -512,10 +526,14 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
 
         $nodes = $className::whereNull($nodeDummy->getParentColumnName())
             ->orderBy($nodeDummy->getQualifiedOrderColumnName())
-            ->whereScopeId($scopeId)
-            ->get();
+            ->whereScopeId($scopeId);
 
-        return $nodes;
+        PermissionORMHelper::applyRestrictions(
+            $nodes,
+            $this->moduleTableName
+        );
+
+        return $nodes->get();
     }
 
     /**
@@ -527,10 +545,14 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
     public function retrieveChildren(Node $node)
     {
         $children = $node->orderBy($node->getQualifiedOrderColumnName())
-            ->where($node->getParentColumnName(), $node->id)
-            ->get();
+            ->where($node->getParentColumnName(), $node->id);
 
-        return $children;
+        PermissionORMHelper::applyRestrictions(
+            $children,
+            $this->moduleTableName
+        );
+            
+        return $children->get();
     }
 
     /**
