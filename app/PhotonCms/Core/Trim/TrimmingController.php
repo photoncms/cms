@@ -2,6 +2,8 @@
 
 namespace Photon\PhotonCms\Core\Trim;
 
+use Photon\PhotonCms\Core\Helpers\TrimResponseHelper;
+
 class TrimmingController
 {
 
@@ -46,7 +48,7 @@ class TrimmingController
      */
     private function filterData($data, $keyName, $isDataArray = false)
     {
-        $includedFields = $this->prepareIncludedFields();
+        $includedFields = TrimResponseHelper::prepareIncludedFields();
 
         if (empty($includedFields)) {
             return $data;
@@ -57,35 +59,6 @@ class TrimmingController
             : $this->trimData($data[$keyName], $includedFields);
 
         return $data;
-    }
-
-    /**
-     * Prepares included_fields received as get paramethers.
-     *
-     * @return array
-     */
-    private function prepareIncludedFields()
-    {
-        $preparedFields = [];
-
-        $includedFields = \Request::get('include');
-
-        if(!is_array($includedFields)) {
-            return $preparedFields;
-        }
-
-        foreach ($includedFields as $key => $field) {
-    		$fields = array_reverse(explode(".", $field));
-
-            $partialArray = [];
-			foreach ($fields as $fieldValue) {
-				$partialArray = [$fieldValue => $partialArray];
-			}
-
-            $preparedFields = array_merge_recursive($preparedFields, $partialArray);
-        }
-
-        return $preparedFields;
     }
 
     /**

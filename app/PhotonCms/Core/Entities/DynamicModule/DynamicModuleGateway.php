@@ -11,6 +11,7 @@ use Photon\PhotonCms\Core\Entities\Node\Node;
 use Photon\PhotonCms\Core\Entities\DynamicModuleModel\Contracts\CanFakeNodeInterface;
 use Photon\PhotonCms\Core\PermissionServices\PermissionORMHelper;
 use Photon\PhotonCms\Core\Helpers\DatabaseHelper;
+use Photon\PhotonCms\Core\Helpers\TrimResponseHelper;
 use Photon\PhotonCms\Core\Entities\Field\FieldRepository;
 use Photon\PhotonCms\Core\Entities\Module\ModuleRepository;
 use Photon\PhotonCms\Core\Entities\Field\FieldGateway;
@@ -91,7 +92,12 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
             $this->moduleTableName
         );
 
-        $this->loadRelations($queryBuilder);
+        $trimArray = [];
+        $this->loadRelations($queryBuilder, $trimArray);
+
+        if(count($trimArray) > 0) {
+            return $queryBuilder->select($trimArray)->find($id);
+        }
 
         return $queryBuilder->find($id);
     }
@@ -111,7 +117,12 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
             $this->moduleTableName
         );
 
-        $this->loadRelations($queryBuilder);
+        $trimArray = [];
+        $this->loadRelations($queryBuilder, $trimArray);
+        
+        if(count($trimArray) > 0) {
+            return $queryBuilder->select($trimArray)->find(1);
+        }
 
         return $queryBuilder->find(1);
     }
@@ -133,8 +144,6 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
             $this->moduleTableName
         );
 
-        $this->loadRelations($queryBuilder);
-
         if (is_array($filter)) {
             $this->applyFilter($queryBuilder, $filter);
         }
@@ -147,10 +156,17 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
             return $this->paginateResults($queryBuilder, $pagination);
         }
 
+        $trimArray = [];
+        $this->loadRelations($queryBuilder, $trimArray);
+        
+        if(count($trimArray) > 0) {
+            return $queryBuilder->select($trimArray)->get();
+        }
+
         return $queryBuilder->get();
     }
 
-    private function loadRelations(&$queryBuilder)
+    private function loadRelations(&$queryBuilder, &$trimArray)
     {
         $module = ModuleRepository::findByTableNameStatic($this->moduleTableName);
 
@@ -158,21 +174,86 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
         $fieldGateway = new FieldGateway();
 
         $fields = $fieldRepository->findByModuleId($module->id, $fieldGateway);
+        $includedFields = TrimResponseHelper::prepareIncludedFields();
+        $relationArray = [];
 
-        $relationArray = [
-            "created_by_relation",
-            "updated_by_relation"
-        ];
+        if(count($includedFields) == 0) {
+            $relationArray = [
+                "created_by_relation",
+                "updated_by_relation",
+            ];
+        
+            $className = $this->modelClassName;
+            $class = new $className();
+            
+            foreach ($fields as $key => $field) {
+                if( $field->relation_name && method_exists($class, $field->relation_name . "_relation") ) {
+                    if($field->related_module == 4) {
+                        $relationArray[] = $field->relation_name . "_relation.resized_images_relation.image_size_relation";
+                    } else {
+                        $relationArray[] = $field->relation_name . "_relation"; 
+                    } 
+                }
+            }
 
+            $queryBuilder->with($relationArray);
+
+            return true;
+        }
+
+        if(key_exists("created_by", $includedFields)) {
+            $relationName = "created_by_relation";
+            if(count($includedFields["created_by"]) > 0) {
+                $selects = array_keys($includedFields["created_by"]);
+                if(!in_array("id", $selects)) {
+                    $selects[] = "id";
+                }
+                $selects = array_diff($selects, ["permission_control", "extensions"]);
+                $relationName .= ":".implode(",", $selects);
+            }
+            $relationArray[] = $relationName;
+        }
+
+        if(key_exists("updated_by", $includedFields)) {
+            $relationName = "updated_by_relation";
+            if(count($includedFields["updated_by"]) > 0) {
+                $selects = array_keys($includedFields["updated_by"]);
+                if(!in_array("id", $selects)) {
+                    $selects[] = "id";
+                }
+                $selects = array_diff($selects, ["permission_control", "extensions"]);
+                $relationName .= ":".implode(",", $selects);
+            }
+            $relationArray[] = $relationName;
+        }
+        
         $className = $this->modelClassName;
         $class = new $className();
         
         foreach ($fields as $key => $field) {
-            if($field->relation_name && method_exists($class, $field->relation_name . "_relation"))
-                if($field->related_module == 4)
-                    $relationArray[] = $field->relation_name . "_relation.resized_images_relation.image_size_relation";
-                else 
-                    $relationArray[] = $field->relation_name . "_relation";
+            if( $field->relation_name && method_exists($class, $field->relation_name . "_relation") && key_exists($field->relation_name, $includedFields) ) {
+                if($field->related_module == 4) {
+                    $relationName = $field->relation_name . "_relation.resized_images_relation.image_size_relation";
+                    $relationArray[] = $relationName;
+                } else {
+                    $relationName = $field->relation_name . "_relation";
+                    if(count($includedFields[$field->relation_name]) > 0) {
+                        $selects = array_keys($includedFields[$field->relation_name]);
+                        if(!in_array("id", $selects)) {
+                            $selects[] = "id";
+                        }
+                        $selects = array_diff($selects, ["permission_control", "extensions"]);
+                        $relationName .= ":".implode(",", $selects);
+                    }
+                    $relationArray[] = $relationName;
+                } 
+            }
+        }
+
+        foreach ($includedFields as $key => $value) {
+            if( array_key_exists($key, $class->getAll()) && !in_array($key . "_relation", $trimArray) ) {
+                $trimArray[] = $key; 
+            }
         }
 
         $queryBuilder->with($relationArray);
