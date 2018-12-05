@@ -23,7 +23,7 @@ class MenuItemTransformer extends BaseTransformer
      */
     public function transform(MenuItem $object)
     {
-        $object->load(["created_by", "updated_by"]);
+        // $object->load(["created_by", "updated_by"]);
 
         $objectArray = [
             'id' => ($object->id !== null) ? (int) $object->id : $object->id,
@@ -58,6 +58,7 @@ class MenuItemTransformer extends BaseTransformer
 
         // Add any relations preloaded with eager loading
         $relations = $object->getRelations();
+
         if (isset($relations['children'])) {
             unset($relations['children']);
         }

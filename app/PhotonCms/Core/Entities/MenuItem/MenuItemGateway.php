@@ -3,6 +3,7 @@
 namespace Photon\PhotonCms\Core\Entities\MenuItem;
 
 use Photon\PhotonCms\Core\Entities\MenuItem\Contracts\MenuItemGatewayInterface;
+use Photon\PhotonCms\Core\Helpers\TrimResponseHelper;
 
 /**
  * Decouples repository from data sources.
@@ -18,7 +19,33 @@ class MenuItemGateway implements MenuItemGatewayInterface
      */
     public function retrieveByMenuId($menuId)
     {
-        return MenuItem::whereMenuId($menuId)->orderBy('lft', 'asc')->get();
+        $includedFields = TrimResponseHelper::prepareIncludedFields();
+
+        if(count($includedFields) == 0) {
+            $relationArray = [
+                "created_by",
+                "updated_by",
+                "menu_link_type",
+                "menu",
+            ];
+            return MenuItem::with($relationArray)->whereMenuId($menuId)->orderBy('lft', 'asc')->get();
+        }
+
+        $relationArrayMap = [
+            "created_by" => "created_by",
+            "updated_by" => "updated_by",
+            "menu_link_type_name" => "menu_link_type",
+            "menu_name" => "menu",
+        ];
+        $relationArray = [];
+
+        foreach ($includedFields as $name => $value) {
+            if(isset($relationArrayMap[$name])) {
+                $relationArray[] = $relationArrayMap[$name];
+            }
+        }
+
+        return MenuItem::with($relationArray)->whereMenuId($menuId)->orderBy('lft', 'asc')->get();
     }
 
     /**

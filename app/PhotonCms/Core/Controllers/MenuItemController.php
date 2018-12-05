@@ -139,7 +139,7 @@ class MenuItemController extends Controller
         }
 
         $menuItems = $this->menuItemRepository->findByMenuId($menu->id, $this->menuItemGateway);
-        
+
         return $this->responseRepository->make('LOAD_MENU_ITEMS_SUCCESS', ['menu_items' => $menuItems]);
     }
 
