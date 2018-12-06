@@ -16,15 +16,13 @@ class CachingStoreCheck extends BaseMiddleware
      */
     public function handle($request, \Closure $next)
     {
-        $driver = env("CACHE_DRIVER");
+        $driver = config("cache.default");
         $photonCaching = env("USE_PHOTON_CACHING");
 
-        if(!$photonCaching)
-            return $next($request);
+        if($photonCaching && $driver != "redis") {
+            throw new PhotonException('PHOTON_INVALID_CACHE_DRIVER');   
+        }
 
-        if(!in_array($driver, ["file", "database"]))
-            return $next($request);
-
-        throw new PhotonException('PHOTON_INVALID_CACHE_DRIVER');   
+        return $next($request);
     }
 }
