@@ -15,6 +15,8 @@ use Photon\PhotonCms\Core\Entities\Menu\Contracts\MenuGatewayInterface;
 use Photon\PhotonCms\Core\Entities\MenuLinkType\MenuLinkTypeRepository;
 use Photon\PhotonCms\Core\Entities\MenuLinkType\Contracts\MenuLinkTypeGatewayInterface;
 
+use Illuminate\Support\Facades\Cache;
+
 class MenuController extends Controller
 {
 
@@ -159,6 +161,8 @@ class MenuController extends Controller
 
         $menu->load('menu_link_types');
 
+        Cache::tags(["menu-".$menuId."-items-list"])->flush();
+
         return $this->responseRepository->make('UPDATE_MENU_SUCCESS', ['menu' => $menu]);
     }
 
@@ -181,7 +185,9 @@ class MenuController extends Controller
             throw new PhotonException('DELETE_SYSTEM_MENU_FORBIDDEN', ['menu_id' => $menuId]);
         }
 
-        $this->menuRepository->delete($menu, $this->menuGateway);
+        $this->menuRepository->delete($menu, $this->menuGateway);        
+
+        Cache::tags(["menu-".$menuId."-items-list"])->flush();
 
         return $this->responseRepository->make('DELETE_MENU_SUCCESS');
     }

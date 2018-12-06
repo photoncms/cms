@@ -18,6 +18,8 @@ use Photon\PhotonCms\Core\Entities\MenuLinkType\MenuLinkTypeRepository;
 use Photon\PhotonCms\Core\Entities\MenuLinkType\Contracts\MenuLinkTypeGatewayInterface;
 use Photon\PhotonCms\Core\Entities\Node\NodeRepository;
 
+use Illuminate\Support\Facades\Cache;
+
 class MenuItemController extends Controller
 {
 
@@ -131,6 +133,14 @@ class MenuItemController extends Controller
      */
     public function getMenuItems($menuId)
     {
+        $include = json_encode(\Request::get("include"));
+        $cacheKeyName = "menu-".$menuId.":".$include;
+
+        // return from cache if exists
+        if(Cache::tags([env("APPLICATION_URL"), "menu-items-list", "menu-".$menuId."-items-list"])->has($cacheKeyName)) {
+            return Cache::tags([env("APPLICATION_URL"), "menu-items-list", "menu-".$menuId."-items-list"])->get($cacheKeyName);
+        }
+
         // Prepare the menu ID
         $menu = $this->menuRepository->find($menuId, $this->menuGateway);
 
@@ -140,7 +150,10 @@ class MenuItemController extends Controller
 
         $menuItems = $this->menuItemRepository->findByMenuId($menu->id, $this->menuItemGateway);
 
-        return $this->responseRepository->make('LOAD_MENU_ITEMS_SUCCESS', ['menu_items' => $menuItems]);
+        $response = $this->responseRepository->make('LOAD_MENU_ITEMS_SUCCESS', ['menu_items' => $menuItems]);
+        Cache::tags([env("APPLICATION_URL"), "menu-items-list", "menu-".$menuId."-items-list"])->forever($cacheKeyName, $response);
+
+        return $response; 
     }
 
     /**
@@ -220,6 +233,8 @@ class MenuItemController extends Controller
 
         $menuItem = $this->menuItemRepository->saveFromData($menuItemData, $this->menuItemGateway);
 
+        Cache::tags(["menu-".$menu->id."-items-list"])->flush();
+
         return $this->responseRepository->make('CREATE_MENU_ITEM_SUCCESS', ['menu_item' => $menuItem]);
     }
 
@@ -268,6 +283,8 @@ class MenuItemController extends Controller
 
         $menuItem = $this->menuItemRepository->saveFromData($menuItemData, $this->menuItemGateway);
 
+        Cache::tags(["menu-".$menuItem->menu_id."-items-list"])->flush();
+
         return $this->responseRepository->make('UPDATE_MENU_ITEM_SUCCESS', ['menu_item' => $menuItem]);
     }
 
@@ -285,6 +302,8 @@ class MenuItemController extends Controller
         if (!$menuItem) {
             throw new PhotonException('MENU_ITEM_NOT_FOUND', ['item_id' => $itemId]);
         }
+
+        Cache::tags(["menu-".$menuItem->menu_id."-items-list"])->flush();
 
         $this->menuItemRepository->delete($menuItem, $this->menuItemGateway);
 
@@ -337,6 +356,8 @@ class MenuItemController extends Controller
         }
 
         $affectedNode = $this->nodeRepository->performNodeAction($affectedNode, $action, $secondNode);
+
+        Cache::tags(["menu-".$menuId."-items-list"])->flush();
 
         return $this->responseRepository->make('REPOSITION_NODE_SUCCESS', ['affected_node' => $affectedNode]);
     }

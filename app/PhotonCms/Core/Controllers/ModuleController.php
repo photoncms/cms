@@ -579,6 +579,7 @@ class ModuleController extends Controller
             $relatedModules = $this->dynamicModuleLibrary->findRelatedModules($module);
             Cache::tags($relatedModules)->flush();
         }
+        Cache::tags(["menu-items-list"])->flush();
 
         $moduleData['id'] = $module->id;
         $hasNewSearchChoice = false;
@@ -920,6 +921,7 @@ class ModuleController extends Controller
             $relatedModules = $this->dynamicModuleLibrary->findRelatedModules($module);
             Cache::tags($relatedModules)->flush();
         }
+        Cache::tags(["menu-items-list"])->flush();
 
         // Backing up module data
         $moduleData = $transformationController->objectFullTransform($module);
