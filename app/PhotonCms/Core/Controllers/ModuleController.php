@@ -48,6 +48,7 @@ use Photon\PhotonCms\Core\Entities\ModelRelation\ModelRelationFactory;
 use Photon\PhotonCms\Core\Entities\DynamicModule\DynamicModuleLibrary;
 use Photon\PhotonCms\Core\Entities\Module\ModuleLibrary;
 use Illuminate\Support\Facades\Cache;
+use Photon\PhotonCms\Core\PermissionServices\PermissionHelper;
 
 class ModuleController extends Controller
 {
@@ -249,6 +250,21 @@ class ModuleController extends Controller
      */
     public function getAllModules()
     {
+        $includedFields = \Request::get('with');
+
+        $user = \Auth::user();
+        $permissions = PermissionHelper::getCurrentUserPermissions();
+        $cacheKeyName = json_encode([
+            "modules"           => "all",
+            "user"              => $user->id,
+            "includedFields"    => $includedFields,
+            "permissions"       => $permissions,
+        ]);
+
+        if(Cache::tags([env("APPLICATION_URL"), 'all-modules'])->has($cacheKeyName)) {
+            return Cache::tags([env("APPLICATION_URL"), 'all-modules'])->get($cacheKeyName);
+        }
+
         $modules = $this->moduleLibrary->getAllModules();
 
         $responseData = ['modules' => $modules];
@@ -257,7 +273,11 @@ class ModuleController extends Controller
             $responseData['categories'] = $this->moduleRepository->getAllMultilevelSortable($this->moduleGateway);
         }
 
-        return $this->responseRepository->make('GET_ALL_MODULES_SUCCESS', $responseData);
+        $response = $this->responseRepository->make('GET_ALL_MODULES_SUCCESS', $responseData);
+
+        Cache::tags([env("APPLICATION_URL"), 'all-modules'])->forever($cacheKeyName, $response);
+
+        return $response;
     }
 
     /**
@@ -541,6 +561,8 @@ class ModuleController extends Controller
             'module' => $module
         ];
 
+        Cache::tags(['all-modules'])->flush();
+        
         return $this->responseRepository->make(
             (
                 ($this->reportingService->isActive())
@@ -874,6 +896,8 @@ class ModuleController extends Controller
             $this->dynamicModuleLibrary->updateAllModuleAnchorTextsForEntries($module, "anchor_html");
         }
 
+        Cache::tags(['all-modules'])->flush();
+
         return $this->responseRepository->make(
             (
                 ($this->reportingService->isActive())
@@ -996,6 +1020,8 @@ class ModuleController extends Controller
         $responseData = [
             'module' => $module
         ];
+
+        Cache::tags(['all-modules'])->flush();
 
         return $this->responseRepository->make(
             (
