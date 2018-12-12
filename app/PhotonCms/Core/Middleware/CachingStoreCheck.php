@@ -17,7 +17,7 @@ class CachingStoreCheck extends BaseMiddleware
     public function handle($request, \Closure $next)
     {
         $driver = config("cache.default");
-        $photonCaching = config("photon.use_photon_cache");
+        $photonCaching = env("USE_PHOTON_CACHING");
 
         if($photonCaching && $driver != "redis") {
             throw new PhotonException('PHOTON_INVALID_CACHE_DRIVER');   

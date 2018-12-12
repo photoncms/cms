@@ -382,7 +382,7 @@ return [
     |
     |
     */
-    'use_photon_cache' => true,
+    'use_photon_cache' => env('USE_PHOTON_CACHING', false),
 
     /*
     |--------------------------------------------------------------------------
