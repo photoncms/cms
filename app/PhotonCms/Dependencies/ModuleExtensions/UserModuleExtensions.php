@@ -154,20 +154,6 @@ class UserModuleExtensions extends BaseDynamicModuleExtension implements
                     throw new PhotonException('INSUFICIENT_PERMISSIONS', ['cannot_assign' => $cannotAssign, 'cannot_revoke' => $cannotRevoke]);
                 }
             }
-
-            //prevent super admin from unsigning other super admin  roles
-            $currentUser = \Auth::user();
-            $roles = $this->requestData['roles'];
-
-            if ($currentUser->roles_relation->contains(1) && $user->roles_relation->contains(1) && !in_array("1", $roles)) {
-                throw new PhotonException(
-                    'CANNOT_UNSIGN_SUPER_ADMIN_ROLE',
-                    [],
-                    null,
-                    [],
-                    'customresponses'
-                );
-            }
         }
 
         // Add password to used passwords list if necessary
@@ -192,22 +178,13 @@ class UserModuleExtensions extends BaseDynamicModuleExtension implements
             $user->password_created_at = Carbon::now();
         }
 
-        // prevent user from locking himself and prevent super admin from locking other super admins
+        // prevent user from locking himself
         if (array_key_exists('locked', $this->requestData)) {
             $currentUser = \Auth::user();
             $locked = $this->requestData['locked'];
 
             if ($currentUser->id == $user->id && $locked) { 
                 throw new PhotonException('CANNOT_LOCK_SELF');
-            }
-            if ($currentUser->roles_relation->contains(1) && $user->roles_relation->contains(1) && $locked) {
-                throw new PhotonException(
-                    'CANNOT_LOCK_SUPER_ADMIN',
-                    [],
-                    null,
-                    [],
-                    'customresponses'
-                );
             }
         }
     }
@@ -223,16 +200,6 @@ class UserModuleExtensions extends BaseDynamicModuleExtension implements
 
         if ($currentUser->id == $entry->id) { // Entry id can happen to be a string accidentally
             throw new PhotonException('CANNOT_DELETE_SELF');
-        }
-
-        if ($currentUser->roles_relation->contains(1) && $entry->roles_relation->contains(1)) {
-            throw new PhotonException(
-                'CANNOT_DELETE_SUPER_ADMIN', 
-                [], 
-                null, 
-                [], 
-                'customresponses'
-            );
         }
     }
 
@@ -286,11 +253,6 @@ class UserModuleExtensions extends BaseDynamicModuleExtension implements
 
     public function preUpdate($item, $cloneBefore, $cloneAfter)
     {
-        //save last password change date
-        if (array_key_exists('password', $this->requestData)) {
-            $item->last_password_change = Carbon::now();
-        }
-
         // set lock_date if needed
         if (isset($cloneAfter->locked) && $cloneBefore->locked !== $cloneAfter->locked) {
             if($cloneAfter->locked) {
@@ -329,9 +291,7 @@ class UserModuleExtensions extends BaseDynamicModuleExtension implements
 
     public function postLogin($item)
     {
-        //store last login time
-        $item->last_login = Carbon::now();
-        $item->save();
+        // do something post login
     }
 
     public function postRegister($item)
