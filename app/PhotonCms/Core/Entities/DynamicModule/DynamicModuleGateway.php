@@ -154,13 +154,13 @@ class DynamicModuleGateway implements DynamicModuleGatewayInterface, RootNodesIn
 
         $trimArray = [];
         $this->loadRelations($queryBuilder, $trimArray);
+        
+        if(count($trimArray) > 0) {
+            $queryBuilder->select($trimArray);
+        }
 
         if (is_array($pagination)) {
             return $this->paginateResults($queryBuilder, $pagination);
-        }
-        
-        if(count($trimArray) > 0) {
-            return $queryBuilder->select($trimArray)->get();
         }
 
         return $queryBuilder->get();
